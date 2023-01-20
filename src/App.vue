@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <the-header></the-header>
+    <the-sidebar @resize="resizeSidebar"></the-sidebar>
+    <main-content></main-content>
+    <widget-container></widget-container>
+
+
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheSidebar from './components/TheSidebar.vue'
+import MainContent from './components/MainContent.vue'
+import TheHeader from './components/TheHeader.vue'
+import WidgetContainer from './components/WidgetContainer.vue'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    TheSidebar,
+    MainContent,
+    TheHeader,
+    WidgetContainer
+  },
+  methods: {
+    resizeSidebar(evt) {
+      let resizerContainer = document.querySelector('#sidebar');
+      let resizerWidth = evt.target.offsetWidth;
+      let resizerPointerLocation = (resizerWidth / 2) - (evt.clientX - evt.target.getBoundingClientRect().left)
+
+      let resize = (event) => {
+        let resizerContainerWidth = event.clientX + resizerPointerLocation - resizerContainer.getBoundingClientRect().left
+        //let resizerMinWidth = resizerContainer.dataset.resizerMin
+        resizerContainer.style.width = `${resizerContainerWidth}px`;
+      }
+      window.addEventListener('mousemove', resize)
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', resize);
+      });
+    },
+  },
+ 
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  margin: 0;
+}
+#app{
+  display: flex;
 }
 </style>
