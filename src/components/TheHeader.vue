@@ -17,7 +17,7 @@ export default{
 </script>
 <style scoped>
     #header{
-        background: lightblue;
+        background: #f1f3f4;
         height: 6rem; 
         width: 100%; 
         position: fixed; 

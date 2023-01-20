@@ -23,23 +23,6 @@ export default {
     TheHeader,
     WidgetContainer
   },
-  methods: {
-    resizeSidebar(evt) {
-      let resizerContainer = document.querySelector('#sidebar');
-      let resizerWidth = evt.target.offsetWidth;
-      let resizerPointerLocation = (resizerWidth / 2) - (evt.clientX - evt.target.getBoundingClientRect().left)
-
-      let resize = (event) => {
-        let resizerContainerWidth = event.clientX + resizerPointerLocation - resizerContainer.getBoundingClientRect().left
-        //let resizerMinWidth = resizerContainer.dataset.resizerMin
-        resizerContainer.style.width = `${resizerContainerWidth}px`;
-      }
-      window.addEventListener('mousemove', resize)
-      window.addEventListener('mouseup', () => {
-        window.removeEventListener('mousemove', resize);
-      });
-    },
-  },
  
 }
 </script>
