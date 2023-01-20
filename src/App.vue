@@ -1,6 +1,6 @@
 <template>
     <the-header></the-header>
-    <the-sidebar @resize="resizeSidebar"></the-sidebar>
+    <the-sidebar></the-sidebar>
     <main-content></main-content>
     <widget-container></widget-container>
 

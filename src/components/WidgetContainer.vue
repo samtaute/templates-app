@@ -44,12 +44,14 @@ export default {
 <style scoped>
 #widget-container {
     width: 6rem;
-    background: lightsalmon;
+    background: #dadce0;
     height: 40rem;
     width: 25rem;
     display: inline-block;
     position: fixed;
     right: 80px;
     top: 120px;
+    border: 2px solid lightgray;
 }
+
 </style>

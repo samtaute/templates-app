@@ -1,5 +1,6 @@
 <template>
     <header id="header">
+        <div class="header-title"><h4>Templates</h4></div>
         <content-container-ribbon></content-container-ribbon>
     </header>
     
@@ -24,7 +25,8 @@ export default{
         top: 0; 
         z-index: 9999;
         display: flex; 
-        justify-content: center;
+    }
+    .header-title{
         align-items: center;
     }
 

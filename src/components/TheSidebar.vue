@@ -1,10 +1,12 @@
 <template>
     <div id="sidebar">
-        Sidebar
         <div class="resizer" @mousedown="resizeSidebar"></div>
+        <import-field></import-field>
     </div>
 </template>
 <script>
+import ImportField from './ImportField.vue'
+
 export default {
     methods: {
         resizeSidebar(evt) {
@@ -23,6 +25,9 @@ export default {
             });
         },
     },
+    components:{
+        ImportField
+    }
 }
 
 
@@ -32,12 +37,14 @@ export default {
 #sidebar {
     height: 100vh;
     margin-top: 4rem;
+    padding-top:4rem;
     background-color: #f1f3f4;
     width: 30%;
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content:flex-start;
     z-index:5;
 }
 
