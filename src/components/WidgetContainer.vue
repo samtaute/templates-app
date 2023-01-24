@@ -49,7 +49,7 @@ export default {
     width: 25rem;
     display: inline-block;
     position: fixed;
-    right: 80px;
+    left: 1100px;
     top: 120px;
     border: 2px solid lightgray;
 }
