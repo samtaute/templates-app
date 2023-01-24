@@ -19,7 +19,7 @@ export default{
 <style scoped>
     #header{
         background: #f1f3f4;
-        height: 6rem; 
+        height: 6.5rem; 
         width: 100%; 
         position: fixed; 
         top: 0; 
@@ -28,6 +28,11 @@ export default{
     }
     .header-title{
         align-items: center;
+        justify-content: left;
+        width: 100%;
+        display: flex; 
+        height: 3rem; 
+        
     }
 
 </style>

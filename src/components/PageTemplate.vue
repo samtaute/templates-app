@@ -10,8 +10,7 @@
     background: lightsalmon;
     height: 100%;
     width: 25rem;
-    margin: .5rem 2rem;
+    margin: 1rem 2rem;
     display: inline-block;
-    
 }
 </style>
