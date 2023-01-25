@@ -1,6 +1,6 @@
 
 import { createStore } from 'vuex'
-
+import startingPlatforms from '../platforms'
 
 const store = createStore({
     modules: {
@@ -8,41 +8,20 @@ const store = createStore({
     },
     state() {
         return {
-            dummy:"",
             json: "",
             blocks: [],
             pageTitle: "",
             fileName: "",
             activeIndex: -1,
-            platforms: ['cricket', 'metropcs', 'boost', 'blu'],
-            activePlatform: 'all'
+            platforms: startingPlatforms,
+            activePlatform: 'all',
+            pageLoaded: false
 
         }
     },
     mutations: {
         updateJson(state, payload) {
             state.json = payload;
-        },
-        updateBlocks(state, payload) {
-            let blockList = payload.blocks;
-
-            let generateBlockPlatforms = (block) => {
-                if (block.platforms !== undefined) {
-                    return block.platforms;
-                } else if (block.excludePlatforms !== undefined) {
-                    return state.platforms.filter((plat) => !block.excludePlatforms.includes(plat));
-                } else {
-                    return state.platforms;
-                }
-            }
-
-            for (let element of blockList) {
-                element.platforms = generateBlockPlatforms(element);
-
-            }
-
-            state.blocks = blockList;
-
         },
         updatePageTitle(state, payload) {
             state.pageTitle = payload.title;
@@ -59,12 +38,17 @@ const store = createStore({
         activatePlatform(state, payload) {
             state.activePlatform = payload
         },
-        updateList(state, payload){
-            state.dummy="dummy"
-            state.blocks=payload; 
+        updateList(state, payload) {
+            state.blocks = payload;
         },
-        deleteBlock(state, payload){
-            state.blocks.splice(payload, 1); 
+        deleteBlock(state, payload) {
+            state.blocks.splice(payload, 1);
+        },
+        updateBlocks(state, payload){
+            state.blocks = payload; 
+        },
+        togglePageLoaded(state){
+            state.pageLoaded = true; 
         }
 
 
@@ -83,31 +67,82 @@ const store = createStore({
         activeIndex(state) {
             return state.activeIndex;
         },
-        platforms(state) {
-            return state.platforms;
+        allProducts(state){
+            return Object.keys(state.platforms); 
         },
-        activePlatform(state){
-            return state.activePlatform; 
+        allPlatforms(state) {
+            let products = Object.keys(state.platforms);
+            let returnArray=[]; 
+
+            for (let prod of products){
+                returnArray = returnArray.concat(state.platforms[prod]);
+            }
+
+            return returnArray; 
+        },
+        activePlatform(state) {
+            return state.activePlatform;
+        },
+        pageLoaded(state){
+            return state.pageLoaded; 
         }
+
     },
     actions: {
         processJson(context, payload) {
             const page = JSON.parse(payload);
-            context.commit('updateBlocks', page);
+            context.dispatch('processBlockPlatforms', page);
+            context.dispatch('processPagePlatforms', page);
             context.commit('updatePageTitle', page);
             context.commit('updateFilename', page);
+            context.commit('togglePageLoaded');
+
         },
         activatePlatform(context, payload) {
             context.commit('activatePlatform', payload.platform)
         },
-        deleteBlock(context, payload){
+        deleteBlock(context, payload) {
             context.commit('deleteBlock', payload)
+        },
+        processBlockPlatforms(context, payload) {
+            let blockList = payload.blocks;
+
+            let generateBlockPlatforms = (block) => {
+                if (block.platforms !== undefined) {
+                    return block.platforms;
+                } else if (block.excludePlatforms !== undefined) {
+                    return context.getters.allPlatforms.filter((plat) => !block.excludePlatforms.includes(plat));
+                } else {
+                    return context.getters.allPlatforms; 
+                }
+            }
+
+            for (let element of blockList) {
+                element.platforms = generateBlockPlatforms(element);
+
+            }
+
+            context.commit('updateBlocks', blockList);
+
+        },
+        processPagePlatforms(context, payload){
+                let products = payload.platformsIncludeAllByProduct;
+                let returnObj = {}; 
+
+
+                for(let prod of products){
+                    returnObj[prod] = context.state.platforms[prod]; 
+                }
+                context.commit('updatePlatforms',returnObj)
+            },
+
         }
+
 
     }
 
 
-});
+);
 
 export default store;
 
