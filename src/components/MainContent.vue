@@ -17,12 +17,13 @@ export default{
 #content-container{
     background:lightyellow;
     vertical-align: top;
-    flex-grow: 1; 
+    flex-grow: 1;
     margin-top:6rem; 
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden;
+    overflow: scroll;
+    height: 100%;
 
 }
 
