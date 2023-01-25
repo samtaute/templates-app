@@ -36,7 +36,7 @@ export default {
 <style scoped>
 #sidebar {
     height: 100%;
-    margin-top: 4rem;
+    margin-top: 6rem;
     padding-top:4rem;
     background-color: #f1f3f4;
     width: 30%;
