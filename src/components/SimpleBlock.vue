@@ -1,5 +1,5 @@
 <template>
-    <div @click="activateElement" class="block-container">
+    <div @click="activateElement" class="block-container" :class="mode">
         <div class="platform-sticky-ribbon">
             <div v-for="platform in element.platforms" :key="platform" class="slice" :class="platform"></div>
 
@@ -22,6 +22,12 @@
 export default {
     props: ['element', 'index'],
     computed:{
+        mode(){
+            if (this.$store.getters.activeIndex === this.index){
+                return 'selected'
+            }
+            else return 'default'
+        },
         layout(){
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')){
                 if (Object.prototype.hasOwnProperty.call(this.element.settings,'layout')){
@@ -90,6 +96,10 @@ export default {
     position: absolute; 
     right: 6px; 
     bottom: 6px;
+}
+.selected{
+    padding-top: 80px; 
+    padding-bottom: 80px; 
 }
 
 </style>
