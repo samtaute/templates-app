@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 #sidebar {
-    height: 100vh;
+    height: 100%;
     margin-top: 4rem;
     padding-top:4rem;
     background-color: #f1f3f4;
@@ -50,7 +50,7 @@ export default {
 
 .resizer {
     position: absolute;
-    height: 100vh;
+    height: 100%;
     width: 8px;
     background: darkslategrey;
     right: 0;

@@ -1,6 +1,8 @@
 <template>
     <header id="header">
-        <div class="header-title"><h4>Templates</h4></div>
+        <div class="header-title"><h4>Templates</h4> 
+            {{ fileName }} {{ pageTitle }}   
+        </div>
         <content-container-ribbon></content-container-ribbon>
     </header>
     
@@ -11,6 +13,14 @@ import ContentContainerRibbon from './ContentContainerRibbon.vue'
 export default{
     components:{
         ContentContainerRibbon
+    },
+    computed: {
+        fileName() {
+            return this.$store.getters.fileName;
+        },
+        pageTitle() {
+            return this.$store.getters.pageTitle;
+        }
     }
 
 }

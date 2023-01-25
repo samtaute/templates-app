@@ -1,5 +1,8 @@
 <template>
     <div id="widget-container" @mousedown="selectContainer">
+        <div class="block-editor">
+            {{ activeBlock }}
+        </div>
     </div>
 </template>
 
@@ -35,6 +38,17 @@ export default {
             });
 
         }
+    },
+    computed:{
+        activeIndex(){
+            return this.$store.getters.activeIndex; 
+        },
+        activeBlock(){
+            if(this.activeIndex >= 0){
+                return this.$store.getters.blocks[this.activeIndex]
+            }
+            else return "No block selected"
+        }
     }
 }
 
@@ -49,7 +63,7 @@ export default {
     width: 25rem;
     display: inline-block;
     position: fixed;
-    left: 1100px;
+    left: 1200px;
     top: 120px;
     border: 2px solid lightgray;
 }

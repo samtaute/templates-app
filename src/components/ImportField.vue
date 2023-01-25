@@ -52,7 +52,6 @@ export default {
     },
     methods: {
         submitUserJson() {
-            console.log("submit")
             this.$store.dispatch('processJson',this.userInput)
             this.$emit('generate-page', this.userInput)
         }

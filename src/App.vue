@@ -33,5 +33,8 @@ body {
 }
 #app{
   display: flex;
+  height: 200vh;
+
+
 }
 </style>

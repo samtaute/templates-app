@@ -16,7 +16,6 @@ export default{
 <style scoped>
 #content-container{
     background:lightyellow;
-    height: 100vh;  
     vertical-align: top;
     flex-grow: 1; 
     margin-top:6rem; 
