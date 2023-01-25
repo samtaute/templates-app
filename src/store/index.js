@@ -91,8 +91,8 @@ const store = createStore({
     actions: {
         processJson(context, payload) {
             const page = JSON.parse(payload);
-            context.dispatch('processBlockPlatforms', page);
             context.dispatch('processPagePlatforms', page);
+            context.dispatch('processBlockPlatforms', page);
             context.commit('updatePageTitle', page);
             context.commit('updateFilename', page);
             context.commit('togglePageLoaded');

@@ -63,10 +63,9 @@ export default {
 <style>
 #page-template-container {
     width: 6rem;
-    background: lightsalmon;
     height: 100%;
     width: 25rem;
-    margin: 1rem 2rem;
+    margin: 2rem 2rem;
     display: inline-block;
 }
 </style>

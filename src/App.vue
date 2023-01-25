@@ -41,4 +41,26 @@ body {
 
 
 }
+.cricket{
+    background-color: aliceblue !important;
+}
+.blu{
+    background-color: aqua !important;
+}
+.boost{
+    background-color: beige !important;
+}
+.firstly{
+    background-color:#8E402A !important
+}
+.metropcs{
+    background-color: #9C9C9C !important; 
+}
+.pwg{
+    background-color: #00BB2D !important;
+}
+.moment{
+    background-color: #7E7B52 !important;
+}
+
 </style>

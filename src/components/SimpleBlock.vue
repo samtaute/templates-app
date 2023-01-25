@@ -1,21 +1,21 @@
 <template>
     <div @click="activateElement" class="block-container">
+        <div class="platform-sticky-ribbon">
+            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="platform"></div>
+
+        </div>
         <div class="block-header">
-            {{ element.blockType }}
-            <button class="btn btn-danger" @click="deleteBlock">Delete</button>
+           <h4>{{ element.blockType }}</h4> 
         </div>
         <div class="block-content">
             <div v-if="layout != 'none'">
-                {{ layout }}
+                <label>Layout:</label> {{ layout }}
             </div>
             <div v-if="count != 'none'">
-                {{ count }}
+                <label>Count:</label> {{ count }}
             </div>
-
         </div>
-        <div class="block-footer">
-
-        </div>
+        <button class="btn-sm btn btn-outline-danger delete" @click="deleteBlock">Delete</button>
     </div>
 </template>
 <script>
@@ -37,7 +37,10 @@ export default {
                 }
             }
             return 'none'; 
-        }
+        },
+        platforms(){
+            return this.$store.getters.allPlatforms; 
+        },
     },
     methods:{
         activateElement(){
@@ -46,9 +49,8 @@ export default {
         deleteBlock(){
             this.$store.dispatch('deleteBlock', this.index); 
         }
+    },
 
-
-    }
 
 
 }
@@ -58,6 +60,8 @@ export default {
 .block-container {
     display: flex;
     flex-direction: column;
+    margin: 2px; 
+    padding-top: 0; 
 
 }
 .block-content{
@@ -67,4 +71,25 @@ export default {
     display: flex;
     justify-content: space-between;
 }
+
+.platform-sticky-ribbon{
+    margin: 0; 
+    padding: 0; 
+    height: 1.3rem; 
+    width: 100%; 
+}
+.slice{
+    width: 4%; 
+    height: 100%; 
+    background: green; 
+    display:inline-block; 
+    border: 1px solid black; 
+
+}
+.delete{
+    position: absolute; 
+    right: 6px; 
+    bottom: 6px;
+}
+
 </style>
