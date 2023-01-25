@@ -62,6 +62,9 @@ const store = createStore({
         updateList(state, payload){
             state.dummy="dummy"
             state.blocks=payload; 
+        },
+        deleteBlock(state, payload){
+            state.blocks.splice(payload, 1); 
         }
 
 
@@ -96,6 +99,9 @@ const store = createStore({
         },
         activatePlatform(context, payload) {
             context.commit('activatePlatform', payload.platform)
+        },
+        deleteBlock(context, payload){
+            context.commit('deleteBlock', payload)
         }
 
     }

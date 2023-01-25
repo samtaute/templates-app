@@ -2,7 +2,7 @@
     <div @click="activateElement" class="block-container">
         <div class="block-header">
             {{ element.blockType }}
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-danger" @click="deleteBlock">Delete</button>
         </div>
         <div class="block-content">
             <div v-if="layout != 'none'">
@@ -41,7 +41,10 @@ export default {
     },
     methods:{
         activateElement(){
-            this.$store.commit('updateActiveIndex', this.index)
+            this.$store.commit('updateActiveIndex', this.index);
+        },
+        deleteBlock(){
+            this.$store.dispatch('deleteBlock', this.index); 
         }
 
 
