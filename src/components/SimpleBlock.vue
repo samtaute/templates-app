@@ -24,7 +24,7 @@
         <div class="block-content--selected" v-if="mode === 'selected'">
 
             <!-- layout selector -->
-            <div>
+            <div v-if="layout != 'none'">
                 <label for="layouts">
                     <h5>Layout:</h5>
                 </label>
@@ -37,7 +37,7 @@
 
 
             <!-- count field -->
-            <div>
+            <div v-if="count != 'none'">
                 <label>
                     <h5>Count: </h5>
                 </label>
