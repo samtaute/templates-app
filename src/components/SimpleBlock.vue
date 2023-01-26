@@ -7,33 +7,63 @@
         <div class="block-header">
             <h4>{{ element.blockType }}</h4>
         </div>
-        <div class="block-content">
+        <div class="block-content--default" v-if="mode === 'default'">
             <div v-if="layout != 'none'">
-                <label><h5>Layout: <span v-if="mode==='default'">{{layout}}</span></h5></label>
-                <span v-if="mode==='selected'" class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" @click="test" type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{layout}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">edge</a></li>
-                        <li><a class="dropdown-item" href="#">edge-description</a></li>
-                        <li><a class="dropdown-item" href="#">small-photocard</a></li>
-                    </ul>
-                </span>
+                <label>
+                    <h5>Layout: {{ layout }}</h5>
+                </label>
             </div>
+
             <div v-if="count != 'none'">
-                <label>Count:</label> {{ count }}
+                <label>
+                    <h5>Layout: {{ count }}</h5>
+                </label>
             </div>
         </div>
-        <button v-if="mode==='selected'" class="btn btn-sm btn-outline-success update" @click="updateBlock">Update</button>
+
+        <div class="block-content--selected" v-if="mode === 'selected'">
+
+            <!-- layout selector -->
+            <div>
+                <label for="layouts">
+                    <h5>Layout:</h5>
+                </label>
+                <select v-if="mode === 'selected'" @click="stopProp" name='layouts' id="layout-select"
+                    class="form-select" aria-label="Default select example">
+                    <option selected>{{ layout }}</option>
+                    <option v-for="layout in layouts" :value="layout" :key="layout">{{ layout }}</option>
+                </select>
+            </div>
+
+
+            <!-- count field -->
+            <div>
+                <label>
+                    <h5>Count: </h5>
+                </label>
+                <input @click="stopProp" type="text" id="count-select" :value="count">
+            </div>
+
+
+        </div>
+
+
+        <button v-if="mode === 'selected'" class="btn btn-sm btn-outline-success update"
+            @click="updateBlock">Update</button>
         <button class="btn-sm btn btn-outline-danger delete" @click="deleteBlock">Delete</button>
     </div>
 </template>
 <script>
+import settings from '../settings'
+
 export default {
+
     props: ['element', 'index'],
     computed: {
+        layouts() {
+            return settings.layouts.filter(layout => layout != this.layout);
+        },
+
         mode() {
             if (this.$store.getters.activeIndex === this.index) {
                 return 'selected'
@@ -67,11 +97,26 @@ export default {
         deleteBlock() {
             this.$store.dispatch('deleteBlock', this.index);
         },
-        test(evt){
-            evt.stopPropagation(); 
+        test(evt) {
+            evt.stopPropagation();
         },
-        update(){
+        updateBlock(evt) {
+            evt.stopPropagation()
+
+            const layoutValue = document.querySelector('#layout-select').value;
+            let newElement = this.element;
+            newElement.settings.layout = layoutValue;
+
+            const countValue = document.querySelector('#count-select').value; 
+            newElement.settings.count=countValue; 
+
+            this.$store.commit('updateBlock', newElement)
+
             
+
+        },
+        stopProp(evt) {
+            evt.stopPropagation();
         }
     },
 
@@ -89,7 +134,11 @@ export default {
 
 }
 
-.block-content {
+.block-content--default {
+    padding-left: 2rem;
+}
+
+.block-content--selected {
     padding-left: 2rem;
 }
 
@@ -119,6 +168,7 @@ export default {
     right: 6px;
     bottom: 6px;
 }
+
 .update {
     position: absolute;
     right: 71px;
@@ -128,5 +178,11 @@ export default {
 .selected {
     padding-top: 40px;
     padding-bottom: 40px;
+}
+
+.form-select {
+    display: inline-block;
+    width: 12rem;
+    margin-left: 10px;
 }
 </style>

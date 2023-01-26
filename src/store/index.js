@@ -55,6 +55,9 @@ const store = createStore({
         },
         togglePageLoaded(state) {
             state.pageLoaded = true;
+        },
+        updateBlock(state, payload){
+            state.blocks[state.activeIndex] = payload; 
         }
 
 

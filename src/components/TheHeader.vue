@@ -51,6 +51,7 @@ export default {
 }
 #header-brand{
     grid-area: brand; 
+    padding-left: 10px; 
 }
 #header-page-info{
     grid-area: info; 
