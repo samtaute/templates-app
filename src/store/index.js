@@ -30,7 +30,13 @@ const store = createStore({
             state.fileName = payload.filename;
         },
         updateActiveIndex(state, payload) {
-            state.activeIndex = payload;
+            if (state.activeIndex === payload){
+                state.activeIndex = -1; 
+            }else{
+                state.activeIndex = payload;
+            }
+            
+
         },
         updatePlatforms(state, payload) {
             state.platforms = payload;
@@ -44,11 +50,11 @@ const store = createStore({
         deleteBlock(state, payload) {
             state.blocks.splice(payload, 1);
         },
-        updateBlocks(state, payload){
-            state.blocks = payload; 
+        updateBlocks(state, payload) {
+            state.blocks = payload;
         },
-        togglePageLoaded(state){
-            state.pageLoaded = true; 
+        togglePageLoaded(state) {
+            state.pageLoaded = true;
         }
 
 
@@ -67,24 +73,24 @@ const store = createStore({
         activeIndex(state) {
             return state.activeIndex;
         },
-        allProducts(state){
-            return Object.keys(state.platforms); 
+        allProducts(state) {
+            return Object.keys(state.platforms);
         },
         allPlatforms(state) {
             let products = Object.keys(state.platforms);
-            let returnArray=[]; 
+            let returnArray = [];
 
-            for (let prod of products){
+            for (let prod of products) {
                 returnArray = returnArray.concat(state.platforms[prod]);
             }
 
-            return returnArray; 
+            return returnArray;
         },
         activePlatform(state) {
             return state.activePlatform;
         },
-        pageLoaded(state){
-            return state.pageLoaded; 
+        pageLoaded(state) {
+            return state.pageLoaded;
         }
 
     },
@@ -113,7 +119,7 @@ const store = createStore({
                 } else if (block.excludePlatforms !== undefined) {
                     return context.getters.allPlatforms.filter((plat) => !block.excludePlatforms.includes(plat));
                 } else {
-                    return context.getters.allPlatforms; 
+                    return context.getters.allPlatforms;
                 }
             }
 
@@ -125,21 +131,21 @@ const store = createStore({
             context.commit('updateBlocks', blockList);
 
         },
-        processPagePlatforms(context, payload){
-                let products = payload.platformsIncludeAllByProduct;
-                let returnObj = {}; 
+        processPagePlatforms(context, payload) {
+            let products = payload.platformsIncludeAllByProduct;
+            let returnObj = {};
 
 
-                for(let prod of products){
-                    returnObj[prod] = context.state.platforms[prod]; 
-                }
-                context.commit('updatePlatforms',returnObj)
-            },
-
-        }
-
+            for (let prod of products) {
+                returnObj[prod] = context.state.platforms[prod];
+            }
+            context.commit('updatePlatforms', returnObj)
+        },
 
     }
+
+
+}
 
 
 );

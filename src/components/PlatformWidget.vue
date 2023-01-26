@@ -26,26 +26,5 @@ export default {
 
 </script>
 <style>
-.cricket{
-    background-color: aliceblue;
-}
-.blu{
-    background-color: aqua;
-}
-.boost{
-    background-color: beige;
-}
-.firstly{
-    background-color:#8E402A
-}
-.metropcs{
-    background-color: #9C9C9C; 
-}
-.pwg{
-    background-color: #00BB2D
-}
-.moment{
-    background-color: #7E7B52;
-}
 
 </style>
