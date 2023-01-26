@@ -64,6 +64,9 @@ const store = createStore({
 
     },
     getters: {
+        jsonExport(state){
+            return JSON.stringify(state.blocks, null, 3)
+        },
         blocks(state) {
             return state.blocks
         },
@@ -143,7 +146,7 @@ const store = createStore({
                 returnObj[prod] = context.state.platforms[prod];
             }
             context.commit('updatePlatforms', returnObj)
-        },
+        }
 
     }
 
