@@ -16,7 +16,7 @@
 
             <div v-if="count != 'none'">
                 <label>
-                    <h5>Layout: {{ count }}</h5>
+                    <h5>Count: {{ count }}</h5>
                 </label>
             </div>
         </div>
