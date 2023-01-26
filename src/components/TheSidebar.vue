@@ -2,10 +2,14 @@
     <div id="sidebar">
         <div class="resizer" @mousedown="resizeSidebar"></div>
         <import-field></import-field>
+        <block-creator></block-creator>
+ 
     </div>
 </template>
 <script>
 import ImportField from './ImportField.vue'
+import BlockCreator from './BlockCreator.vue'
+
 
 export default {
     methods: {
@@ -26,7 +30,8 @@ export default {
         },
     },
     components:{
-        ImportField
+        ImportField,
+        BlockCreator
     }
 }
 

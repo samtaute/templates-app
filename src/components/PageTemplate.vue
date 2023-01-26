@@ -1,6 +1,6 @@
 <template>
     <div id="page-template-container">
-        <draggable v-model='myList' :disabled="!enabled" item-key="name" class="list-group layout-container"
+        <draggable v-model='myList' :disabled="!enabled" item-key="name" group="blocks" class="list-group layout-container"
             ghost-class="ghost" :move="checkMove" @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
                 <simple-block v-if="element.platforms.includes(activePlatform) || activePlatform === 'all'"

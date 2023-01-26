@@ -10,6 +10,7 @@ const store = createStore({
         return {
             json: "",
             blocks: [],
+            newBlocks:[],
             pageTitle: "",
             fileName: "",
             activeIndex: -1,
@@ -47,6 +48,10 @@ const store = createStore({
         updateList(state, payload) {
             state.blocks = payload;
         },
+
+        updateNewBlocks(state, payload){
+            state.newBlocks = payload; 
+        },
         deleteBlock(state, payload) {
             state.blocks.splice(payload, 1);
         },
@@ -58,6 +63,10 @@ const store = createStore({
         },
         updateBlock(state, payload){
             state.blocks[state.activeIndex] = payload; 
+        },
+        createBlock(state, payload){
+            state.newBlocks.push(payload); 
+            console.log(state.newBlocks)
         }
 
 
