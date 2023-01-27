@@ -7,11 +7,11 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" @click="createBlock" href="#">fotoscape_block</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">outbrain_block</a></li>
+                <li><a class="dropdown-item" href="#">ad_unit</a></li>
             </ul>
         </div>
-        <draggable v-model='newBlocks' :disabled="!enabled" item-key="name" class="list-group layout-container"
+        <draggable @delete="message" v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name" class="list-group layout-container"
             ghost-class="ghost" group="blocks" :move="checkMove" @start="dragging = true"
             @end="dragging = false">
             <template #item="{ element, index }">
@@ -58,6 +58,9 @@ export default {
                 }
             },)
 
+        },
+        message(){
+            console.log('message')
         }
     },
     computed: {

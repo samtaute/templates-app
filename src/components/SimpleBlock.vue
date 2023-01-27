@@ -5,18 +5,18 @@
 
         </div>
         <div class="block-header">
-            <h4>{{ element.blockType }}</h4>
+            <h5>{{ element.blockType }}</h5>
         </div>
         <div class="block-content--default" v-if="mode === 'default'">
             <div v-if="layout != 'none'">
                 <label>
-                    <h5>Layout: {{ layout }}</h5>
+                    <h6>Layout: {{ layout }}</h6>
                 </label>
             </div>
 
             <div v-if="count != 'none'">
                 <label>
-                    <h5>Count: {{ count }}</h5>
+                    <h6>Count: {{ count }}</h6>
                 </label>
             </div>
         </div>
@@ -50,6 +50,7 @@
 
         <button v-if="mode === 'selected'" class="btn btn-sm btn-outline-success update"
             @click="updateBlock">Update</button>
+        <button class="btn-sm btn btn-outline-info duplicate" @click="duplicateBlock">Duplicate</button>
         <button class="btn-sm btn btn-outline-danger delete" @click="deleteBlock">Delete</button>
     </div>
 </template>
@@ -59,6 +60,7 @@ import settings from '../settings'
 export default {
 
     props: ['element', 'index'],
+    emits: ['delete'],
     computed: {
         layouts() {
             return settings.layouts.filter(layout => layout != this.layout);
@@ -91,11 +93,20 @@ export default {
         },
     },
     methods: {
+        duplicateBlock() {
+            this.$store.commit('createBlock', this.element);
+
+        },
         activateElement() {
             this.$store.commit('updateActiveIndex', this.index);
         },
         deleteBlock() {
-            this.$store.dispatch('deleteBlock', this.index);
+            let container = this.$parent._sortable.options.container;
+            this.$store.dispatch('deleteBlock',{
+                container: container, 
+                index: this.index,
+            });
+            this.$parent.$emit('delete',this.index)
         },
         test(evt) {
             evt.stopPropagation();
@@ -107,21 +118,18 @@ export default {
             let newElement = this.element;
             newElement.settings.layout = layoutValue;
 
-            const countValue = document.querySelector('#count-select').value; 
-            newElement.settings.count=countValue; 
+            const countValue = document.querySelector('#count-select').value;
+            newElement.settings.count = countValue;
 
             this.$store.commit('updateBlock', newElement)
 
-            
+
 
         },
         stopProp(evt) {
             evt.stopPropagation();
         }
-    },
-
-
-
+    }
 }
 
 </script>
@@ -169,14 +177,20 @@ export default {
     bottom: 6px;
 }
 
-.update {
+.duplicate {
     position: absolute;
     right: 71px;
     bottom: 6px;
 }
 
+.update {
+    position: absolute;
+    right: 155px;
+    bottom: 6px;
+}
+
 .selected {
-    padding-top: 40px;
+    padding-top: 30px;
     padding-bottom: 40px;
 }
 

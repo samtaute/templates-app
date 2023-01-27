@@ -55,6 +55,9 @@ const store = createStore({
         deleteBlock(state, payload) {
             state.blocks.splice(payload, 1);
         },
+        deleteNewBlock(state, payload) {
+            state.newBlocks.splice(payload, 1);
+        },
         updateBlocks(state, payload) {
             state.blocks = payload;
         },
@@ -66,10 +69,7 @@ const store = createStore({
         },
         createBlock(state, payload){
             state.newBlocks.push(payload); 
-            console.log(state.newBlocks)
         }
-
-
 
     },
     getters: {
@@ -123,7 +123,12 @@ const store = createStore({
             context.commit('activatePlatform', payload.platform)
         },
         deleteBlock(context, payload) {
-            context.commit('deleteBlock', payload)
+            if (payload.container === 'newBlocks'){
+                context.commit('deleteNewBlock', payload.index)
+            } else{
+                context.commit('deleteBlock', payload.index)
+            }
+          
         },
         processBlockPlatforms(context, payload) {
             let blockList = payload.blocks;
