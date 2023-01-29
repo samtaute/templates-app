@@ -1,14 +1,19 @@
 <template>
-    <div id="widget-container" @mousedown="selectContainer">
+    <div v-if="pageLoaded" id="widget-container" @mousedown="selectContainer">
         <div class="block-editor">
             {{ activeBlock }}
         </div>
+        <page-preview></page-preview>
     </div>
 </template>
 
 <script>
+import PagePreview from './PagePreview.vue'
 
 export default {
+    components:{
+        PagePreview
+    },
     methods: {
         selectContainer(evt) {
 
@@ -48,6 +53,9 @@ export default {
                 return this.$store.getters.blocks[this.activeIndex]
             }
             else return "No block selected"
+        },
+        pageLoaded(){
+            return this.$store.getters.pageLoaded 
         }
     }
 }
@@ -59,7 +67,6 @@ export default {
 #widget-container {
     width: 6rem;
     background: #dadce0;
-    height: 40rem;
     width: 25rem;
     display: inline-block;
     position: fixed;
