@@ -1,7 +1,4 @@
 <template>
-
-
-
     <!-- Modal -->
     <div @click="activateElement" class="block-container" :class="mode">
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,7 +42,13 @@
         <div class="block-header">
             <h5>{{ element.blockType }}</h5>
         </div>
-        <div class="block-content--default" v-if="mode === 'default'">
+        <div class="block-content block-content--default" v-if="mode === 'default'">
+            <div v-if="element.blockType === 'header_block'">
+                <label>
+                    <h6>Subheader: {{ element.settings.subheader }}</h6>
+                </label>
+
+            </div>
             <div v-if="layout != 'none'">
                 <label>
                     <h6>Layout: {{ layout }}</h6>
@@ -57,9 +60,23 @@
                     <h6>Count: {{ count }}</h6>
                 </label>
             </div>
+
+            <div v-if="element.blockType === 'fotoscape_block'">
+                <label>
+                    <h6>Category: {{ category }}</h6>
+                </label>
+            </div>
         </div>
 
-        <div class="block-content--selected" v-if="mode === 'selected'">
+        <div class="block-content block-content--selected" v-if="mode === 'selected'">
+            <!-- text field for header block -->
+            <div v-if="element.blockType === 'header_block'">
+                <label for="header text">
+                    <h5>Header:</h5>
+                </label>
+                <input @click="stopProp" type="text" id="subheader-input" :value="element.settings.subheader">
+
+            </div>
 
 
 
@@ -84,15 +101,34 @@
                 <input @click="stopProp" type="text" id="count-select" :value="count">
             </div>
 
+            <!-- category field -->
+            <div v-if="element.blockType === 'fotoscape_block'">
+                <label>
+                    <h5>Category: </h5>
+                </label>
+                <select v-if="mode === 'selected'" @click="stopProp" name='category' id="category-select"
+                    class="form-select" aria-label="Default select example">
+                    <option selected>{{ category }}</option>
+                    <option v-for="category in categories" :value="category" :key="category">{{ category }}</option>
+                </select>
+            </div>
+
 
         </div>
 
 
-        <button v-if="mode === 'selected'" class="btn btn-sm btn-outline-success update"
-            @click="updateBlock">Update</button>
-        <button class="btn-sm btn btn-outline-info duplicate" @click="duplicateBlock">Duplicate</button>
-        <button class="btn-sm btn btn-outline-danger delete" @click="deleteBlock">Delete</button>
+
+
+        <section class='footer'>
+            <button v-if="mode === 'selected'" class="btn btn-sm btn-outline-success update"
+                @click="updateBlock">Update</button>
+            <button class="btn-sm btn btn-outline-info duplicate" @click="duplicateBlock">Duplicate</button>
+            <button class="btn-sm btn btn-outline-danger delete" @click="deleteBlock">Delete</button>
+
+        </section>
+
     </div>
+
 </template>
 <script>
 import settings from '../settings'
@@ -111,6 +147,20 @@ export default {
     computed: {
         layouts() {
             return settings.layouts.filter(layout => layout != this.layout);
+        },
+
+        //todo make this a utility function
+        category() {
+            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
+                    return this.element.settings.category;
+                }
+            }
+            return 'standard';
+
+        },
+        categories() {
+            return this.$store.getters.allCategories.filter(category => category != this.category);
         },
 
         allPlatforms() {
@@ -165,12 +215,32 @@ export default {
         updateBlock(evt) {
             evt.stopPropagation()
 
-            const layoutValue = document.querySelector('#layout-select').value;
             let newElement = this.element;
-            newElement.settings.layout = layoutValue;
 
-            const countValue = document.querySelector('#count-select').value;
-            newElement.settings.count = countValue;
+            if (this.layout != 'none') {
+                const layoutValue = document.querySelector('#layout-select').value;
+                newElement.settings.layout = layoutValue;
+
+            }
+
+            if (this.count != 'none') {
+                const countValue = document.querySelector('#count-select').value;
+                newElement.settings.count = countValue;
+
+            }
+
+
+
+            if (this.element.blockType === 'header_block') {
+                const subheaderValue = document.querySelector('#subheader-input').value;
+                newElement.settings.subheader = subheaderValue;
+            }
+
+            if (this.element.blockType === 'fotoscape_block') {
+                const categoryValue = document.querySelector('#category-select').value;
+                newElement.settings.category = categoryValue;
+            }
+
 
             this.$store.commit('updateBlock', newElement)
         },
@@ -246,6 +316,9 @@ export default {
     padding-top: 30px;
     padding-bottom: 40px;
 }
+.block-content{
+    margin-bottom: 20px; 
+}
 
 .form-select {
     display: inline-block;
@@ -261,5 +334,9 @@ export default {
 
 .modal-content {
     top: 100px;
+}
+
+.footer {
+    margin-top: 10px;
 }
 </style>

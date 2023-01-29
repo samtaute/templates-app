@@ -1,6 +1,7 @@
 
 import { createStore } from 'vuex'
 import startingPlatforms from '../platforms'
+import settings from '../settings'
 
 const store = createStore({
     modules: {
@@ -16,7 +17,8 @@ const store = createStore({
             activeIndex: -1,
             platforms: startingPlatforms,
             activePlatform: 'all',
-            pageLoaded: false
+            pageLoaded: false,
+            settings: settings
 
         }
     },
@@ -76,6 +78,9 @@ const store = createStore({
 
     },
     getters: {
+        allCategories(state){
+            return state.settings.category; 
+        },
         jsonExport(state){
             return JSON.stringify(state.blocks, null, 3)
         },
