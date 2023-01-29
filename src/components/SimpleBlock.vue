@@ -1,7 +1,45 @@
 <template>
+
+
+
+    <!-- Modal -->
     <div @click="activateElement" class="block-container" :class="mode">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" @click="stopProp">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Select Platforms</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="platformForm">
+                        <div class="modal-body">
+                            <div class="form-check" v-for="plat in allPlatforms" :key="plat">
+                                <input class="form-check-input" type="checkbox" :value="plat" :id="plat"
+                                    v-model="checkedPlatforms">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ plat }}
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="submitPlatforms">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="platform-sticky-ribbon">
-            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="platform"></div>
+            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="platform"
+                @click="togglePlatform(platform)">
+            </div>
+            <button type="button" class="btn btn-sm btn-link platform-btn" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                Platforms
+            </button>
 
         </div>
         <div class="block-header">
@@ -22,6 +60,8 @@
         </div>
 
         <div class="block-content--selected" v-if="mode === 'selected'">
+
+
 
             <!-- layout selector -->
             <div v-if="layout != 'none'">
@@ -57,15 +97,25 @@
 <script>
 import settings from '../settings'
 
+
 export default {
 
     props: ['element', 'index'],
+    data() {
+        return {
+            checkedPlatforms: []
+        }
+    },
+
     emits: ['delete'],
     computed: {
         layouts() {
             return settings.layouts.filter(layout => layout != this.layout);
         },
 
+        allPlatforms() {
+            return this.$store.getters.allPlatforms
+        },
         mode() {
             if (this.$store.getters.activeIndex === this.index) {
                 return 'selected'
@@ -93,23 +143,24 @@ export default {
         },
     },
     methods: {
+        submitPlatforms() {
+            this.$store.commit('updatePlatformsOnBlock', this.checkedPlatforms);
+        },
         duplicateBlock() {
             this.$store.commit('createBlock', this.element);
 
         },
         activateElement() {
             this.$store.commit('updateActiveIndex', this.index);
+            this.checkedPlatforms = this.element.platforms;
         },
         deleteBlock() {
             let container = this.$parent._sortable.options.container;
-            this.$store.dispatch('deleteBlock',{
-                container: container, 
+            this.$store.dispatch('deleteBlock', {
+                container: container,
                 index: this.index,
             });
-            this.$parent.$emit('delete',this.index)
-        },
-        test(evt) {
-            evt.stopPropagation();
+            this.$parent.$emit('delete', this.index)
         },
         updateBlock(evt) {
             evt.stopPropagation()
@@ -122,12 +173,14 @@ export default {
             newElement.settings.count = countValue;
 
             this.$store.commit('updateBlock', newElement)
-
-
-
         },
         stopProp(evt) {
             evt.stopPropagation();
+        },
+        togglePlatform(platform) {
+
+            console.log("platform selected: " + platform)
+            this.$store.dispatch('togglePlatformOnBlock', platform);
         }
     }
 }
@@ -198,5 +251,15 @@ export default {
     display: inline-block;
     width: 12rem;
     margin-left: 10px;
+}
+
+.platform-sticky-ribbon {
+    display: flex;
+    align-items: center;
+    margin: 5px 0px;
+}
+
+.modal-content {
+    top: 100px;
 }
 </style>

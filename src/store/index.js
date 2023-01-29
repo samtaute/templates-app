@@ -69,6 +69,9 @@ const store = createStore({
         },
         createBlock(state, payload){
             state.newBlocks.push(payload); 
+        },
+        updatePlatformsOnBlock(state, payload){
+            state.blocks[state.activeIndex].platforms=payload; 
         }
 
     },
@@ -160,6 +163,14 @@ const store = createStore({
                 returnObj[prod] = context.state.platforms[prod];
             }
             context.commit('updatePlatforms', returnObj)
+        },
+
+        //todo: refactor so that action does not access state directly. 
+        togglePlatformOnBlock(context, payload){
+            let currBlock = context.state.blocks[context.state.activeIndex]; 
+            currBlock.platforms = currBlock.platforms.filter((plat)=>plat != payload); 
+
+            // context.commit('updateBlock', currBlock)
         }
 
     }
