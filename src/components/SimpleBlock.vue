@@ -1,6 +1,6 @@
 <template>
-    <!-- Modal -->
     <div @click="activateElement" class="block-container" :class="mode">
+        
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" @click="stopProp">
