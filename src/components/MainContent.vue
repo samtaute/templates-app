@@ -1,15 +1,18 @@
 <template>
     <div id="content-container">
         <page-template></page-template>
+        <page-preview></page-preview>
     </div>
 </template>
 
 <script>
 import PageTemplate from './PageTemplate.vue'
+import PagePreview from './PagePreview.vue'
 
 export default{
     components:{
         PageTemplate,
+        PagePreview
     }
 }
 </script>
