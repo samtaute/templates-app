@@ -3,16 +3,14 @@
         <div class="block-editor">
             {{ activeBlock }}
         </div>
-        <page-preview></page-preview>
     </div>
 </template>
 
 <script>
-import PagePreview from './PagePreview.vue'
 
 export default {
     components:{
-        PagePreview
+
     },
     methods: {
         selectContainer(evt) {
@@ -67,9 +65,9 @@ export default {
 #widget-container {
     width: 6rem;
     background: #dadce0;
-    width: 25rem;
+    height: 100rem;
     display: inline-block;
-    position: fixed;
+    position: absolute; 
     left: 1200px;
     top: 120px;
     border: 2px solid lightgray;
