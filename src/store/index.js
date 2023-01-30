@@ -5,6 +5,7 @@ import settings from '../settings'
 
 const store = createStore({
     modules: {
+        
 
     },
     state() {
