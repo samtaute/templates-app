@@ -63,14 +63,14 @@ export default {
   },
   beforeMount() {
     const sampleInput = `{
-  "title": "Trending at 3pm",
-  "filename": "1500",
+  "title": "Photos at 4pm",
+  "filename": "1600",
   "view": "one_column",
   "language": "en",
   "outputTargets": ["content"],
-  "iab_categories": ["News"],
+  "iab_categories": ["Hobbies & Interests"],
   "platformsIncludeAllByProduct": ["firstscreen"],
-  "categories": ["news"],
+  "categories": ["outdoor_photography"],
   "campaigns": {
     "default": {
       "type": "single",
@@ -99,10 +99,7 @@ export default {
       {
         "type": "useragent",
         "platforms": ["boost"],
-        "matchList": [
-          "LM-X220PM",
-          "LM-Q720"
-      ],
+        "matchList": ["LM-X220PM", "LM-Q720"],
         "config": "useragent"
       },
       {
@@ -120,68 +117,109 @@ export default {
     "platformsBlacklist": ["metropcs"]
   },
   "notification": {
-    "description": "Check out these trending photo galleries.",
-    "title": "Hit the Afternoon Slump?"
+    "description": "Relax for a few minutes with soothing photo galleries.",
+    "title": "Take Five"
   },
   "blocks": [
     {
-      "blockType": "playbuzz_video_block",
-      "platforms": ["metropcs", "boost"]
+      "blockType": "header_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "subheader": "Afternoon Break"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "layout": "carousel",
+        "count": 5
+      }
+    },
+    {
+      "blockType": "ad_unit",
+      "platforms": ["cricket"]
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "layout": "edge",
+        "count": 2,
+        "category": "licensed-news"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "layout": "tile",
+        "count": 4,
+        "category": "licensed-news"
+      }
+    },
+
+    {
+      "blockType": "memes_widget_block",
+      "platforms": ["cricket"]
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "layout": "edge-description",
+        "count": 3,
+        "category": "entrepreneur"
+      }
+    },
+    {
+      "blockType": "outbrain_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "widgetId": "JS_6",
+        "layout": "tile"
+      }
+    },
+    {
+      "blockType": "emoji_feedback_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "title": "Are you enjoying theSCOOP?"
+      }
+    },
+    {
+      "blockType": "header_block",
+      "platforms": ["metropcs", "boost"],
+      "settings": {
+        "subheader": "Photos of the Day"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["metropcs", "boost"],
+      "settings": {
+        "layout": "carousel",
+        "count": 4
+      }
     },
     {
       "blockType": "ad_unit",
       "platforms": ["metropcs", "boost"]
+    },
+    {
+      "blockType": "outbrain_block",
+      "platforms": ["metropcs", "boost"],
+      "settings": {
+        "widgetId": "JS_16",
+        "layout": "edge"
+      }
     },
     {
       "blockType": "outbrain_block",
       "platforms": ["metropcs", "boost"],
       "settings": {
         "widgetId": "JS_9",
-        "layout": "edge"
-      }
-    },
-    {
-      "blockType": "ad_unit",
-      "platforms": ["metropcs", "boost"]
-    },
-    {
-      "blockType": "fotoscape_block",
-      "platforms": ["metropcs", "boost"],
-      "settings": {
-        "layout": "small-photocard",
-        "count": 6
-      }
-    },
-    {
-      "blockType": "outbrain_block",
-      "platforms": ["metropcs", "boost"],
-      "settings": {
-        "widgetId": "JS_6",
-        "layout": "edge"
-      }
-    },
-    {
-      "blockType": "outbrain_block",
-      "platforms": ["metropcs", "boost"],
-      "settings": {
-        "widgetId": "JS_6",
         "layout": "tile"
-      }
-    },
-    {
-      "blockType": "outbrain_block",
-      "platforms": ["metropcs", "boost"],
-      "settings": {
-        "widgetId": "JS_6",
-        "layout": "edge"
-      }
-    },
-    {
-      "blockType": "outbrain_block",
-      "platforms": ["metropcs", "boost"],
-      "settings": {
-        "widgetId": "JS_6",
-        "layout": "edge"
       }
     },
     {
@@ -190,86 +228,150 @@ export default {
     },
     {
       "blockType": "header_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "platforms": ["metropcs", "boost"],
       "settings": {
-        "subheader": "News & Gossip"
+        "subheader": "Pop Culture Roundup"
       }
     },
     {
       "blockType": "fotoscape_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "platforms": ["metropcs", "boost"],
       "settings": {
-        "layout": "edge-description",
-        "count": 1,
-        "category": "stereogum",
-        "link_destination": "referral"
+        "category": "licensed-entertainment",
+        "layout": "carousel",
+        "link_destination": "referral",
+        "count": 5
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["metropcs", "boost"],
+      "settings": {
+        "category": "licensed-entertainment",
+        "link_destination": "referral",
+        "layout": "tile",
+        "count": 4
       }
     },
     {
       "blockType": "ad_unit",
-      "excludePlatforms": ["metropcs", "boost"]
+      "platforms": ["metropcs", "boost"]
     },
     {
-      "blockType": "fotoscape_block",
+      "blockType": "header_block",
+      "platforms": ["metropcs", "boost"],
       "settings": {
-        "layout": "carousel",
-        "count": 4,
-        "category": "celebrities",
-        "link_destination": "referral"
+        "subheader": "Picked For You"
       }
     },
     {
       "blockType": "fotoscape_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "platforms": ["metropcs", "boost"],
       "settings": {
-        "category": "celebrities",
-        "count": 4,
-        "layout": "tile"
+        "layout": "small-photocard",
+        "count": 5
+      }
+    },
+    {
+      "blockType": "memes_widget_block",
+      "platforms": ["metropcs", "boost"]
+    },
+    {
+      "blockType": "ad_unit",
+      "platforms": ["metropcs", "boost"]
+    },
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
+      "settings": {
+        "subheader": "Afternoon Top 5"
+      }
+    },
+    {
+      "blockType": "rss_feed_block",
+      "excludePlatforms": ["metropcs", "cricket", "blu", "boost"],
+      "settings": {
+        "layout": "slideshow",
+        "count": 5,
+        "categories": ["news"]
       }
     },
     {
       "blockType": "rss_feed_block",
       "platforms": ["blu"],
       "settings": {
-        "feeds": [{ "feed_id": "fotoscape_all_en" }],
         "layout": "small-photocard",
-        "count": 5
+        "count": 5,
+        "categories": ["news"]
       }
     },
     {
-      "blockType": "rss_feed_block",
-      "excludePlatforms": ["metropcs", "blu", "boost"],
-      "settings": {
-        "feeds": [{ "feed_id": "fotoscape_all_en" }],
-        "layout": "slideshow",
-        "count": 5
-      }
-    },
-    {
-      "blockType": "quotes_widget_block",
-      "excludePlatforms": ["metropcs", "boost"]
+      "blockType": "ad_unit",
+      "excludePlatforms": ["metropcs", "cricket", "boost"]
     },
     {
       "blockType": "header_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
       "settings": {
-        "subheader": "Top Headlines"
+        "subheader": "Photos of the Day"
       }
     },
     {
       "blockType": "fotoscape_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
+      "settings": {
+        "layout": "carousel",
+        "count": 5
+      }
+    },
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
+      "settings": {
+        "subheader": "Trending Headlines"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
       "settings": {
         "layout": "edge-description",
-        "count": 4
+        "count": 3
+      }
+    },
+    {
+      "blockType": "memes_widget_block"
+    },
+    {
+      "blockType": "ad_unit"
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
+      "settings": {
+        "category": "mix",
+        "link_destination": "referral",
+        "layout": "edge-list",
+        "count": 8
+      }
+    },
+    {
+      "blockType": "button_nav",
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
+      "settings": {
+        "items": [
+          {
+            "text": "More Trending News",
+            "url": "./discover-news.html"
+          }
+        ]
       }
     },
     {
       "blockType": "outbrain_block",
-      "excludePlatforms": ["metropcs", "boost"],
+      "excludePlatforms": ["metropcs", "cricket", "boost"],
       "settings": {
         "widgetId": "JS_6",
-        "layout": "list-medium"
+        "layout": "tile"
       }
     },
     {
@@ -292,17 +394,11 @@ export default {
       "blockType": "ad_unit"
     },
     {
-      "blockType": "outbrain_widget_block",
-      "platforms": ["boost"],
-      "settings": {
-        "widgetId": "REELM_1"
-      }
-    },
-    {
       "blockType": "fotoscape_block",
       "settings": {
         "category": "mix",
         "layout": "carousel",
+        "link_destination": "referral",
         "count": 5
       }
     },
@@ -386,7 +482,7 @@ export default {
       }
     },
     {
-      "blockType": "fortune_cookie_block"
+      "blockType": "memes_widget_block"
     },
     {
       "blockType": "ad_unit"
@@ -400,7 +496,10 @@ export default {
       }
     },
     {
-      "blockType": "quotes_widget_block"
+      "blockType": "horoscope_carousel_block",
+      "settings": {
+        "type": "general"
+      }
     },
     {
       "blockType": "fotoscape_block",
@@ -417,7 +516,7 @@ export default {
       }
     },
     {
-      "blockType": "fortune_cookie_block"
+      "blockType": "jokes_widget_block"
     },
     {
       "blockType": "header_block",
