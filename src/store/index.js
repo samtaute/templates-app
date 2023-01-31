@@ -19,7 +19,9 @@ const store = createStore({
             platforms: startingPlatforms,
             activePlatform: 'all',
             pageLoaded: false,
-            settings: settings
+            settings: settings,
+            fotoscapeObject:{},
+            loading: true, 
 
         }
     },
@@ -51,7 +53,6 @@ const store = createStore({
         updateList(state, payload) {
             state.blocks = payload;
         },
-
         updateNewBlocks(state, payload){
             state.newBlocks = payload; 
         },

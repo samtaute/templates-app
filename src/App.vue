@@ -2,7 +2,7 @@
     <the-header></the-header>
     <the-sidebar></the-sidebar>
     <main-content></main-content>
-    <widget-container></widget-container>
+    <!-- <widget-container></widget-container> -->
 
 
 
@@ -12,7 +12,7 @@
 import TheSidebar from './components/TheSidebar.vue'
 import MainContent from './components/MainContent.vue'
 import TheHeader from './components/TheHeader.vue'
-import WidgetContainer from './components/WidgetContainer.vue'
+// import WidgetContainer from './components/WidgetContainer.vue'
 
 
 export default {
@@ -21,7 +21,7 @@ export default {
     TheSidebar,
     MainContent,
     TheHeader,
-    WidgetContainer
+    // WidgetContainer
   },
  
 }

@@ -22,11 +22,13 @@ export default{
     vertical-align: top;
     flex-grow: 1;
     margin-top:6rem; 
-    justify-content: center;
+    padding-top: 1rem;
+    justify-content: left;
     align-items: center;
     position: relative;
     overflow: scroll;
     height: 100%;
+    display: flex; 
 
 }
 
