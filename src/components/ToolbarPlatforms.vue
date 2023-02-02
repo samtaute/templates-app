@@ -1,5 +1,5 @@
 <template>
-        <div id="platform-ribbon">
+        <div>
             <div v-if="pageLoaded">
                 <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm" :class="platform" :key="platform"
                 @click="selectPlatform(platform)">{{ platform }}</button>

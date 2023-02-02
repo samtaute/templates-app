@@ -1,5 +1,5 @@
 <template>
-    <div id="content-container">
+    <div class="the-main-area">
         <page-template></page-template>
         <page-preview></page-preview>
     </div>
@@ -17,7 +17,15 @@ export default{
 }
 </script>
 <style scoped>
-#content-container{
+.the-main-area{
+    display: flex; 
+    flex-wrap: nowrap;
+    background:lightyellow;
+    flex-grow: 1;
+
+
+}
+/* #content-container{
     background:lightyellow;
     vertical-align: top;
     flex-grow: 1;
@@ -30,6 +38,6 @@ export default{
     height: 100%;
     display: flex; 
 
-}
+} */
 
 </style>

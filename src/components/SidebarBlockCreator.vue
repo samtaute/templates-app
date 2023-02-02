@@ -1,6 +1,6 @@
 <template>
-    <div id="block-creator-container">
-        <div class="dropdown">
+    <div id="sidebar-block-creator">
+        <div id="block-creator-dropdown" class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Create Block
@@ -87,12 +87,20 @@ export default {
 
 </script>
 
-<style>
-#block-creator-container {
-    width: 6rem;
-    height: 100%;
+<style scoped>
+#block-creator-dropdown{
+    align-items: flex-start;
+
+}
+#sidebar-block-creator {
+    border: 2px solid grey;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
     width: 25rem;
+    min-height: 25rem;
     margin: 2rem 2rem;
-    display: inline-block;
+    display: flex; 
+
 }
 </style>

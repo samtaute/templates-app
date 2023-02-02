@@ -62,7 +62,6 @@ export default {
 </script>
 <style>
 #page-template-container {
-    width: 6rem;
     height: 100%;
     width: 25rem;
     margin: 2rem 2rem;
