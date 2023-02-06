@@ -2,12 +2,14 @@
   <div id="sidebar-json-manager">
  
     <!-- Button trigger modal -->
+    <div class="button-container">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonImportModal">
       Import JSON
     </button>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonExportModal">
       Export JSON
     </button>
+    </div>
 
     <!-- Import Modal -->
     <div class="modal fade" id="jsonImportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -80,6 +82,9 @@ export default {
     jsonExport() {
       return this.$store.getters.jsonExport;
     }
+  },
+  mounted(){
+    this.$store.dispatch('processJson', this.userInput);
   },
   beforeMount() {
     const sampleInput = `{
@@ -188,15 +193,11 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 #sidebar-json-manager {
-  padding: 2rem; 
   width: 25rem; 
   display: flex;
-  justify-content: space-evenly;
   flex-wrap: nowrap;
-  border:2px solid gray; 
-  border-radius: 5px;
   overflow:hidden;
 
 }
@@ -212,5 +213,13 @@ export default {
 #jsonImportModal,
 #jsonExportModal{
   top: 80px;
+}
+
+.btn{
+  margin: 4px; 
+}
+.button-container{
+  display: flex; 
+  width: 100%;
 }
 </style>
