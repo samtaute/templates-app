@@ -5,14 +5,14 @@ import settings from '../settings'
 
 const store = createStore({
     modules: {
-        
+
 
     },
     state() {
         return {
             json: "",
             blocks: [],
-            newBlocks:[],
+            newBlocks: [],
             pageTitle: "",
             fileName: "",
             activeIndex: -1,
@@ -20,8 +20,8 @@ const store = createStore({
             activePlatform: 'all',
             pageLoaded: false,
             settings: settings,
-            fotoscapeObject:{},
-            loading: true, 
+            fotoscapeObject: {},
+            loading: true,
 
         }
     },
@@ -36,13 +36,7 @@ const store = createStore({
             state.fileName = payload.filename;
         },
         updateActiveIndex(state, payload) {
-            if (state.activeIndex === payload){
-                state.activeIndex = -1; 
-            }else{
-                state.activeIndex = payload;
-            }
-            
-
+            state.activeIndex = payload;
         },
         updatePlatforms(state, payload) {
             state.platforms = payload;
@@ -53,8 +47,8 @@ const store = createStore({
         updateList(state, payload) {
             state.blocks = payload;
         },
-        updateNewBlocks(state, payload){
-            state.newBlocks = payload; 
+        updateNewBlocks(state, payload) {
+            state.newBlocks = payload;
         },
         deleteBlock(state, payload) {
             state.blocks.splice(payload, 1);
@@ -68,22 +62,23 @@ const store = createStore({
         togglePageLoaded(state) {
             state.pageLoaded = true;
         },
-        updateBlock(state, payload){
-            state.blocks[state.activeIndex] = payload; 
+        updateBlock(state, payload) {
+            state.blocks[state.activeIndex] = payload;
         },
-        createBlock(state, payload){
-            state.newBlocks.push(payload); 
+        createBlock(state, payload) {
+            state.newBlocks.push(payload);
         },
-        updatePlatformsOnBlock(state, payload){
-            state.blocks[state.activeIndex].platforms=payload; 
+        updatePlatformsOnBlock(state, payload) {
+            console.log(state.activeIndex);
+            state.blocks[state.activeIndex].platforms = payload;
         }
 
     },
     getters: {
-        allCategories(state){
-            return state.settings.category; 
+        allCategories(state) {
+            return state.settings.category;
         },
-        jsonExport(state){
+        jsonExport(state) {
             return JSON.stringify(state.blocks, null, 3)
         },
         blocks(state) {
@@ -120,6 +115,12 @@ const store = createStore({
 
     },
     actions: {
+        retrieveNextItem(context, category){
+            let offset = context.state.fotoscapeObject[category].offset
+            console.log(offset); 
+
+            return offset; 
+        },
         processJson(context, payload) {
             const page = JSON.parse(payload);
             context.dispatch('processPagePlatforms', page);
@@ -133,12 +134,12 @@ const store = createStore({
             context.commit('activatePlatform', payload.platform)
         },
         deleteBlock(context, payload) {
-            if (payload.container === 'newBlocks'){
+            if (payload.container === 'newBlocks') {
                 context.commit('deleteNewBlock', payload.index)
-            } else{
+            } else {
                 context.commit('deleteBlock', payload.index)
             }
-          
+
         },
         processBlockPlatforms(context, payload) {
             let blockList = payload.blocks;
@@ -173,9 +174,9 @@ const store = createStore({
         },
 
         //todo: refactor so that action does not access state directly. 
-        togglePlatformOnBlock(context, payload){
-            let currBlock = context.state.blocks[context.state.activeIndex]; 
-            currBlock.platforms = currBlock.platforms.filter((plat)=>plat != payload); 
+        togglePlatformOnBlock(context, payload) {
+            let currBlock = context.state.blocks[context.state.activeIndex];
+            currBlock.platforms = currBlock.platforms.filter((plat) => plat != payload);
 
             // context.commit('updateBlock', currBlock)
         }
