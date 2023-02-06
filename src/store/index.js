@@ -115,12 +115,6 @@ const store = createStore({
 
     },
     actions: {
-        retrieveNextItem(context, category){
-            let offset = context.state.fotoscapeObject[category].offset
-            console.log(offset); 
-
-            return offset; 
-        },
         processJson(context, payload) {
             const page = JSON.parse(payload);
             context.dispatch('processPagePlatforms', page);

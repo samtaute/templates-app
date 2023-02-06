@@ -39,7 +39,7 @@
 
 
                     <h1 class="block-item__title en">
-                        <span class="block-item__headline">{{headline}}</span>
+                        <span class="block-item__headline">Dummy Headline</span>
                         <span class="block-item__subtitle en"></span>
                     </h1>
 
@@ -105,9 +105,6 @@ export default {
         layout() {
             return this.element.settings.layout
         },
-        headline(){
-            return this.$store.dispatch('retrieveNextItem',this.element.settings.category)
-        }
     }
 }
 
