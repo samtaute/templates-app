@@ -1,7 +1,7 @@
 <template>
     <div @click="activateElement" class="block-container" :class="mode">
         
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" :id="currModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" @click="stopProp">
                     <div class="modal-header">
@@ -34,7 +34,7 @@
                 @click="togglePlatform(platform)">
             </div>
             <button type="button" class="btn btn-sm btn-link platform-btn" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
+                :data-bs-target="'#' + currModal">
                 Platforms
             </button>
 
@@ -147,6 +147,9 @@ export default {
     computed: {
         layouts() {
             return settings.layouts.filter(layout => layout != this.layout);
+        },
+        currModal(){
+            return "modal" + this.index; 
         },
 
         //todo make this a utility function
