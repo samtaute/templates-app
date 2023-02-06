@@ -21,6 +21,7 @@ const store = createStore({
             pageLoaded: false,
             settings: settings,
             fotoscapeObject: {},
+            currentCategory: 'standard', 
             loading: true,
 
         }
