@@ -60,7 +60,7 @@ export default {
                         content: data.items,
                     }
                 }).then(() => {
-                    this.$store.state.fotoscapeObj = this.fotoscapeContent;
+                    this.$store.state.fotoscapeObject = this.fotoscapeContent;
                     console.log(this.fotoscapeContent);
                     this.$store.state.loading = false;
                 });

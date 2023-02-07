@@ -89,7 +89,7 @@ body {
   background-color: #00BB2D !important;
 }
 
-.moment {
+.moment-button {
   background-color: #7E7B52 !important;
 }
 </style>

@@ -21,12 +21,19 @@ const store = createStore({
             pageLoaded: false,
             settings: settings,
             fotoscapeObject: {},
-            currentCategory: 'standard', 
+            currentCategory: 'standard',
             loading: true,
 
         }
     },
     mutations: {
+        updateCategory(state, payload){
+            state.currentCategory=payload; 
+        },
+        incrementOffset(state, payload){
+            state.fotoscapeObject[payload.category]['offset']+=payload.count;  
+            console.log(state.fotoscapeObject[payload.category].offset)
+        },
         updateJson(state, payload) {
             state.json = payload;
         },
@@ -76,6 +83,17 @@ const store = createStore({
 
     },
     getters: {
+        //Retrieves Fotoscape item
+        nextItem(state, getters) {
+            let currCategory = getters.currentCategory;
+            let currOffset = state.fotoscapeObject[currCategory]['offset'];
+
+            return state.fotoscapeObject[currCategory]['content'][currOffset];
+        },
+        currentCategory(state) {
+            return state.currentCategory;
+        },
+
         allCategories(state) {
             return state.settings.category;
         },

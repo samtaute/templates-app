@@ -1,116 +1,130 @@
 <template>
-    <section class="block block--fotoscapes block--small-photocard ">
+    <!-- trending carousel -->
+    <section v-if="layout === 'trending-carousel'" class="block block--fotoscapes red" :class="`block--${layout}`">
+        <header class="block__header">
+            <div class="title ">
+                <h2 class="en">
+                    {{title}}
+                </h2>
+            </div>
+        </header>
         <section class="block__main">
-            <article v-for="n in this.element.settings.count" :key="n" class="block-item en" >
-                <a class="block-item__body"
-                    href="https://apnews.com/4d0175cfc826405f6770589724847543?utm_source=mp-moment"
-                    style="--bg-image: url(https://media.fotoscapes.com/imgs/3x/fd/XO/Gh/6/3xfdXOGh6-e1fVqqaGfe.jpg);"
-                    data-mp-cct="" data-href="https://apnews.com/4d0175cfc826405f6770589724847543?utm_source=mp-moment">
-
-
-                    <div class="block-item__media">
-                        <img loading="lazy" class="block-item__thumbnail"
-                            src="https://media.fotoscapes.com/imgs/3x/fd/XO/Gh/6/3xfdXOGh6-e1fVqqaGfe.jpg" alt="">
-                    </div>
-                    <div class="block-item__blur"></div>
-
-
-
-
-                    <div class="block-item__body-header  moment en">
-
-
-                        <div class="block-item__body-header-light">
-                            <img loading="lazy" class="block-item__publisher-logo"
-                                src="https://neptune.mobileposse.com/image/fetch/f_png/if_h_gt_132/h_132/if_end/https%3A%2F%2Fmedia.fotoscapes.com%2Fimgs%2FGv%2FfQ%2FeG%2FCE%2FGvfQeGCE-ANfBbr3U0.png"
-                                alt="AP News logo">
-
-                        </div>
-                        <div class="block-item__body-header-dark en">
-                            <img loading="lazy" class="block-item__publisher-logo"
-                                src="https://neptune.mobileposse.com/image/fetch/f_png/if_h_gt_132/h_132/if_end/https%3A%2F%2Fmedia.fotoscapes.com%2Fimgs%2FGv%2FfQ%2FeG%2FCE%2FGvfQeGCE-aYfnZQlu0.png"
-                                alt="AP News logo">
-
-                        </div>
-                    </div>
-
-
-
-
-
-                    <h1 class="block-item__title en">
-                        <span class="block-item__headline">Dummy Headline</span>
-                        <span class="block-item__subtitle en"></span>
-                    </h1>
-
-                    <p class="block-item__description en">A confidential UN report into the alleged missteps by senior
-                        World Health Organization staffers in how they handled a sexual misconduct case during an Ebola
-                        outbreak in Congo found their response didnt violate the agencys policies because of what some
-                        officials described as a loophole.</p>
-
-                </a>
-
-
-                <footer class="block-item__footer en">
-                    <small class="block-item__content-type en">
-                        <span class="icon icon--media-gallery"></span>
-                        <span>browse</span>
-                    </small>
-
-                    <span class="block-item__timestamp">today</span>
-
-
-
-
-
-
-
-                    <div class="block-item__actions">
-                        <button id="personalize" data-mp-three-dots-button=""
-                            class="button button__icon button__icon--personalize svg--dark" type="button"
-                            data-mp-share-title="'Loophole' excuses WHO officials accused of misconduct"
-                            data-mp-share-link="https://apnews.com/4d0175cfc826405f6770589724847543"
-                            data-mp-content-api-id="undefined" data-gtm-id="three_dots" aria-label="Three Dots"
-                            data-modal-custom-trigger-target-personalization="modal--personalize"
+            <div
+                class="swiper--trending-carousel swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
+                <div class='block-item__actions'>
+                    <button id="personalize" data-mp-three-dots-button
+                        class="button button__icon button__icon--personalize svg--dark" type="button">
+                        <div class="icon-three-dots icon-three-dots-swiper" data-gtm-id="three_dots"
                             data-gtm-event-type="click-element" data-gtm-event-category="Three Dots"
-                            data-gtm-event-action="apnews.com"
-                            data-gtm-event-label="https://apnews.com/4d0175cfc826405f6770589724847543">
+                            data-gtm-event-label="">
+                        </div>
+                    </button>
+                </div>
 
-                            <div class="icon-three-dots" data-gtm-id="three_dots" data-gtm-event-type="click-element"
-                                data-gtm-event-category="Three Dots"
-                                data-gtm-event-label="https://apnews.com/4d0175cfc826405f6770589724847543"></div>
-                        </button>
-                    </div>
+                <div class="swiper-wrapper" style="width: 508.762px;">
 
-                </footer>
+                    <carousel-item v-for="n in element.settings.count" :layout="element.settings.layout" :key="n"
+                        :content-data="retrieveNextFotoscape(n)"></carousel-item>
 
+                </div>
+                <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div>
+            </div>
 
-
-
-            </article>
         </section>
 
+
+    </section>
+
+
+
+
+
+
+
+    <!-- <section v-if="layout==='trending-carousel'"  class="block block--fotoscapes red" :class="`block--${layout}`">
+        <section class="block__main">
+            <div class="swiper--trending-carousel swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
+                <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(-508.762px, 0px, 0px);">
+                    <section class="swiper-slide swiper-slide-duplicate swiper-slide-prev" style="style=508.762px;">
+                    <carousel-item v-for="n in element.settings.count" :layout="element.settings.layout" :key="n" :content-data="retrieveNextFotoscape(n)"></carousel-item>
+                    </section>
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+    </section> -->
+    <section v-if="layout != 'trending-carousel'" class="block block--fotoscapes" :class="`block--${layout}`">
+        <section class="block__main">
+            <feed-item v-for="n in element.settings.count" :layout="element.settings.layout" :key="n"
+                :content-data="retrieveNextFotoscape(n)"></feed-item>
+            <!-- <fotoscape-item v-for="n in this.element.settings.count" :key="n" :fotoscape-data="retrieveNextFotoscape(n)">
+            </fotoscape-item> -->
+        </section>
     </section>
 </template>
 
 <script>
+// import FotoscapeItem from './FotoscapeItem.vue'
+import FeedItem from './FeedItem.vue'
+import CarouselItem from './CarouselItem.vue'
 
 export default {
-    props: ['element'],
+    components: {
+        // FotoscapeItem,
+        FeedItem,
+        CarouselItem
+    },
+    props: ['element', 'offset'],
+    data() {
+        return {
+
+
+        }
+    },
     computed: {
-        thumbnail() {
-            return this.$store.state.fotoscapeObj[this.element.settings.category]['content'][0]['images'][0]['link'];
+        title(){
+            if (this.element.settings.title != undefined){
+                return this.element.settings.title.text; 
+            }
+            return "Placeholder Headline"
         },
 
         layout() {
             return this.element.settings.layout
         },
+        category() {
+            return this.element.settings.category
+        },
+        count() {
+            return this.element.settings.count;
+        }
+    },
+
+    methods:
+    {
+        retrieveNextFotoscape(idx) {
+            // let currOffset = this.$store.state.fotoscapeObject[this.category]['offset'];
+            // this.$store.state.fotoscapeObject[this.category]['offset']+= 1; 
+            //this.$store.dispatch('updateObject')
+
+            // this.$store.commit('incrementOffset');
+            let offset = this.$store.state.fotoscapeObject[this.category]['offset']
+
+            return this.$store.state.fotoscapeObject[this.category]['content'][offset + idx];
+        }
+    },
+    mounted() {
+        this.$store.commit('incrementOffset', {
+            category: this.category,
+            count: this.count,
+        })
     }
 }
 
 </script>
 
-<style scoped>
+<style>
 /* carousel layout */
 .carousel.preview-block-container {
     display: flex;
