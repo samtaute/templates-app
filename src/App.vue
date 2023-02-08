@@ -31,12 +31,10 @@ html {
 
 body {
   margin: 0;
-  height: 100%;
 }
 
 #app {
   display: flex; 
-  height: 100%;
   margin-top:5.5rem;
 
 
