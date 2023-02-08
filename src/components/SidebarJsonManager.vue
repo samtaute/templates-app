@@ -88,104 +88,288 @@ export default {
   },
   beforeMount() {
     const sampleInput = `{
-  "title": "Photos at 4pm",
-  "filename": "1600",
+  "title": "Discover News",
+  "filename": "discover-news",
   "view": "one_column",
   "language": "en",
   "outputTargets": ["content"],
-  "iab_categories": ["Hobbies & Interests"],
-  "platformsIncludeAllByProduct": ["firstscreen","toolbar","portal"],
-  "categories": ["outdoor_photography"],
-  "campaigns": {
-    "default": {
-      "type": "single",
-      "config": "default"
-    },
-    "custom": [
-      {
-        "type": "useragent",
-        "platforms": ["metropcs"],
-        "matchList": [
-          "Moto G Stylus",
-          "LM-K500",
-          "SM-A025U",
-          "SM-A125U",
-          "SM-A326U",
-          "LM-Q730",
-          "SM-A205U",
-          "SM-A215U",
-          "5007Z",
-          "Moto G Play",
-          "SM-J260T1",
-          "LM-K300"
-        ],
-        "config": "useragent"
-      },
-      {
-        "type": "useragent",
-        "platforms": ["boost"],
-        "matchList": ["LM-X220PM", "LM-Q720"],
-        "config": "useragent"
-      },
-      {
-        "type": "mode",
-        "platforms": ["boost", "cricket"],
-        "filter": {
-          "twa": "twa",
-          "default": "default"
-        }
-      }
-    ]
-  },
+  "iab_categories": ["News"],
+  "platformsIncludeAllByProduct": ["toolbar", "firstscreen", "minusone"],
+  "platformsExclude": ["moment", "pwg", "blubar", "uscellbar"],
   "section_navigation_bar": {
     "display": true,
     "platformsBlacklist": ["metropcs"]
   },
-  "notification": {
-    "description": "Relax for a few minutes with soothing photo galleries.",
-    "title": "Take Five"
-  },
   "blocks": [
     {
-      "blockType": "header_block",
-      "platforms": ["cricket"],
+      "blockType": "rss_feed_block",
+      "platforms": ["myphonebar"],
       "settings": {
-        "subheader": "Afternoon Break"
+        "feeds": [
+          { "feed_id": "the_manila_times_news_ph_en" },
+          { "feed_id": "abs_cbn_news_ph_tl_en" }
+        ],
+        "layout": "slideshow",
+        "count": 6
       }
     },
+
     {
       "blockType": "fotoscape_block",
-      "platforms": ["cricket"],
+      "excludePlatforms": ["blubar"],
       "settings": {
         "layout": "carousel",
         "count": 5,
-        "category": "standard"
-      }
-    },
-    {
-      "blockType": "ad_unit",
-      "platforms": ["cricket"]
-    },
-    {
-      "blockType": "fotoscape_block",
-      "platforms": ["cricket"],
-      "settings": {
-        "layout": "edge",
-        "count": 2,
         "category": "licensed-news"
       }
     },
     {
       "blockType": "fotoscape_block",
-      "platforms": ["cricket"],
+      "excludePlatforms": ["blu"],
+      "settings": {
+        "layout": "tile",
+        "count": 5,
+        "category": "news",
+        "link_destination": "fotoscape",
+        "cta": true
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "platforms": ["blu"],
+      "settings": {
+        "layout": "small-photocard",
+        "count": 5,
+        "category": "news",
+        "link_destination": "fotoscape",
+        "cta": true
+      }
+    },
+    {
+      "blockType": "ad_unit"
+    },
+    {
+      "blockType": "image_only_block",
+      "platforms": ["firstlybar"],
+      "settings": {
+        "image_url": "https://neptune.mobileposse.com/image/upload/v1664553506/DT_Moment_Mahomes_Launch_Page.jpg",
+        "image_alt_text": "nfl",
+        "image_link": "https://8th.io/kbhtw"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["verizonbar", "myphonebar", "metrobar"],
+      "settings": {
+        "layout": "carousel",
+        "count": 5,
+        "category": "licensed-news"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "settings": {
+        "layout": "tile",
+        "count": 8,
+        "category": "news",
+        "link_destination": "fotoscape"
+      }
+    },
+    {
+      "blockType": "ad_unit"
+    },
+
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "subheader": "Trending Headlines"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["verizonbar", "metrobar", "attbar"],
+      "settings": {
+        "layout": "edge",
+        "count": 1,
+        "category": "mix",
+        "link_destination": "referral"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["verizonbar", "metrobar", "attbar"],
       "settings": {
         "layout": "tile",
         "count": 4,
-        "category": "licensed-news"
+        "category": "mix",
+        "link_destination": "referral"
       }
+    },
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "subheader": "You May Like"
+      }
+    },
+    {
+      "blockType": "outbrain_block",
+      "excludePlatforms": ["verizonbar", "metrobar", "myphonebar"],
+
+      "settings": {
+        "widgetId": "JS_9",
+        "layout": "list-medium"
+      }
+    },
+    {
+      "blockType": "header_block",
+      "settings": {
+        "subheader": "Entertainment News"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["verizonbar", "metrobar", "attbar"],
+      "settings": {
+        "layout": "small-photocard",
+        "count": 6,
+        "category": "licensed-entertainment",
+        "link_destination": "referral"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "excludePlatforms": ["verizonbar", "metrobar", "attbar"],
+      "settings": {
+        "layout": "tile",
+        "count": 6,
+        "category": "licensed-entertainment",
+        "link_destination": "referral"
+      }
+    },
+    {
+      "blockType": "ad_unit"
+    },
+    {
+      "blockType": "header_block",
+      "settings": {
+        "subheader": "Technology News"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "settings": {
+        "layout": "edge-list",
+        "count": 8,
+        "category": "technology",
+        "link_destination": "fotoscape"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "settings": {
+        "layout": "list-small",
+        "count": 5,
+        "category": "technology",
+        "link_destination": "fotoscape"
+      }
+    },
+    {
+      "blockType": "outbrain_block",
+      "platforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "widgetId": "JS_6",
+        "layout": "list-small-sponsored"
+      }
+    },
+    {
+      "blockType": "ad_unit"
+    },
+
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "subheader": "Sports News"
+      }
+    },
+    {
+      "blockType": "rss_feed_block",
+      "excludePlatforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "feeds": [{ "feed_id": "fotoscape_sports_news_en" }, { "feed_id": "bleacher_report_en" }],
+        "layout": "edge",
+        "count": 1
+      }
+    },
+    {
+      "blockType": "rss_feed_block",
+      "excludePlatforms": ["verizonbar", "metrobar"],
+      "settings": {
+        "feeds": [{ "feed_id": "fotoscape_sports_news_en" }, { "feed_id": "bleacher_report_en" }],
+        "layout": "tile",
+        "count": 4
+      }
+    },
+    {
+      "blockType": "header_block",
+      "excludePlatforms": ["verizonbar"],
+      "settings": {
+        "subheader": "Trending Headlines"
+      }
+    },
+    {
+      "blockType": "rss_feed_block",
+      "settings": {
+        "feeds": [
+          { "feed_id": "axios_top_news_en" },
+          { "feed_id": "fotoscape_all_en" },
+          { "feed_id": "nbc_news_en" },
+          { "feed_id": "fotoscape_news_en" }
+        ],
+        "layout": "list-medium",
+        "count": 8
+      }
+    },
+    {
+      "blockType": "ad_unit"
+    },
+    {
+      "blockType": "header_block",
+      "settings": {
+        "subheader": "Just For Fun"
+      }
+    },
+    {
+      "blockType": "fotoscape_block",
+      "settings": {
+        "layout": "small-photocard",
+        "count": 8
+      }
+    },
+    {
+      "blockType": "header_block",
+
+      "settings": {
+        "subheader": "You May Like"
+      }
+    },
+    {
+      "blockType": "outbrain_block",
+
+      "excludePlatforms": ["myphonebar"],
+      "settings": {
+        "widgetId": "JS_5",
+        "layout": "list-small-sponsored"
+      }
+    },
+    {
+      "blockType": "ad_unit"
     }
   ]
-}`
+}
+`
 
     this.userInput = sampleInput;
 
