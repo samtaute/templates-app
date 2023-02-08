@@ -5,7 +5,7 @@
             <div class="modal-dialog">
                 <div class="modal-content" @click="stopProp">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Select Platforms</h5>
+                        <h4 class="modal-title" id="exampleModalLabel">Select Platforms</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="platformForm">
@@ -40,7 +40,7 @@
 
         </div>
         <div class="block-header">
-            <h5>{{ element.blockType }}</h5>
+            <h4>{{ element.blockType }}</h4>
         </div>
         <div class="block-content block-content--default" v-if="mode === 'default'">
             <div v-if="element.blockType === 'header_block'">
@@ -72,7 +72,7 @@
             <!-- text field for header block -->
             <div v-if="element.blockType === 'header_block'">
                 <label for="header text">
-                    <h5>Header:</h5>
+                    <h4>Header:</h4>
                 </label>
                 <input @click="stopProp" type="text" id="subheader-input" :value="element.settings.subheader">
 
@@ -83,7 +83,7 @@
             <!-- layout selector -->
             <div v-if="layout != 'none'">
                 <label for="layouts">
-                    <h5>Layout:</h5>
+                    <h4>Layout:</h4>
                 </label>
                 <select v-if="mode === 'selected'" @click="stopProp" name='layouts' id="layout-select"
                     class="form-select" aria-label="Default select example">
@@ -96,7 +96,7 @@
             <!-- count field -->
             <div v-if="count != 'none'">
                 <label>
-                    <h5>Count: </h5>
+                    <h4>Count: </h4>
                 </label>
                 <input @click="stopProp" type="text" id="count-select" :value="count">
             </div>
@@ -104,7 +104,7 @@
             <!-- category field -->
             <div v-if="element.blockType === 'fotoscape_block'">
                 <label>
-                    <h5>Category: </h5>
+                    <h4>Category: </h4>
                 </label>
                 <select v-if="mode === 'selected'" @click="stopProp" name='category' id="category-select"
                     class="form-select" aria-label="Default select example">

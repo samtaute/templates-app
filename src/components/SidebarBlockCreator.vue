@@ -7,13 +7,13 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" @click="createBlock" href="#">fotoscape_block</a></li>
-                <li><a class="dropdown-item" href="#">outbrain_block</a></li>
-                <li><a class="dropdown-item" href="#">ad_unit</a></li>
+                <li><a class="dropdown-item" @click="createOutbrainBlock">outbrain_block</a></li>
+                <li><a class="dropdown-item" @click="createAdUnit">ad_unit</a></li>
             </ul>
         </div>
-        <draggable @delete="message" v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name" class="list-group layout-container"
-            ghost-class="ghost" group="blocks" :move="checkMove" @start="dragging = true"
-            @end="dragging = false">
+        <draggable @delete="message" v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
+            class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
+            @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
                 <simple-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
                     :index="index">
@@ -59,7 +59,25 @@ export default {
             },)
 
         },
-        message(){
+        createOutbrainBlock() {
+
+            this.$store.commit('createBlock', {
+                "blockType": "outbrain_block",
+                "platforms": this.allPlatforms,
+                "settings": {
+                    "layout": "list-medium",
+                    "widget_id": "JS_9"
+                }
+            },)
+
+        },
+        createAdUnit() {
+            this.$store.commit('createBlock', {
+                "blockType": "ad_unit"
+            },)
+
+        },
+        message() {
             console.log('message')
         }
     },
@@ -78,8 +96,8 @@ export default {
             }
 
         },
-        allPlatforms(){
-            return this.$store.getters.allPlatforms; 
+        allPlatforms() {
+            return this.$store.getters.allPlatforms;
         }
     }
 
@@ -88,10 +106,11 @@ export default {
 </script>
 
 <style scoped>
-#block-creator-dropdown{
+#block-creator-dropdown {
     align-items: flex-start;
 
 }
+
 #sidebar-block-creator {
     border: 2px solid grey;
     flex-direction: column;
@@ -100,7 +119,7 @@ export default {
     width: 25rem;
     min-height: 25rem;
     margin: 2rem 2rem;
-    display: flex; 
+    display: flex;
 
 }
 </style>

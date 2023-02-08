@@ -1,5 +1,6 @@
 <template>
     <div v-if="pageLoaded" id="widget-container" @mousedown="selectContainer">
+        <div class="handle"></div>
         <toolbar-platforms></toolbar-platforms>
     </div>
 </template>
@@ -69,6 +70,10 @@ export default {
     left: 1200px;
     top: 120px;
     border: 2px solid lightgray;
+}
+.handle{
+    height: 1rem; 
+    background-color: gray; 
 }
 
 </style>
