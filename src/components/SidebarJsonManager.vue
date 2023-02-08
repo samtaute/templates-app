@@ -94,7 +94,7 @@ export default {
   "language": "en",
   "outputTargets": ["content"],
   "iab_categories": ["Hobbies & Interests"],
-  "platformsIncludeAllByProduct": ["firstscreen"],
+  "platformsIncludeAllByProduct": ["firstscreen","toolbar","portal"],
   "categories": ["outdoor_photography"],
   "campaigns": {
     "default": {

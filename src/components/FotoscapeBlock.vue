@@ -56,7 +56,7 @@
     </section> -->
     <section v-if="layout != 'trending-carousel'" class="block block--fotoscapes" :class="`block--${layout}`">
         <section class="block__main">
-            <feed-item v-for="n in element.settings.count" :layout="element.settings.layout" :key="n"
+            <feed-item v-for="n in count" :layout="element.settings.layout" :key="n"
                 :content-data="retrieveNextFotoscape(n)"></feed-item>
             <!-- <fotoscape-item v-for="n in this.element.settings.count" :key="n" :fotoscape-data="retrieveNextFotoscape(n)">
             </fotoscape-item> -->
@@ -97,6 +97,7 @@ export default {
             return this.element.settings.category
         },
         count() {
+            console.log(typeof this.element.settings.count)
             return this.element.settings.count;
         }
     },
@@ -104,14 +105,15 @@ export default {
     methods:
     {
         retrieveNextFotoscape(idx) {
+            // console.log("test" + idx); 
+            // console.log(this.$store.state.fotoscapeObject[this.category]['content'][idx])
             // let currOffset = this.$store.state.fotoscapeObject[this.category]['offset'];
             // this.$store.state.fotoscapeObject[this.category]['offset']+= 1; 
             //this.$store.dispatch('updateObject')
 
             // this.$store.commit('incrementOffset');
-            let offset = this.$store.state.fotoscapeObject[this.category]['offset']
 
-            return this.$store.state.fotoscapeObject[this.category]['content'][offset + idx];
+            return this.$store.state.fotoscapeObject[this.category]['content'][idx];
         }
     },
     mounted() {

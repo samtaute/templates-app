@@ -55,7 +55,6 @@ button{
     margin: 10px; 
 }
 #the-sidebar {
-    height: 100%;
     background-color: #f1f3f4;
     width: 26rem;
     display: flex;

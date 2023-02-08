@@ -1,9 +1,9 @@
 <template>
     <div id="page-preview-container">
-        <button @click="loadPreview">Load Fotoscape</button>
-        <button @click="loadBlocks">Load Page</button>
-        Loading:{{ loading }} Preview:{{ previewActive }}
-        <viewable-list v-if="previewActive">
+        <button type="button" class="btn btn-outline-dark" @click="loadPreview">Load Preview</button>
+        <button type="button" class="btn btn-outline-dark" @click="stopPreview">Stop Preview</button>
+
+        <viewable-list v-if="previewActiveComputed">
         </viewable-list>
     </div>
 
@@ -22,6 +22,9 @@ export default {
         },
         loading(){
             return this.$store.state.loading
+        },
+        previewActiveComputed(){
+            return this.previewActive;
         }
     },
 
@@ -34,7 +37,8 @@ export default {
 
     methods: {
         loadPreview() {
-            this.$store.loading = true;
+            this.previewActive = false; 
+            this.$store.state.loading = true;
 
             let categoryArray = [];
             for (let block of this.blocks) {
@@ -61,9 +65,11 @@ export default {
                     }
                 }).then(() => {
                     this.$store.state.fotoscapeObject = this.fotoscapeContent;
-                    console.log(this.fotoscapeContent);
                     this.$store.state.loading = false;
-                });
+                }).then(()=>{
+                    setTimeout(()=>this.previewActive = true, 1000)
+                }
+                ); 
 
             }
 
@@ -71,6 +77,10 @@ export default {
         },
         loadBlocks(){
             this.previewActive = true; 
+        },
+        stopPreview(){
+            this.previewActive = false; 
+            this.$store.state.fotoscapeObject = {}; 
         }
     },
 

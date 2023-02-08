@@ -213,7 +213,7 @@ export default {
                 container: container,
                 index: this.index,
             });
-            this.$parent.$emit('delete', this.index)
+            // this.$parent.$emit('delete', this.index)
         },
         updateBlock(evt) {
             evt.stopPropagation()
@@ -228,7 +228,7 @@ export default {
 
             if (this.count != 'none') {
                 const countValue = document.querySelector('#count-select').value;
-                newElement.settings.count = countValue;
+                newElement.settings.count = parseInt(countValue);
 
             }
 

@@ -22,8 +22,6 @@ export default{
     flex-wrap: nowrap;
     background:lightyellow;
     flex-grow: 1;
-
-
 }
 /* #content-container{
     background:lightyellow;
