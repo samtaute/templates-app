@@ -1,16 +1,15 @@
 <template>
     <div v-if="pageLoaded" id="widget-container" @mousedown="selectContainer">
-        <div class="block-editor">
-            {{ activeBlock }}
-        </div>
+        <toolbar-platforms></toolbar-platforms>
     </div>
 </template>
 
 <script>
+import ToolbarPlatforms from './ToolbarPlatforms.vue'
 
 export default {
     components:{
-
+        ToolbarPlatforms
     },
     methods: {
         selectContainer(evt) {
@@ -63,9 +62,8 @@ export default {
 
 <style scoped>
 #widget-container {
-    width: 6rem;
+    width: 5rem;
     background: #dadce0;
-    height: 100rem;
     display: inline-block;
     position: absolute; 
     left: 1200px;

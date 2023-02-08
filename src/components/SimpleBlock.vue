@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="platform-sticky-ribbon">
-            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="platform"
+            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="`${platform}-button`"
                 @click="togglePlatform(platform)">
             </div>
             <button type="button" class="btn btn-sm btn-link platform-btn" data-bs-toggle="modal"

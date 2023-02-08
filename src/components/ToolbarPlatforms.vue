@@ -1,7 +1,7 @@
 <template>
         <div>
             <div v-if="pageLoaded">
-                <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm" :class="platform" :key="platform"
+                <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm" :class="`${platform}-button`" :key="platform"
                 @click="selectPlatform(platform)">{{ platform }}</button>
             </div>
           
@@ -25,6 +25,13 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
+.btn-sm{
+    font-size: 11px; 
+    color: white; 
+    font-weight: bold; 
+    display: block; 
+    width: 100%
+}
 
 </style>
