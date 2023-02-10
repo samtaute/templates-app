@@ -40,7 +40,7 @@
 
         </div>
         <div class="block-header">
-            <h4>{{ element.blockType }} {{ index }}</h4>
+            <h4>{{ element.blockType }}</h4>
         </div>
         <div class="block-content block-content--default" v-if="mode === 'default'">
             <div v-if="element.blockType === 'header_block'">

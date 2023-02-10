@@ -6,7 +6,7 @@ export default{
         'pwgbar',
         'tracfonebar',
         'verizonbar',
-        'uscellbar',
+        'uscellbar'
     ],
     firstscreen: [
         'cricket', 

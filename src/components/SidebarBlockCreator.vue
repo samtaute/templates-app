@@ -9,6 +9,13 @@
                 <li><a class="dropdown-item" @click="createBlock" href="#">fotoscape_block</a></li>
                 <li><a class="dropdown-item" @click="createOutbrainBlock">outbrain_block</a></li>
                 <li><a class="dropdown-item" @click="createAdUnit">ad_unit</a></li>
+                <li><a class="dropdown-item" @click="createHeaderBlock">HeaderBlock</a></li>
+                <li><a class="dropdown-item" @click="createJokesWidget">Jokes Widget</a></li>
+                <li><a class="dropdown-item" @click="createMemesWidget">Memes Widget</a></li>
+
+
+
+
             </ul>
         </div>
         <draggable @delete="message" v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
@@ -79,8 +86,32 @@ export default {
         },
         message() {
             console.log('message')
+        },
+        createHeaderBlock() {
+            this.$store.commit('createBlock', {
+                "blockType": "header_block",
+                "platforms": this.allPlatforms,
+                "settings": {
+                    "subheader": "Replace text"
+                }
+            },)
+
+        },
+        createJokesWidget() {
+
+            this.$store.commit('createBlock', {
+                "blockType": "jokes_widget_block"
+            },)
+
+        },
+        createMemesWidget() {
+            this.$store.commit('createBlock', {
+                "blockType": "memes_widget_block"
+            },)
+
         }
     },
+
     computed: {
         draggingInfo() {
             return this.dragging ? "under drag" : "";
