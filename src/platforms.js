@@ -25,7 +25,7 @@ export default{
         'awweb',
         'cricketweb',
         'pwgweb',
-        'sprintweb',
+        'sprintweb'
     ]
 
 }
