@@ -1,14 +1,17 @@
 <template>
   <div id="sidebar-json-manager">
- 
+
     <!-- Button trigger modal -->
     <div class="button-container">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonImportModal">
-      Import JSON
-    </button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonExportModal">
-      Export JSON
-    </button>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonImportModal">
+        Import JSON
+      </button>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jsonExportModal">
+        Export JSON
+      </button>
+      <button type="button" class="btn btn-danger" @click="clearPage">
+        Clear
+      </button>
     </div>
 
     <!-- Import Modal -->
@@ -31,7 +34,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
           </div>
         </div>
       </div>
@@ -76,6 +79,78 @@ export default {
       this.$store.dispatch('processJson', this.userInput);
       this.$emit('generate-page', this.userInput);
 
+    },
+    clearPage() {
+      this.$store.dispatch('processJson',
+        `{
+  "title": "New Page",
+  "filename": "-",
+  "view": "one_column",
+  "language": "en",
+  "outputTargets": ["content"],
+  "iab_categories": ["Hobbies & Interests"],
+  "platformsIncludeAllByProduct": ["firstscreen","toolbar","portal"],
+  "categories": ["outdoor_photography"],
+  "campaigns": {
+    "default": {
+      "type": "single",
+      "config": "default"
+    },
+    "custom": [
+      {
+        "type": "useragent",
+        "platforms": ["metropcs"],
+        "matchList": [
+          "Moto G Stylus",
+          "LM-K500",
+          "SM-A025U",
+          "SM-A125U",
+          "SM-A326U",
+          "LM-Q730",
+          "SM-A205U",
+          "SM-A215U",
+          "5007Z",
+          "Moto G Play",
+          "SM-J260T1",
+          "LM-K300"
+        ],
+        "config": "useragent"
+      },
+      {
+        "type": "useragent",
+        "platforms": ["boost"],
+        "matchList": ["LM-X220PM", "LM-Q720"],
+        "config": "useragent"
+      },
+      {
+        "type": "mode",
+        "platforms": ["boost", "cricket"],
+        "filter": {
+          "twa": "twa",
+          "default": "default"
+        }
+      }
+    ]
+  },
+  "section_navigation_bar": {
+    "display": true,
+    "platformsBlacklist": ["metropcs"]
+  },
+  "notification": {
+    "description": "Relax for a few minutes with soothing photo galleries.",
+    "title": "Take Five"
+  },
+  "blocks": [
+    {
+      "blockType": "header_block",
+      "platforms": ["cricket"],
+      "settings": {
+        "subheader": "Afternoon Break"
+      }
+    }
+  ]
+  }`
+      )
     }
   },
   computed: {
@@ -83,7 +158,7 @@ export default {
       return this.$store.getters.jsonExport;
     }
   },
-  mounted(){
+  mounted() {
     this.$store.dispatch('processJson', this.userInput);
   },
   beforeMount() {
@@ -603,10 +678,10 @@ export default {
 </script>
 <style scoped>
 #sidebar-json-manager {
-  width: 25rem; 
+  width: 25rem;
   display: flex;
   flex-wrap: nowrap;
-  overflow:hidden;
+  overflow: hidden;
 
 }
 
@@ -618,17 +693,21 @@ export default {
   width: 100%;
 
 }
+
 #jsonImportModal,
-#jsonExportModal{
+#jsonExportModal {
   top: 80px;
 }
-
-.btn{
-  margin: 4px; 
+.modal{
+  z-index: 10000;
 }
-.button-container{
-  display: flex; 
+
+.btn {
+  margin: 4px;
+}
+
+.button-container {
+  display: flex;
   width: 100%;
 }
-
 </style>

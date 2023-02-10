@@ -36,6 +36,7 @@ body {
 #app {
   display: flex;
   margin-top: 3.5rem;
+  min-height: 100vh;
 
 
 }

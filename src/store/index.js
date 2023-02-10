@@ -81,6 +81,9 @@ const store = createStore({
 
     },
     getters: {
+        allWidgetIds(state){
+            return state.settings.widgetIds;
+        },
         //Retrieves Fotoscape item
         nextItem(state, getters) {
             let currCategory = getters.currentCategory;

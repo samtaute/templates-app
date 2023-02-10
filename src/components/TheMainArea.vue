@@ -11,11 +11,12 @@ import PageTemplate from './PageTemplate.vue'
 import PagePreview from './PagePreview.vue'
 import WidgetContainer from './WidgetContainer.vue'
 
+
 export default{
     components:{
         PageTemplate,
         PagePreview,
-        WidgetContainer
+        WidgetContainer,
     }
 }
 </script>
@@ -25,6 +26,7 @@ export default{
     flex-wrap: nowrap;
     background:lightyellow;
     flex-grow: 1;
+    margin-left: 26rem; 
 }
 /* #content-container{
     background:lightyellow;

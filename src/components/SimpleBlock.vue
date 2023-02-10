@@ -1,6 +1,6 @@
 <template>
     <div @click="activateElement" class="block-container" :class="mode">
-        
+
         <div class="modal fade" :id="currModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" @click="stopProp">
@@ -40,7 +40,7 @@
 
         </div>
         <div class="block-header">
-            <h4>{{ element.blockType }}</h4>
+            <h4>{{ element.blockType }} {{ index }}</h4>
         </div>
         <div class="block-content block-content--default" v-if="mode === 'default'">
             <div v-if="element.blockType === 'header_block'">
@@ -64,6 +64,13 @@
             <div v-if="element.blockType === 'fotoscape_block'">
                 <label>
                     <h6>Category: {{ category }}</h6>
+                </label>
+            </div>
+
+
+            <div v-if="element.blockType === 'outbrain_block'">
+                <label>
+                    <h6>WidgetId: {{ widgetId }}</h6>
                 </label>
             </div>
         </div>
@@ -91,16 +98,6 @@
                     <option v-for="layout in layouts" :value="layout" :key="layout">{{ layout }}</option>
                 </select>
             </div>
-
-
-            <!-- count field -->
-            <div v-if="count != 'none'">
-                <label>
-                    <h4>Count: </h4>
-                </label>
-                <input @click="stopProp" type="text" id="count-select" :value="count">
-            </div>
-
             <!-- category field -->
             <div v-if="element.blockType === 'fotoscape_block'">
                 <label>
@@ -112,6 +109,28 @@
                     <option v-for="category in categories" :value="category" :key="category">{{ category }}</option>
                 </select>
             </div>
+
+            <!-- count field -->
+            <div v-if="count != 'none'">
+                <label>
+                    <h4>Count: </h4>
+                </label>
+                <input @click="stopProp" type="text" id="count-select" :value="count">
+            </div>
+
+            <!-- widgetId field -->
+            <div v-if="widgetId != 'none'">
+                <label>
+                    <h4>WidgetId: </h4>
+                </label>
+                <select v-if="mode === 'selected'" @click="stopProp" name='widget-id' id="widget-select"
+                    class="form-select" aria-label="Default select example">
+                    <option selected>{{ widgetId }}</option>
+                    <option v-for="id in widgetIds" :value="id" :key="id">{{ id }}</option>
+                </select>
+            </div>
+
+
 
 
         </div>
@@ -148,8 +167,8 @@ export default {
         layouts() {
             return settings.layouts.filter(layout => layout != this.layout);
         },
-        currModal(){
-            return "modal" + this.index; 
+        currModal() {
+            return "modal" + this.index;
         },
 
         //todo make this a utility function
@@ -157,23 +176,12 @@ export default {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
                 if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
                     return this.element.settings.category;
+                }else if (this.element.blockType === 'none'){
+                    return 'standard'
                 }
             }
-            return 'standard';
+            return 'none';
 
-        },
-        categories() {
-            return this.$store.getters.allCategories.filter(category => category != this.category);
-        },
-
-        allPlatforms() {
-            return this.$store.getters.allPlatforms
-        },
-        mode() {
-            if (this.$store.getters.activeIndex === this.index) {
-                return 'selected'
-            }
-            else return 'default'
         },
         layout() {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
@@ -183,6 +191,26 @@ export default {
             }
             return 'none';
         },
+        categories() {
+            return this.$store.getters.allCategories.filter(category => category != this.category);
+        },
+
+        widgetIds() {
+            return this.$store.getters.allWidgetIds.filter(id => id != this.widgetId);
+        },
+        allPlatforms() {
+            return this.$store.getters.allPlatforms
+        },
+        mode() {
+            let container = this.$parent._sortable.options.container;
+            if (container === 'newBlocks') {
+                return 'selected'
+            }
+            if (this.$store.getters.activeIndex === this.index) {
+                return 'selected'
+            }
+            else return 'default'
+        },
         count() {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
                 if (Object.prototype.hasOwnProperty.call(this.element.settings, 'count')) {
@@ -190,6 +218,16 @@ export default {
                 }
             }
             return 'none';
+        },
+
+        widgetId() {
+            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'widgetId')) {
+                    return this.element.settings.widgetId;
+                }
+            }
+            return 'none';
+
         },
         platforms() {
             return this.$store.getters.allPlatforms;
@@ -204,8 +242,14 @@ export default {
 
         },
         activateElement() {
+            let container = this.$parent._sortable.options.container;
+
+            if (container === 'newBlocks') {
+                return;
+            }
             this.$store.commit('updateActiveIndex', this.index);
             this.checkedPlatforms = this.element.platforms;
+
         },
         deleteBlock() {
             let container = this.$parent._sortable.options.container;
@@ -239,9 +283,13 @@ export default {
                 newElement.settings.subheader = subheaderValue;
             }
 
-            if (this.element.blockType === 'fotoscape_block') {
+            if (this.category != 'none') {
                 const categoryValue = document.querySelector('#category-select').value;
                 newElement.settings.category = categoryValue;
+            }
+            if (this.element.blockType === 'outbrain_block') {
+                const widgetValue = document.querySelector('#widget-select').value;
+                newElement.settings.widgetId = widgetValue;
             }
 
 
@@ -258,7 +306,6 @@ export default {
 
 </script>
 <style scoped>
-
 .block-container {
     display: flex;
     flex-direction: column;
@@ -318,8 +365,9 @@ export default {
     padding-top: 30px;
     padding-bottom: 40px;
 }
-.block-content{
-    margin-bottom: 20px; 
+
+.block-content {
+    margin-bottom: 20px;
 }
 
 .form-select {

@@ -1,5 +1,6 @@
 <template>
     <div v-if="pageLoaded" id="widget-container" @mousedown="selectContainer">
+        <!-- {{ activeBlock }} -->
         <div class="handle"></div>
         <toolbar-platforms></toolbar-platforms>
     </div>

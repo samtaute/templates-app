@@ -1,19 +1,22 @@
 <template>
-  
-    <div v-if="visible" id="the-sidebar">
-        <!-- <div id="sidebar-resizer" @mousedown="resizeSidebar"></div> -->
-        <div id="sidebar-resizer" @mousedown="resizeSidebar"></div>
-        <sidebar-json-manager></sidebar-json-manager>
-        <sidebar-block-creator></sidebar-block-creator>
-    </div>
+    <section>
+        <div v-if="visible" id="the-sidebar">
+            <!-- <div id="sidebar-resizer" @mousedown="resizeSidebar"></div> -->
+            <div id="sidebar-resizer" @mousedown="resizeSidebar"></div>
+            <!-- <sidebar-json-manager></sidebar-json-manager> -->
+            <sidebar-block-creator></sidebar-block-creator>
+        </div>
+    </section>
+
+
 </template>
 <script>
-import SidebarJsonManager from './SidebarJsonManager.vue'
+// import SidebarJsonManager from './SidebarJsonManager.vue'
 import SidebarBlockCreator from './SidebarBlockCreator.vue'
 
 
 export default {
-    data(){
+    data() {
         return {
             visible: true,
         }
@@ -32,7 +35,7 @@ export default {
         //         }else{
         //             resizerContainer.style.width = `${resizerContainerWidth}px`;
         //         }
-               
+
         //     }
         //     window.addEventListener('mousemove', resize)
         //     window.addEventListener('mouseup', () => {
@@ -40,8 +43,8 @@ export default {
         //     });
         // },
     },
-    components:{
-        SidebarJsonManager,
+    components: {
+        // SidebarJsonManager,
         SidebarBlockCreator
     }
 }
@@ -50,19 +53,25 @@ export default {
 </script>
 
 <style scoped>
-button{
-    align-self: flex-end;
-    margin: 10px; 
+section{
+    position: fixed; 
+    height: 200vh; 
 }
+button {
+    align-self: flex-end;
+    margin: 10px;
+}
+
 #the-sidebar {
     background-color: #f1f3f4;
     width: 26rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content:flex-start;
-    position: relative; 
+    justify-content: flex-start;
+    position: relative;
     padding: 5px;
+    height: 100%;
 }
 
 #sidebar-resizer {
