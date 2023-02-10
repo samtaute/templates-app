@@ -118,12 +118,12 @@ const store = createStore({
         },
         allPlatforms(state) {
             let products = Object.keys(state.platforms);
+            
             let returnArray = [];
 
             for (let prod of products) {
                 returnArray = returnArray.concat(state.platforms[prod]);
             }
-
             return returnArray;
         },
         activePlatform(state) {
@@ -182,7 +182,7 @@ const store = createStore({
 
 
             for (let prod of products) {
-                returnObj[prod] = context.state.platforms[prod];
+                returnObj[prod] = startingPlatforms[prod];
             }
             context.commit('updatePlatforms', returnObj)
         },
