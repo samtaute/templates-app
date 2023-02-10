@@ -80,7 +80,8 @@ export default {
         },
         createAdUnit() {
             this.$store.commit('createBlock', {
-                "blockType": "ad_unit"
+                "blockType": "ad_unit",
+                "platforms": this.allPlatforms,
             },)
 
         },
@@ -100,13 +101,15 @@ export default {
         createJokesWidget() {
 
             this.$store.commit('createBlock', {
-                "blockType": "jokes_widget_block"
+                "blockType": "jokes_widget_block",
+                "platforms": this.allPlatforms,
             },)
 
         },
         createMemesWidget() {
             this.$store.commit('createBlock', {
-                "blockType": "memes_widget_block"
+                "blockType": "memes_widget_block",
+                "platforms": this.allPlatforms,
             },)
 
         }
