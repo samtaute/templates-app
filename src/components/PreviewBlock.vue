@@ -4,9 +4,8 @@
             :key="element.blockType"></preview-ad-unit>
         <fotoscape-block v-if="element.blockType === 'fotoscape_block'" :element='element'
             :key="element.blockType"></fotoscape-block>
-        <sponsored-block v-if="element.blockType === 'outbrain_block'"></sponsored-block>
-        <reveal-widget v-if="revealWidget"></reveal-widget>
-        <unknown-block v-if="unknown"></unknown-block>
+        <sponsored-block v-if="element.blockType === 'outbrain_block'" :element='element'></sponsored-block>
+        <unknown-block :element='element' v-if="unknown"></unknown-block>
         <preview-block-header v-if="element.blockType==='header_block'" :element='element'></preview-block-header>
         
     </div>
@@ -17,9 +16,9 @@
 import FotoscapeBlock from './FotoscapeBlock.vue'
 import PreviewAdUnit from './PreviewAdUnit.vue'
 import SponsoredBlock from './SponsoredBlock.vue'
-import RevealWidget from './RevealWidget.vue'
-import UnknownBlock from './UnknownBlock.vue'
 import PreviewBlockHeader from './PreviewBlockHeader.vue'
+import UnknownBlock from './UnknownBlock.vue'
+
 
 export default {
     props: ['element', 'fotoscapeObj'],
@@ -27,9 +26,8 @@ export default {
         FotoscapeBlock,
         PreviewAdUnit,
         SponsoredBlock,
-        RevealWidget,
-        UnknownBlock,
         PreviewBlockHeader,
+        UnknownBlock
     },
     computed: {
         activePlatform() {

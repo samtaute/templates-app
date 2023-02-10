@@ -32,7 +32,6 @@ const store = createStore({
         },
         incrementOffset(state, payload){
             state.fotoscapeObject[payload.category]['offset']+=payload.count;  
-            console.log(state.fotoscapeObject[payload.category].offset)
         },
         updateJson(state, payload) {
             state.json = payload;
@@ -77,7 +76,6 @@ const store = createStore({
             state.newBlocks.push(payload);
         },
         updatePlatformsOnBlock(state, payload) {
-            console.log(state.activeIndex);
             state.blocks[state.activeIndex].platforms = payload;
         }
 

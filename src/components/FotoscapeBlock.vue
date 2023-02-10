@@ -97,7 +97,6 @@ export default {
             return this.element.settings.category
         },
         count() {
-            console.log(typeof this.element.settings.count)
             return this.element.settings.count;
         }
     },
@@ -14727,7 +14726,7 @@ a:visited {
 
 .block--carousel .block__main {
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
     scroll-behavior: smooth
 }
 
@@ -15006,7 +15005,7 @@ a:visited {
 
 :root[data-mp-app-theme='moment'] .block--carousel .block__main {
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
     scroll-behavior: smooth
 }
 

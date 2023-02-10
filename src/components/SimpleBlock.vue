@@ -251,8 +251,6 @@ export default {
             evt.stopPropagation();
         },
         togglePlatform(platform) {
-
-            console.log("platform selected: " + platform)
             this.$store.dispatch('togglePlatformOnBlock', platform);
         }
     }
@@ -260,6 +258,7 @@ export default {
 
 </script>
 <style scoped>
+
 .block-container {
     display: flex;
     flex-direction: column;
