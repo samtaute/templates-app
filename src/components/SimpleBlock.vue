@@ -176,7 +176,7 @@ export default {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
                 if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
                     return this.element.settings.category;
-                }else if (this.element.blockType === 'none'){
+                }else if (this.element.blockType === 'fotoscape_block'){
                     return 'standard'
                 }
             }

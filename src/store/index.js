@@ -1,6 +1,6 @@
 
 import { createStore } from 'vuex'
-import startingPlatforms from '../platforms'
+import startingPlatforms from '../platforms-all'
 import settings from '../settings'
 
 const store = createStore({
@@ -167,9 +167,14 @@ const store = createStore({
                     return context.getters.allPlatforms;
                 }
             }
-
+//Includes check for cateogry on Fotoscape blocks. Might want to make this a separate processing step. 
             for (let element of blockList) {
                 element.platforms = generateBlockPlatforms(element);
+                if(element.blockType === 'fotoscape_block'){
+                    if(element.settings.category === undefined){
+                        element.settings.category = 'standard'; 
+                    }
+                }
 
             }
 
