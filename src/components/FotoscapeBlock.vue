@@ -56,7 +56,7 @@
     </section> -->
     <section v-if="layout != 'trending-carousel'" class="block block--fotoscapes" :class="`block--${layout}`">
         <section class="block__main">
-            <feed-item v-for="n in count" :layout="element.settings.layout" :key="n"
+            <feed-item v-for="n in count" v-once :layout="element.settings.layout" :key="n"
                 :content-data="retrieveNextFotoscape(n)"></feed-item>
             <!-- <fotoscape-item v-for="n in this.element.settings.count" :key="n" :fotoscape-data="retrieveNextFotoscape(n)">
             </fotoscape-item> -->

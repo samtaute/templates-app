@@ -20,7 +20,7 @@
 <script>
 import draggable from 'vuedraggable'
 import SimpleBlock from './SimpleBlock.vue'
-import SidebarJsonManager from './SidebarJsonManager.vue'
+import SidebarJsonManager from './JsonProcesser.vue'
 
 export default {
     components: {
@@ -43,17 +43,18 @@ export default {
 
 
     computed: {
+        //recommended by draggable documentation.
         draggingInfo() {
             return this.dragging ? "under drag" : "";
         },
 
-
+        //recommended by draggable documentation
         myList: {
             get() {
-                return this.$store.state.blocks;
+                return this.$store.getters.currentBlocksJson;
             },
-            set(value) {
-                this.$store.commit('updateList', value)
+            set(newBlockList) {
+                this.$store.commit('setBlocksJson', newBlockList)
             }
 
         },

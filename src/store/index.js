@@ -1,12 +1,12 @@
 
 import { createStore } from 'vuex'
+import refactoredIndex from './index-refactored'
 import startingPlatforms from '../platforms-all'
 import settings from '../settings'
 
 const store = createStore({
     modules: {
-
-
+        refactored: refactoredIndex
     },
     state() {
         return {
