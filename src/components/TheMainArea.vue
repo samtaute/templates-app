@@ -1,20 +1,20 @@
 <template>
     <div class="the-main-area">
-        <page-template></page-template>
+        <template-page></template-page>
         <page-preview></page-preview>
         <widget-container></widget-container>
     </div>
 </template>
 
 <script>
-import PageTemplate from './PageTemplate.vue'
+import TemplatePage from './TemplatePage.vue'
 import PagePreview from './PagePreview.vue'
 import WidgetContainer from './WidgetContainer.vue'
 
 
 export default{
     components:{
-        PageTemplate,
+        TemplatePage,
         PagePreview,
         WidgetContainer,
     }
