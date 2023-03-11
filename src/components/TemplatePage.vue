@@ -4,24 +4,22 @@
         <draggable v-model='myList' :disabled="!enabled" item-key="name" group="blocks" class="list-group layout-container"
             ghost-class="ghost" :move="checkMove" @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
-                <simple-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
+                <template-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
                     :index="index">
-                </simple-block>
+                </template-block>
             </template>
         </draggable>
-
-
     </div>
 </template>
 <script>
 import draggable from 'vuedraggable'
-import SimpleBlock from './SimpleBlock.vue'
+import TemplateBlock from './TemplateBlock.vue'
 import SidebarJsonManager from './JsonProcesser.vue'
 
 export default {
     components: {
         draggable,
-        SimpleBlock,
+        TemplateBlock,
         SidebarJsonManager,
     },
     data() {

@@ -45,6 +45,9 @@ export default {
         },
         setBlocksJson(state, newBlocks) {
             state.currentPageJson.blocks = newBlocks;
+        },
+        replaceBlock(state, newBlock){
+            state.currentPageJson.blocks[newBlock.index] = newBlock.block; 
         }
 
     },
@@ -55,6 +58,9 @@ export default {
 
             context.commit('setFullJson', cleanPage);
             context.commit('setBlocksJson', cleanPage.blocks);
+        },
+        replaceBlock(context, newBlock){
+            context.commit('replaceBlock', newBlock)
         }
 
 
