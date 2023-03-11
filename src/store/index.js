@@ -17,7 +17,6 @@ const store = createStore({
             fileName: "",
             activeIndex: -1,
             platforms: startingPlatforms,
-            activePlatform: 'all',
             pageLoaded: false,
             settings: settings,
             fotoscapeObject: {},

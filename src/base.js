@@ -80,12 +80,12 @@ export default {
     },
     "blocks": [
         {
-            "blockType": "header_block",
-            "platforms": [
-                "cricket"
-            ],
+            "blockType": "fotoscape_block",
+            "platforms": ["cricket"],
             "settings": {
-                "subheader": "Afternoon Break"
+                "layout": "carousel",
+                "category": "news",
+                "count": 5
             }
         }
     ]
