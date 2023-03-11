@@ -64,10 +64,6 @@ export default {
         unusedPlatforms() {
             return this.$store.getters.allPlatforms;
         },
-        test() {
-            console.log('test')
-            return this.testData;
-        }
     },
     methods: {
         enterPlat(evt) {
