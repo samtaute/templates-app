@@ -18,7 +18,7 @@
 
             </ul>
         </div>
-        <draggable @delete="message" v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
+        <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
             class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
             @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
@@ -36,6 +36,7 @@
 <script>
 import draggable from 'vuedraggable'
 import TemplateBlock from './TemplateBlock.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
     components: {
@@ -54,10 +55,12 @@ export default {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
         },
         createBlock() {
+            const blockId = uuidv4(); 
 
-            this.$store.commit('createBlock', {
+
+            this.$store.dispatch('createBlock', {
                 "blockType": "fotoscape_block",
-                "platforms": this.allPlatforms,
+                "id":blockId, 
                 "settings": {
                     "layout": "edge-description",
                     "count": 1,
@@ -84,9 +87,6 @@ export default {
                 "platforms": this.allPlatforms,
             },)
 
-        },
-        message() {
-            console.log('message')
         },
         createHeaderBlock() {
             this.$store.commit('createBlock', {
@@ -123,10 +123,10 @@ export default {
 
         newBlocks: {
             get() {
-                return this.$store.state.newBlocks;
+                return this.$store.getters.currentWorkset;
             },
             set(value) {
-                this.$store.commit('updateNewBlocks', value)
+                this.$store.commit('setWorkset', value)
             }
 
         },

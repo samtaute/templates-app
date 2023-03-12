@@ -146,14 +146,14 @@ const store = createStore({
         activatePlatform(context, payload) {
             context.commit('activatePlatform', payload.platform)
         },
-        deleteBlock(context, payload) {
-            if (payload.container === 'newBlocks') {
-                context.commit('deleteNewBlock', payload.index)
-            } else {
-                context.commit('deleteBlock', payload.index)
-            }
+        // deleteBlock(context, payload) {
+        //     if (payload.container === 'newBlocks') {
+        //         context.commit('deleteNewBlock', payload.index)
+        //     } else {
+        //         context.commit('deleteBlock', payload.index)
+        //     }
 
-        },
+        // },
         processBlockPlatforms(context, payload) {
             let blockList = payload.blocks;
 

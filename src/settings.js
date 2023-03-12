@@ -16,7 +16,7 @@ export default {
         'JS_22',
         'JS_23',
     ],
-    layouts: [
+    layout: [
         "carousel",
         "carousel-photocard",
         "daily-top",
@@ -173,6 +173,28 @@ export default {
         'fotoscape',
         'referral',
         'full_page_article'
+    ],
+    count:[
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
     ]
 
 

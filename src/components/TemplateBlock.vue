@@ -7,8 +7,9 @@
                     <button type="button" @click="duplicateBlock" class="btn btn-sm btn-success">@</button>
                 </div>
         </div>
-        <template-block-platforms :element="element"></template-block-platforms>
-        <template-block-settings :element="element"></template-block-settings>
+        <template-block-platforms :element="element" :index="index"></template-block-platforms>
+        <template-block-settings :element="element" :index="index"></template-block-settings>
+        {{ element.id }}
     </div>
 </template>
 <script>
@@ -124,11 +125,8 @@ export default {
 
         },
         deleteBlock() {
-            let container = this.$parent._sortable.options.container;
-            this.$store.dispatch('deleteBlock', {
-                container: container,
-                index: this.index,
-            });
+            console.log(this.element.id); 
+            this.$store.dispatch('deleteBlock', this.element.id);
             // this.$parent.$emit('delete', this.index)
         },
         updateBlock(evt) {
@@ -183,6 +181,7 @@ export default {
     flex-direction: column;
     padding: 0;
     box-sizing: border-box;
+    margin-top: 2px; 
 }
 
 h4{

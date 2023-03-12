@@ -4,10 +4,10 @@
         <div class="platforms__list">
             <span class="platform platform--badge badge bg-primary" v-for="platform in element.platforms" :key="platform">{{
                 platform }}</span>
-            <input class="form-control platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + index"
-                :id="'platformsList' + index" placeHolder="..add">
-            <datalist :id="'unusedPlatforms' + index">
-                <option v-for="plat in unusedPlatforms" :key="plat">{{ plat }}</option>
+            <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
+                :id="'platformsList' + element.id" placeHolder="..add">
+            <datalist :id="'unusedPlatforms' + element.id">
+                <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
             </datalist>
         </div>
     </div>
@@ -16,45 +16,6 @@
         <span v-for="platform in element.excludePlatforms" :key="platform">{{ platform }}</span>
 
     </div>
-
-    <!-- <div class="modal fade" :id="currModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content" @click="stopProp">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel">Select Platforms</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="platformForm">
-                        <div class="modal-body">
-                            <div class="form-check" v-for="plat in allPlatforms" :key="plat">
-                                <input class="form-check-input" type="checkbox" :value="plat" :id="plat"
-                                    v-model="checkedPlatforms">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{ plat }}
-                                </label>
-                            </div>
-                        </div>
-
-
-
-                    </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="submitPlatforms">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-    <!-- <div class="platform-sticky-ribbon">
-            <div v-for="platform in element.platforms" :key="platform" class="slice" :class="`${platform}-button`"
-                @click="togglePlatform(platform)">
-            </div> -->
-    <!-- <button type="button" class="btn btn-sm btn-link platform-btn" data-bs-toggle="modal"
-                :data-bs-target="'#' + currModal">
-                Platforms
-            </button> -->
-    <!-- 
-        </div> -->
 </template>
 <script>
 
@@ -62,7 +23,16 @@ export default {
     props: ['element', 'index'],
     computed: {
         unusedPlatforms() {
-            return this.$store.getters.allPlatforms;
+            let allPlatforms = this.$store.getters.allPlatforms; 
+            let blockPlatforms = this.element.platforms;
+
+
+            let clone = JSON.parse(JSON.stringify(allPlatforms)); 
+
+
+            let returnArray = clone.filter(item => !blockPlatforms.includes(item)); 
+            console.log(returnArray)
+            return returnArray; 
         },
     },
     methods: {

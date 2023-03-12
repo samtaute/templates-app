@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 export function processPageJson(rawPage){
     if (rawPage.blocks === null){
         console.log('Error processiing raw page')
@@ -7,21 +9,22 @@ export function processPageJson(rawPage){
     }else{
         let blockList = rawPage.blocks; 
         for (let block of blockList){
-            processPlatforms(block); 
-            //Check that standard is made explicit on Fotoscape blocks
-            if (block.blockType === 'fotoscape_block'){
-                if(block.settings.category === undefined){
-                    block.settings.category = 'standard'
-                }
-            }
-
+            processBlockJson(block); 
         }
         return rawPage; 
     }
 }
 
-//Used in processPage function
-function processPlatforms(block){
-//todo - write code for processing block
-    return block; 
+export function processBlockJson(rawBlock){
+    //add uuid
+    rawBlock.id=uuidv4(); 
+    //Check that standard is made explicit on Fotoscape blocks
+    if (rawBlock.blockType === 'fotoscape_block'){
+        if(rawBlock.settings.category === undefined){
+            rawBlock.settings.category = 'standard'
+        }
+    }
+    return rawBlock; 
+
 }
+
