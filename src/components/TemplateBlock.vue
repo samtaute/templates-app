@@ -1,15 +1,19 @@
 <template>
-    <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement"  :class="mode">       
+    <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement" :class="mode">
         <div class="header">
-                <h4>{{ element.blockType }}</h4>
-                <div class="header__buttons">
-                    <button  @click="deleteBlock" type="button" class="btn btn-sm btn-danger">X</button>
-                    <button type="button" @click="duplicateBlock" class="btn btn-sm btn-success">@</button>
-                </div>
+            <h4>{{ element.blockType }}</h4>
+            <div class="header__buttons">
+                <button @click="deleteBlock" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success">Duplicate</button>
+            </div>
         </div>
-        <template-block-platforms :element="element" :index="index"></template-block-platforms>
-        <template-block-settings :element="element" :index="index"></template-block-settings>
-        {{ element.id }}
+
+            <template-block-platforms :element="element" :index="index"></template-block-platforms>
+            <template-block-settings :element="element" :index="index"></template-block-settings>
+
+
+
+        <!-- {{ element.id }} -->
     </div>
 </template>
 <script>
@@ -21,23 +25,23 @@ import TemplateBlockSettings from './TemplateBlockSettings.vue'
 export default {
 
     props: ['element', 'index'],
-    components:{
+    components: {
         TemplateBlockPlatforms,
         TemplateBlockSettings,
     },
     computed: {
         //used to filter block
-        elementHasActivePlatform(){
-            let activePlatform = this.$store.getters.activePlatform; 
-            if (!activePlatform){
+        elementHasActivePlatform() {
+            let activePlatform = this.$store.getters.activePlatform;
+            if (!activePlatform) {
                 return true;
-            }else if (!this.element.platforms && !this.elemet.excludePlatforms){
-                return true; 
-            }else if(this.element.platforms && this.element.platforms.includes(activePlatform)){
-                return true; 
-            }else if (this.element.excludePlatforms && this.element.excludePlatforms.includes(activePlatform)){
-                return false; 
-            }else return false; 
+            } else if (!this.element.platforms && !this.elemet.excludePlatforms) {
+                return true;
+            } else if (this.element.platforms && this.element.platforms.includes(activePlatform)) {
+                return true;
+            } else if (this.element.excludePlatforms && this.element.excludePlatforms.includes(activePlatform)) {
+                return false;
+            } else return false;
 
         },
         layouts() {
@@ -49,7 +53,7 @@ export default {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
                 if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
                     return this.element.settings.category;
-                }else if (this.element.blockType === 'fotoscape_block'){
+                } else if (this.element.blockType === 'fotoscape_block') {
                     return 'standard'
                 }
             }
@@ -125,7 +129,7 @@ export default {
 
         },
         deleteBlock() {
-            console.log(this.element.id); 
+            console.log(this.element.id);
             this.$store.dispatch('deleteBlock', this.element.id);
             // this.$parent.$emit('delete', this.index)
         },
@@ -177,31 +181,34 @@ export default {
 </script>
 <style scoped>
 .block-container {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     padding: 0;
     box-sizing: border-box;
-    margin-top: 2px; 
+    margin-top: 4px;
 }
 
-h4{
-    margin: 0; 
+h4 {
+    margin: 0;
 }
-.header{
+
+.header {
     display: flex;
     justify-content: space-between;
-    height: 2.5rem; 
+    height: 2.5rem;
     align-items: center;
-    background-color: #f1f3f4;
-    padding: 0px .5rem; 
-}
-
-.header__buttons{
+    /* background-color: #f1f3f4; */
     padding: 0px .5rem;
 }
-button{
-    margin: 2px; 
+
+.header__buttons {
+    padding: 0px .5rem;
+    /* display: flex;
+    width: 100%; 
+    justify-content: flex-end; */
 }
 
-
+button {
+    margin: 2px;
+}
 </style>

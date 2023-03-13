@@ -78,7 +78,6 @@ export default {
   },
   methods: {
     submitJson(json) {
-      
       try {
         this.$store.dispatch('submitPageJson', json);
       } catch (error) {

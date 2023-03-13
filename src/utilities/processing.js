@@ -1,6 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 
 export function processPageJson(rawPage){
+    if(typeof rawPage === 'string'){
+        rawPage = JSON.parse(rawPage)
+    } 
     if (rawPage.blocks === null){
         console.log('Error processiing raw page')
         console.log(rawPage)
