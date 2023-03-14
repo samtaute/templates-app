@@ -2,16 +2,16 @@
     <div v-if="pageLoaded" id="widget-container" @mousedown="selectContainer">
         <!-- {{ activeBlock }} -->
         <div class="handle"></div>
-        <toolbar-platforms></toolbar-platforms>
+        <platforms-filter></platforms-filter>
     </div>
 </template>
 
 <script>
-import ToolbarPlatforms from './ToolbarPlatforms.vue'
+import PlatformsFilter from './PlatformsFilter.vue'
 
 export default {
     components:{
-        ToolbarPlatforms
+        PlatformsFilter
     },
     methods: {
         selectContainer(evt) {

@@ -71,9 +71,6 @@ const store = createStore({
         updateBlock(state, payload) {
             state.blocks[state.activeIndex] = payload;
         },
-        createBlock(state, payload) {
-            state.newBlocks.push(payload);
-        },
         updatePlatformsOnBlock(state, payload) {
             state.blocks[state.activeIndex].platforms = payload;
         }

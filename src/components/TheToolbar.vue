@@ -1,14 +1,14 @@
 <template>
     <section>
-        <toolbar-platforms></toolbar-platforms>
+        <platforms-filter></platforms-filter>
     </section>
 </template>
 
 <script>
-import ToolbarPlatforms from './ToolbarPlatforms.vue'
+import PlatformsFilter from './PlatformsFilter.vue'
 export default{
     components:{
-       ToolbarPlatforms
+       PlatformsFilter
     }
 
 

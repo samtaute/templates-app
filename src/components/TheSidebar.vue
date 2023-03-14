@@ -1,95 +1,116 @@
 <template>
     <section>
-        <div v-if="visible" id="the-sidebar">
-            <!-- <div id="sidebar-resizer" @mousedown="resizeSidebar"></div> -->
-            <div id="sidebar-resizer" @mousedown="resizeSidebar"></div>
-            <!-- <sidebar-json-manager></sidebar-json-manager> -->
-            <sidebar-block-creator></sidebar-block-creator>
+        <div class="widgetTitle" @click="togglePlatformsVisibility" :class="platformsVisibilityStatus">Platforms</div>
+        <platforms-filter v-if="platformsVisibilityStatus === 'open'"></platforms-filter>
+        <div class="widgetTitle dropdown" @click="toggleWorksetVisibility" :class="worksetVisibilityStatus">Block Workset
+            <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../assets/Plus.svg"
+                    class="titleImage" @click.stop="prevent">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" @click.stop="createBlock" href="#">fotoscape_block</a></li>
+                <li><a class="dropdown-item" @click.stop="createOutbrainBlock">outbrain_block</a></li>
+                <li><a class="dropdown-item" @click.stop="createAdUnit">ad_unit</a></li>
+                <li><a class="dropdown-item" @click.stop="createHeaderBlock">HeaderBlock</a></li>
+                <li><a class="dropdown-item" @click.stop="createJokesWidget">Jokes Widget</a></li>
+                <li><a class="dropdown-item" @click.stop="createMemesWidget">Memes Widget</a></li>
+            </ul>
         </div>
+        <sidebar-block-creator v-if="worksetVisibilityStatus === 'open'"></sidebar-block-creator>
+
+
     </section>
-
-
 </template>
 <script>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import SidebarBlockCreator from './SidebarBlockCreator.vue'
+import PlatformsFilter from './PlatformsFilter.vue'
 
 
 export default {
+
+    components: {
+        // SidebarJsonManager,
+        SidebarBlockCreator,
+        PlatformsFilter
+    },
     data() {
         return {
-            visible: true,
+            platformsVisibilityStatus: 'open',
+            worksetVisibilityStatus: 'open'
         }
     },
     methods: {
-        // resizeSidebar(evt) {
-        //     let resizerContainer = document.querySelector('#the-sidebar');
-        //     let resizerWidth = evt.target.offsetWidth;
-        //     let resizerPointerLocation = (resizerWidth / 2) - (evt.clientX - evt.target.getBoundingClientRect().left)
-
-        //     let resize = (event) => {
-        //         let resizerContainerWidth = event.clientX + resizerPointerLocation - resizerContainer.getBoundingClientRect().left
-        //         //let resizerMinWidth = resizerContainer.dataset.resizerMin
-        //         if(resizerContainerWidth < 410){
-        //             this.visible = false;
-        //         }else{
-        //             resizerContainer.style.width = `${resizerContainerWidth}px`;
-        //         }
-
-        //     }
-        //     window.addEventListener('mousemove', resize)
-        //     window.addEventListener('mouseup', () => {
-        //         window.removeEventListener('mousemove', resize);
-        //     });
-        // },
-    },
-    components: {
-        // SidebarJsonManager,
-        SidebarBlockCreator
+        togglePlatformsVisibility() {
+            this.platformsVisibilityStatus = this.platformsVisibilityStatus === 'open' ? 'closed' : 'open'
+        },
+        toggleWorksetVisibility() {
+            this.worksetVisibilityStatus = this.worksetVisibilityStatus === 'open' ? 'closed' : 'open'
+        },
+        createBlock() {
+            this.$store.dispatch('createBlock', {
+                "blockType": "fotoscape_block",
+                "settings": {
+                    "layout": "edge-description",
+                    "count": 1,
+                    "category": "news",
+                }
+            },)
+            this.worksetVisibilityStatus = 'open';
+        },
     }
+
 }
 
 
 </script>
 
 <style scoped>
-section{
-    position: fixed; 
-    height: 200vh; 
-}
-button {
-    align-self: flex-end;
-    margin: 10px;
+.widgetTitle {
+    border-color: #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    padding-left: 22px;
+    display: flex;
+    align-items: center;
 }
 
-#the-sidebar {
+.widgetTitle.open {
+    background-image: url(../assets/down.gif);
+    background-repeat: no-repeat;
+    background-position: 4px 50%;
+    position: relative;
+}
+
+.widgetTitle.closed {
+    background-image: url(../assets/right.gif);
+    background-repeat: no-repeat;
+    background-position: 4px 50%;
+    position: relative;
+}
+
+section {
+    position: fixed;
+    height: 200vh;
     background-color: #f1f3f4;
-    width: 26rem;
+    width: 22rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    position: relative;
     padding: 5px;
-    height: 100%;
 }
 
-#sidebar-resizer {
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    background: darkslategrey;
-    right: 0;
-    top: 0;
-    cursor: col-resize;
-    transform: translateX(50%);
-    z-index: 5;
-    border-left: 1px solid #dadce0;
-    background-color: transparent;
+.titleImage {
+    position: relative;
+    top: 2px;
+    width: 14px;
+    cursor: pointer;
+    margin: 0px 12px;
+    padding-bottom: 4px;
+    opacity: 50%;
 }
 
-.resizer:hover {
-    background-color: #dadce0;
-    opacity: 0.7;
+.titleImage:hover {
+    opacity: 1;
 }
 </style>

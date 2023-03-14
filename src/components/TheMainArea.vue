@@ -26,7 +26,7 @@ export default{
     flex-wrap: nowrap;
     background:lightyellow;
     flex-grow: 1;
-    margin-left: 26rem; 
+    margin-left: 22rem; 
 }
 /* #content-container{
     background:lightyellow;

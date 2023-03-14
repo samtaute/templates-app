@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import store from '../store/index'
 
 export function processPageJson(rawPage){
     if(typeof rawPage === 'string'){
@@ -21,6 +22,23 @@ export function processPageJson(rawPage){
 export function processBlockJson(rawBlock){
     //add uuid
     rawBlock.id=uuidv4(); 
+
+    //Add platforms and excludePlatforms to filterArray. 
+    if (rawBlock.platforms){
+        for (let platform of rawBlock.platforms){
+            if(!store.getters.platformsFilterArray.includes(platform)){
+                store.commit('pushToPlatformsFilterArray', platform)
+            }
+        }
+    }
+    if (rawBlock.excludePlatforms){
+        for (let platform of rawBlock.excludePlatforms){
+            if(!store.getters.platformsFilterArray.includes(platform)){
+                store.commit('pushToPlatformsFilterArray', platform)
+            }
+        }
+    }
+
     //Check that standard is made explicit on Fotoscape blocks
     if (rawBlock.blockType === 'fotoscape_block'){
         if(rawBlock.settings.category === undefined){

@@ -19,6 +19,8 @@ export default {
             //template state
             activeTemplateIndex: -1,
             platforms: startingPlatforms,
+            platformsFilterArray:[], 
+
             activePlatform: null,
             allBlockSettings: settings,
 
@@ -32,10 +34,16 @@ export default {
             return JSON.stringify(state.currentPageJson);
         },
         currentBlocksJson(state) {
-            return state.currentPageJson.blocks;
+            if (state.currentPageJson.blocks){
+                return state.currentPageJson.blocks;
+            }
+            else return []
         },
         currentWorkset(state){
             return state.worksetArray; 
+        },
+        platformsFilterArray(state){
+            return state.platformsFilterArray; 
         }
 
 
@@ -60,6 +68,9 @@ export default {
         pushToWorkset(state, processedBlock){
             state.worksetArray.push(processedBlock);
         },
+        pushToPlatformsFilterArray(state, platform){
+            state.platformsFilterArray.push(platform); 
+        }
 
     },
     actions: {

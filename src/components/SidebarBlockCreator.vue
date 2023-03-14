@@ -1,23 +1,5 @@
 <template>
-    <div id="sidebar-block-creator">
-        <div id="block-creator-dropdown" class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Create Block
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" @click="createBlock" href="#">fotoscape_block</a></li>
-                <li><a class="dropdown-item" @click="createOutbrainBlock">outbrain_block</a></li>
-                <li><a class="dropdown-item" @click="createAdUnit">ad_unit</a></li>
-                <li><a class="dropdown-item" @click="createHeaderBlock">HeaderBlock</a></li>
-                <li><a class="dropdown-item" @click="createJokesWidget">Jokes Widget</a></li>
-                <li><a class="dropdown-item" @click="createMemesWidget">Memes Widget</a></li>
-
-
-
-
-            </ul>
-        </div>
+    <div v-if="this.$store.getters.currentWorkset.length === 0"><span>No blocks</span></div>
         <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
             class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
             @start="dragging = true" @end="dragging = false">
@@ -27,16 +9,11 @@
                 </template-block>
             </template>
         </draggable>
-
-    </div>
-
-
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import TemplateBlock from './TemplateBlock.vue'
-import { v4 as uuidv4 } from 'uuid'
 
 export default {
     components: {
@@ -53,21 +30,6 @@ export default {
     methods: {
         checkMove: function (e) {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
-        },
-        createBlock() {
-            const blockId = uuidv4(); 
-
-
-            this.$store.dispatch('createBlock', {
-                "blockType": "fotoscape_block",
-                "id":blockId, 
-                "settings": {
-                    "layout": "edge-description",
-                    "count": 1,
-                    "category": "news",
-                }
-            },)
-
         },
         createOutbrainBlock() {
 

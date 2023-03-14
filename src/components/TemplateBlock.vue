@@ -1,5 +1,5 @@
 <template>
-    <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement" :class="mode">
+    <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement">
         <div class="header">
             <h4>{{ element.blockType }}</h4>
             <div class="header__buttons">
@@ -77,16 +77,6 @@ export default {
         },
         allPlatforms() {
             return this.$store.getters.allPlatforms
-        },
-        mode() {
-            let container = this.$parent._sortable.options.container;
-            if (container === 'newBlocks') {
-                return 'selected'
-            }
-            if (this.$store.getters.activeIndex === this.index) {
-                return 'selected'
-            }
-            else return 'default'
         },
         count() {
             if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {

@@ -68,7 +68,7 @@ body {
   z-index: 9999;
 }
 
-.cricket-button {
+/* .cricket-button {
   background-color: #C1CFDA !important;
 }
 
@@ -299,5 +299,5 @@ body {
   background-color: #ECE2D0 !important;
 
 
-}
+} */
 </style>

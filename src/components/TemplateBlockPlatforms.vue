@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-
+import { processBlockJson } from '@/utilities/processing';
 export default {
     props: ['element', 'index'],
     computed: {
@@ -31,7 +31,6 @@ export default {
 
 
             let returnArray = clone.filter(item => !blockPlatforms.includes(item)); 
-            console.log(returnArray)
             return returnArray; 
         },
     },
@@ -41,6 +40,8 @@ export default {
                 const returnBlock = this.element;
 
                 returnBlock.platforms.push(evt.target.value);
+
+                processBlockJson(returnBlock); 
 
                 this.$store.dispatch('replaceBlock', {
                     index: this.index,
