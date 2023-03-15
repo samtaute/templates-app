@@ -7,18 +7,12 @@
             <div class="header-title">
 
             </div>
-            <div class="header-toolbar">
-                <input @change="selectFile" type="file" id="fileInput"/>
-                <button type="button" @click="saveFile">Save</button>
-            </div>
 
 
         </div>
     </header>
 </template>
 <script>
-
-
 export default {
     data(){
         return{
@@ -34,20 +28,6 @@ export default {
             return this.$store.getters.pageTitle;
         }
     },
-    methods:{
-        selectFile(evt){
-            this.selectedFile = evt.target.files[0]; 
-            console.log(this.selectedFile); 
-            if(!this.selectedFile) return
-            const reader = new FileReader(); 
-            reader.onload = (evt)=>{
-                const textContent = evt.target.result; 
-                this.$store.dispatch('submitPageJson', textContent); 
-                console.log(textContent); 
-            }
-            reader.readAsText(this.selectedFile); 
-        }
-    }
 
 }
 

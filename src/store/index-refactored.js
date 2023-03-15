@@ -44,6 +44,9 @@ export default {
         },
         platformsFilterArray(state){
             return state.platformsFilterArray; 
+        },
+        activePlatform(state){
+            return state.activePlatform; 
         }
 
 
@@ -62,15 +65,32 @@ export default {
             state.worksetArray = newWorkset; 
         }, 
 
-        replaceBlock(state, newBlock){
-            state.currentPageJson.blocks[newBlock.index] = newBlock.block; 
+        //payload includes id and block keys.
+        replaceBlock(state, payload){
+            for(let block of state.worksetArray){
+                if (block.id === payload.id){
+                    block = payload.block; 
+                }
+            }
+            for(let block of state.currentPageJson.blocks){
+                if (block.id === payload.id){
+                    block = payload.block; 
+                }
+            }
         },
+
+
+        //Update block arrays
         pushToWorkset(state, processedBlock){
             state.worksetArray.push(processedBlock);
         },
         pushToPlatformsFilterArray(state, platform){
             state.platformsFilterArray.push(platform); 
-        }
+        },
+
+        activatePlatform(state, platform) {
+            state.activePlatform = platform; 
+        },
 
     },
     actions: {
@@ -81,8 +101,9 @@ export default {
             context.commit('setFullJson', cleanPage);
             context.commit('setBlocksJson', cleanPage.blocks);
         },
-        replaceBlock(context, newBlock){
-            context.commit('replaceBlock', newBlock);
+        //payload includes id, block fields
+        replaceBlock(context, payload){
+            context.commit('replaceBlock', payload);
         },
 
         createBlock(context, blockJson){
@@ -98,7 +119,15 @@ export default {
 
 
             context.commit('setWorkset', updatedWorkset); 
-        }
+        },
+
+
+        //Template actions
+
+        //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
+        activatePlatform(context, platform) {
+            context.commit('activatePlatform', platform)
+        },
 
 
     }

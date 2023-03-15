@@ -54,13 +54,14 @@ export default {
     },
     methods:{
         enterSetting(setting, evt) {
-            if (this.settings[setting].includes(evt.target.value)){
-                const returnBlock = this.element;
 
-                returnBlock.settings[setting] = evt.target.value;
+            if (!this.settings[setting] || this.settings[setting].includes(evt.target.value)){
+                const returnBlock = this.element;
+                let value = evt.target.value; 
+                returnBlock.settings[setting] = value;
 
                 this.$store.dispatch('replaceBlock', {
-                    index: this.index,
+                    id: this.id,
                     block: returnBlock,
                 })
                 evt.target.value = ''

@@ -16,6 +16,9 @@
             </ul>
         </div>
         <sidebar-block-creator v-if="worksetVisibilityStatus === 'open'"></sidebar-block-creator>
+        <div class="widgetTitle" @click="toggleFilesVisibility" :class="filesVisibilityStatus">Files</div>
+        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
+
 
 
     </section>
@@ -24,6 +27,7 @@
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import SidebarBlockCreator from './SidebarBlockCreator.vue'
 import PlatformsFilter from './PlatformsFilter.vue'
+
 
 
 export default {
@@ -36,7 +40,8 @@ export default {
     data() {
         return {
             platformsVisibilityStatus: 'open',
-            worksetVisibilityStatus: 'open'
+            worksetVisibilityStatus: 'open',
+            filesVisibilityStatus: 'open'
         }
     },
     methods: {
@@ -45,6 +50,9 @@ export default {
         },
         toggleWorksetVisibility() {
             this.worksetVisibilityStatus = this.worksetVisibilityStatus === 'open' ? 'closed' : 'open'
+        },
+        toggleFilesVisibility() {
+            this.filesVisibilityStatus = this.filesVisibilityStatus === 'open' ? 'closed' : 'open'
         },
         createBlock() {
             this.$store.dispatch('createBlock', {
@@ -57,6 +65,16 @@ export default {
             },)
             this.worksetVisibilityStatus = 'open';
         },
+        selectFile(evt) {
+            let selectedFile = evt.target.files[0];
+            if (!selectedFile) return
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const textContent = evt.target.result;
+                this.$store.dispatch('submitPageJson', textContent);
+            }
+            reader.readAsText(selectedFile);
+        }
     }
 
 }

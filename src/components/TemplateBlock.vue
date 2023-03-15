@@ -1,7 +1,7 @@
 <template>
     <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement">
         <div class="header">
-            <h4>{{ element.blockType }}</h4>
+            {{ element.blockType }}
             <div class="header__buttons">
                 <button @click="deleteBlock" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
                 <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success">Duplicate</button>
@@ -35,7 +35,7 @@ export default {
             let activePlatform = this.$store.getters.activePlatform;
             if (!activePlatform) {
                 return true;
-            } else if (!this.element.platforms && !this.elemet.excludePlatforms) {
+            } else if (!this.element.platforms && !this.element.excludePlatforms) {
                 return true;
             } else if (this.element.platforms && this.element.platforms.includes(activePlatform)) {
                 return true;

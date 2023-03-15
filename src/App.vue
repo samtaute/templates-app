@@ -9,6 +9,7 @@
 import TheSidebar from './components/TheSidebar.vue'
 import TheMainArea from './components/TheMainArea.vue'
 import TheHeader from './components/TheHeader.vue'
+import base from './base'
 // import TheToolbar from './components/TheToolbar.vue'
 
 
@@ -17,14 +18,21 @@ export default {
   components: {
     TheSidebar,
     TheHeader,
-    // TheToolbar,
     TheMainArea,
   },
+  mounted(){
+    this.$store.dispatch('submitPageJson', base); 
+  }
 
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+*{
+  font-family: sans-serif;
+}
 html {
   height: 100%;
 }

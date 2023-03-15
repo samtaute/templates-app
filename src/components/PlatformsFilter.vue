@@ -16,8 +16,8 @@ export default {
         },
     },
     methods: {
-        selectPlatform(currPlatform) {
-            this.$store.dispatch('activatePlatform', { platform: currPlatform })
+        selectPlatform(selectedPlatform) {
+            this.$store.dispatch('activatePlatform', selectedPlatform)
         }
     }
 }

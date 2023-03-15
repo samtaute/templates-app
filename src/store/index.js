@@ -47,9 +47,7 @@ const store = createStore({
         updatePlatforms(state, payload) {
             state.platforms = payload;
         },
-        activatePlatform(state, payload) {
-            state.activePlatform = payload
-        },
+   
         updateList(state, payload) {
             state.blocks = payload;
         },
@@ -122,9 +120,6 @@ const store = createStore({
             }
             return returnArray;
         },
-        activePlatform(state) {
-            return state.activePlatform;
-        },
         pageLoaded(state) {
             return state.pageLoaded;
         }
@@ -140,9 +135,7 @@ const store = createStore({
             context.commit('togglePageLoaded');
 
         },
-        activatePlatform(context, payload) {
-            context.commit('activatePlatform', payload.platform)
-        },
+
         // deleteBlock(context, payload) {
         //     if (payload.container === 'newBlocks') {
         //         context.commit('deleteNewBlock', payload.index)
