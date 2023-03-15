@@ -34,7 +34,7 @@ export function processBlockJson(rawBlock){
     if (rawBlock.excludePlatforms){
         for (let platform of rawBlock.excludePlatforms){
             if(!store.getters.platformsFilterArray.includes(platform)){
-                store.commit('pushToPlatformsFilterArray', platform)
+                 store.commit('pushToPlatformsFilterArray', platform)
             }
         }
     }

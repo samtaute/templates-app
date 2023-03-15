@@ -35,33 +35,17 @@ body {
 
 #app {
   display: flex;
-  margin-top: 3.5rem;
+  margin-top: 4.5rem;
   min-height: 100vh;
 
 
 }
 
-#the-header {
-  background: #f1f3f4;
-  display: grid;
-  grid-template-columns: 20% 60% 20%;
-  align-items: center;
-  justify-items: center;
-  position: fixed;
-  top: 0;
-  height: 3.5rem;
-  width: 100%;
-  z-index: 9999;
-  border-bottom: 1px solid #dadce0;
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: rgb(218, 220, 224);
-}
 
 #the-toolbar {
   position: fixed;
   padding: 5px;
-  top: 3.5rem;
+  top: 4.5rem;
   width: 100%;
   display: flex;
   justify-content: center;

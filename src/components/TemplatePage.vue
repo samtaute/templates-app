@@ -1,6 +1,5 @@
 <template>
     <div id="page-template-container">
-        <sidebar-json-manager></sidebar-json-manager>
         <draggable v-model='myList' :disabled="!enabled" item-key="name" group="blocks" class="list-group layout-container"
             ghost-class="ghost" :move="checkMove" @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
@@ -14,13 +13,11 @@
 <script>
 import draggable from 'vuedraggable'
 import TemplateBlock from './TemplateBlock.vue'
-import SidebarJsonManager from './JsonProcesser.vue'
 
 export default {
     components: {
         draggable,
         TemplateBlock,
-        SidebarJsonManager,
     },
     data() {
         return {
