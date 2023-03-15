@@ -1,5 +1,5 @@
 export default {
-    widgetIds: [
+    widgetId: [
         'JS_1',
         'JS_2',
         'JS_3',
@@ -152,23 +152,6 @@ export default {
         "new-years-resolutions",
         "oscars"
     ],
-    outbrainId: [
-        'JS_1',
-        'JS_2',
-        'JS_3',
-        'JS_4',
-        'JS_5',
-        'JS_6',
-        'JS_9',
-        'JS_12',
-        'JS_16',
-        'JS_13',
-        'JS_14',
-        'JS_17',
-        'JS_21',
-        'JS_22',
-        'JS_23',
-    ],
     link_destination: [
         'fotoscape',
         'referral',
@@ -195,7 +178,9 @@ export default {
         18,
         19,
         20,
-    ]
+    ],
+    subheader:'',
+
 
 
 

@@ -3,34 +3,16 @@
     <div class="settings">
         <div v-for="setting of elementSettings" :key="setting" class="setting">
             <div class="setting__label">{{ setting }}:</div>
-            <input class="setting__input" @keyup.enter="enterSetting(setting, $event)" :list="setting + index" :id="setting +'options'+ index"
-                :placeHolder=element.settings[setting]>
+            <input class="setting__input" @keyup.enter="enterSetting(setting, $event)" :list="setting + index"
+                :id="setting + 'options' + index" :placeHolder=element.settings[setting]> <a class="addSettingButton" @click="deleteSetting(setting)" href="#">x</a>
             <datalist :id="setting + index">
                 <option v-for="option in settings[setting]" :value="option" :key="option">{{ option }}</option>
             </datalist>
-        </div> 
-        <div>+</div>
-<!-- 
-        <div v-if="element.settings.layout" class="setting">
-            <div class="setting__label">Layout:</div>
-            <select class="form-select setting__input" aria-label="Default select example">
-                <option selected>{{ element.settings.layout }}</option>
-                <option value="edge">edge</option>
-            </select>
         </div>
-        <div v-if="element.settings.category" class="setting">
-            <div class="setting__label">Category:</div>
-            <select class="form-select setting__input" aria-label="Default select example">
-                <option selected>{{ element.settings.category }}</option>
-                <option value="edge">entertainment</option>
-
-            </select>
-        </div>
-        <div v-if="element.settings.count" class="setting">
-            <div class="setting__label">Count:</div>
-            <input class="form-control setting__number-input" type="number" min="0" max="15"
-                :value="element.settings.count">
-        </div> -->
+        <a class="addSettingButton" @click="addSettingRow" data-bs-toggle="dropdown">+</a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li v-for="setting in unusedSettings" :key="setting"><a class="dropdown-item" @click.stop="createSetting(setting)" href="#">{{ setting }}</a></li>
+        </ul>
 
     </div>
 </template>
@@ -40,9 +22,9 @@ import settings from '../settings'
 
 export default {
     props: ['element', 'index'],
-    data(){
+    data() {
         return {
-            settings:settings, 
+            settings: settings,
         }
     },
     computed: {
@@ -51,16 +33,26 @@ export default {
                 return Object.keys(this.element.settings);
             }
             else return [];
-        }
-    },
-    methods:{
-        enterSetting(setting, evt) {
-            let input = evt.target.value; 
-            if (setting === 'count'){
-                input = Number(input); 
+        },
+        unusedSettings(){
+            const allSettings = Object.keys(this.settings); 
+            let blockSettings = []; 
+            if(this.element.settings){
+                blockSettings = Object.keys(this.element.settings); 
             }
 
-            if (!this.settings[setting] || this.settings[setting].includes(input)){
+          
+            return allSettings.filter(item=>!blockSettings.includes(item))
+        }
+    },
+    methods: {
+        enterSetting(setting, evt) {
+            let input = evt.target.value;
+            if (setting === 'count') {
+                input = Number(input);
+            }
+
+            if (!this.settings[setting] || this.settings[setting].includes(input)) {
                 const returnBlock = this.element;
                 returnBlock.settings[setting] = input;
 
@@ -69,9 +61,18 @@ export default {
                     block: returnBlock,
                 })
                 evt.target.value = ''
-                evt.target.blur(); 
-
+                evt.target.blur();
             }
+        },
+        createSetting(setting) {
+            let newBlock  = this.element; 
+            newBlock.settings[setting] = ''; 
+            this.$store.dispatch('replaceBlock', newBlock.id)
+        },
+        deleteSetting(setting){
+            let newBlock  = this.element; 
+            delete newBlock.settings[setting];
+            this.$store.dispatch('replaceBlock', newBlock.id)
         }
 
     }
@@ -87,8 +88,20 @@ export default {
     flex-direction: column;
     padding: .5rem 0;
 }
+
 input::placeholder {
     opacity: 1;
+}
+
+.addSettingButton{
+    text-decoration: none;
+    color: black; 
+    margin-left: 2rem; 
+    opacity:.5; 
+}
+.addSettingButton:hover {
+    opacity: 1;
+    cursor: pointer;
 }
 
 .setting {
@@ -108,7 +121,7 @@ input::placeholder {
 .setting__input {
     width: 10rem;
 
-}
 
+}
 </style>
 
