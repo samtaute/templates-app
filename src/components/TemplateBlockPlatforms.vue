@@ -2,7 +2,7 @@
     <div v-if="element.platforms" class="platforms">
         <label class="platforms__label">Platforms: </label>
         <div class="platforms__list">
-            <span class="platform platform--badge badge bg-primary" v-for="platform in element.platforms" :key="platform">{{
+            <span class="platform platform--badge badge bg-primary" v-for="platform in element.platforms" @click="removePlat(platform)"  :key="platform">{{
                 platform }}</span>
             <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
                 :id="'platformsList' + element.id" placeHolder="..add">
@@ -22,6 +22,7 @@ import { processBlockJson } from '@/utilities/processing';
 export default {
     props: ['element', 'index'],
     computed: {
+        //returns an array of all platforms not included on block
         unusedPlatforms() {
             let allPlatforms = this.$store.getters.allPlatforms; 
             let blockPlatforms = this.element.platforms;
@@ -44,11 +45,21 @@ export default {
                 processBlockJson(returnBlock); 
 
                 this.$store.dispatch('replaceBlock', {
-                    index: this.index,
+                    index: this.id,
                     block: returnBlock,
                 })
                 evt.target.value = ''
             }
+        },
+        removePlat(platform){
+            const returnBlock = this.element; 
+            returnBlock.platforms = returnBlock.platforms.filter((plat)=>plat != platform)
+            this.$store.dispatch('checkFilterArray',platform); 
+            processBlockJson(returnBlock); 
+            this.$store.dispatch('replaceBlock', {
+                    id: returnBlock.id, 
+                    block: returnBlock,
+                });
         }
     }
 }

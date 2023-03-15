@@ -8,7 +8,8 @@
             <datalist :id="setting + index">
                 <option v-for="option in settings[setting]" :value="option" :key="option">{{ option }}</option>
             </datalist>
-        </div>
+        </div> 
+        <div>+</div>
 <!-- 
         <div v-if="element.settings.layout" class="setting">
             <div class="setting__label">Layout:</div>
@@ -54,14 +55,17 @@ export default {
     },
     methods:{
         enterSetting(setting, evt) {
+            let input = evt.target.value; 
+            if (setting === 'count'){
+                input = Number(input); 
+            }
 
-            if (!this.settings[setting] || this.settings[setting].includes(evt.target.value)){
+            if (!this.settings[setting] || this.settings[setting].includes(input)){
                 const returnBlock = this.element;
-                let value = evt.target.value; 
-                returnBlock.settings[setting] = value;
+                returnBlock.settings[setting] = input;
 
                 this.$store.dispatch('replaceBlock', {
-                    id: this.id,
+                    id: returnBlock.id,
                     block: returnBlock,
                 })
                 evt.target.value = ''

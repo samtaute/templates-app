@@ -1,6 +1,6 @@
 <template>
         <div class="buttonContainer">
-                <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm" :class="`${platform}-button`" :key="platform"
+                <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm" :class="{active: platform === activePlatform}" :key="platform"
                 @click="selectPlatform(platform)">{{ platform }}</button>
                 <div v-if = "this.$store.getters.platformsFilterArray.length === 0"><span>No Platforms Available for Filtering</span></div>
         </div>
@@ -12,8 +12,11 @@ export default {
             return this.$store.getters.platformsFilterArray;
         },
         pageLoaded() {
-            return this.$store.getters.pageLoaded
+            return this.$store.getters.pageLoaded;
         },
+        activePlatform(){
+            return this.$store.getters.activePlatform; 
+        }
     },
     methods: {
         selectPlatform(selectedPlatform) {
@@ -34,6 +37,9 @@ span{
     font-weight: bold; 
     display: block; 
     margin: 1.5px; 
+}
+.active{
+    opacity: 50%; 
 }
 
 .buttonContainer{

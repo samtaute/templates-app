@@ -87,6 +87,9 @@ export default {
         pushToPlatformsFilterArray(state, platform){
             state.platformsFilterArray.push(platform); 
         },
+        removeFromPlatformsFilterArray(state, platform){
+            state.platformsFilterArray = state.platformsFilterArray.filter(plat => plat != platform)
+        },
 
         activatePlatform(state, platform) {
             state.activePlatform = platform; 
@@ -127,6 +130,20 @@ export default {
         //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
         activatePlatform(context, platform) {
             context.commit('activatePlatform', platform)
+        },
+
+
+        //Used when removing a platform from TemplateBlockPlatforms to check whether platform being removed should also be removed from the platformsFilterArray
+        checkFilterArray(context, platform){
+            for (let block of context.getters.currentBlocksJson){
+                if (block.platforms && block.platforms.includes(platform)){
+                    return
+                }
+                if (block.excludePlatforms && block.excludePlatforms.includes(platform)){
+                    return
+                }
+            }
+            context.commit('removeFromPlatformsFilterArray',platform) 
         },
 
 
