@@ -96,7 +96,7 @@ input::placeholder {
 .addSettingButton{
     text-decoration: none;
     color: black; 
-    margin-left: 2rem; 
+    margin-left: 3rem; 
     opacity:.5; 
 }
 .addSettingButton:hover {
