@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import PlatformsFilter from './PlatformsFilter.vue'
+import PlatformsFilter from '../PlatformsFilter.vue'
 
 export default {
     components:{

@@ -13,7 +13,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import TemplateBlock from './TemplateBlock.vue'
+import TemplateBlock from './template/TemplateBlock.vue'
 
 export default {
     components: {

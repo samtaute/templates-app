@@ -2,21 +2,18 @@
     <div class="the-main-area">
         <template-page></template-page>
         <page-preview></page-preview>
-        <widget-container></widget-container>
     </div>
 </template>
 
 <script>
-import TemplatePage from './TemplatePage.vue'
-import PagePreview from './PagePreview.vue'
-import WidgetContainer from './WidgetContainer.vue'
+import TemplatePage from '../template/TemplatePage.vue'
+import PagePreview from '../preview/PagePreview.vue'
 
 
 export default{
     components:{
         TemplatePage,
         PagePreview,
-        WidgetContainer,
     }
 }
 </script>

@@ -66,8 +66,8 @@
 
 <script>
 // import FotoscapeItem from './FotoscapeItem.vue'
-import FeedItem from './FeedItem.vue'
-import CarouselItem from './CarouselItem.vue'
+import FeedItem from '../blocktypes/FeedItem.vue'
+import CarouselItem from '../blocktypes/CarouselItem.vue'
 
 export default {
     components: {

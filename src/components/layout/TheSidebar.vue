@@ -3,7 +3,7 @@
         <div class="widgetTitle" @click="togglePlatformsVisibility" :class="platformsVisibilityStatus">Platforms</div>
         <platforms-filter v-if="platformsVisibilityStatus === 'open'"></platforms-filter>
         <div class="widgetTitle dropdown" @click="toggleWorksetVisibility" :class="worksetVisibilityStatus">Block Workset
-            <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../assets/Plus.svg"
+            <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
                     class="titleImage" @click.stop="prevent">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -25,8 +25,8 @@
 </template>
 <script>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
-import SidebarBlockCreator from './SidebarBlockCreator.vue'
-import PlatformsFilter from './PlatformsFilter.vue'
+import SidebarBlockCreator from '../SidebarBlockCreator.vue'
+import PlatformsFilter from '../PlatformsFilter.vue'
 
 
 
@@ -93,14 +93,14 @@ export default {
 }
 
 .widgetTitle.open {
-    background-image: url(../assets/down.gif);
+    background-image: url(../../assets/down.gif);
     background-repeat: no-repeat;
     background-position: 4px 50%;
     position: relative;
 }
 
 .widgetTitle.closed {
-    background-image: url(../assets/right.gif);
+    background-image: url(../../assets/right.gif);
     background-repeat: no-repeat;
     background-position: 4px 50%;
     position: relative;

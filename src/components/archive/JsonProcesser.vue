@@ -66,7 +66,7 @@
   </section>
 </template>
 <script>
-import baseJson from '../base'
+import baseJson from '../../base'
 
 
 export default {

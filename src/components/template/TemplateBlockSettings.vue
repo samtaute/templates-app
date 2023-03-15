@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import settings from '../settings'
+import settings from '../../settings'
 
 export default {
     props: ['element', 'index'],

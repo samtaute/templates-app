@@ -13,11 +13,11 @@
 
 </template>
 <script>
-import FotoscapeBlock from './FotoscapeBlock.vue'
-import PreviewAdUnit from './PreviewAdUnit.vue'
-import SponsoredBlock from './SponsoredBlock.vue'
+import FotoscapeBlock from './blocktypes/FotoscapeBlock.vue'
+import PreviewAdUnit from './blocktypes/PreviewAdUnit.vue'
+import SponsoredBlock from './blocktypes/SponsoredBlock.vue'
 import PreviewBlockHeader from './PreviewBlockHeader.vue'
-import UnknownBlock from './UnknownBlock.vue'
+import UnknownBlock from './blocktypes/UnknownBlock.vue'
 
 
 export default {

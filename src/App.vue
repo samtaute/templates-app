@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import TheSidebar from './components/TheSidebar.vue'
-import TheMainArea from './components/TheMainArea.vue'
-import TheHeader from './components/TheHeader.vue'
+import TheSidebar from './components/layout/TheSidebar.vue'
+import TheMainArea from './components/layout/TheMainArea.vue'
+import TheHeader from './components/layout/TheHeader.vue'
 import base from './base'
 // import TheToolbar from './components/TheToolbar.vue'
 

@@ -17,9 +17,9 @@
     </div>
 </template>
 <script>
-import settings from '../settings'
-import TemplateBlockPlatforms from './TemplateBlockPlatforms.vue'
-import TemplateBlockSettings from './TemplateBlockSettings.vue'
+import settings from '../../settings'
+import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
+import TemplateBlockSettings from '../template/TemplateBlockSettings.vue'
 
 
 export default {
