@@ -1,43 +1,29 @@
 <template>
-    <div class="the-main-area">
+    <div class="main-area">
         <template-page></template-page>
-        <page-preview></page-preview>
+        <preview-container></preview-container>
     </div>
 </template>
 
 <script>
 import TemplatePage from '../template/TemplatePage.vue'
-import PagePreview from '../preview/PagePreview.vue'
+import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
 
 
 export default{
     components:{
         TemplatePage,
-        PagePreview,
+        PreviewContainer
     }
 }
 </script>
 <style scoped>
-.the-main-area{
+.main-area{
     display: flex; 
     flex-wrap: nowrap;
     background:lightyellow;
     flex-grow: 1;
     margin-left: 22rem; 
 }
-/* #content-container{
-    background:lightyellow;
-    vertical-align: top;
-    flex-grow: 1;
-    margin-top:6rem; 
-    padding-top: 1rem;
-    justify-content: left;
-    align-items: center;
-    position: relative;
-    overflow: scroll;
-    height: 100%;
-    display: flex; 
-
-} */
 
 </style>

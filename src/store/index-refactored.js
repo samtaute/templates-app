@@ -31,7 +31,12 @@ export default {
     },
     getters: {
         currentPageJsonToString(state) {
-            return JSON.stringify(state.currentPageJson);
+            return JSON.stringify(state.currentPageJson, (key, value)=>{
+                if (key === 'id'){
+                    return ''; 
+                }
+                else return value
+            }, "\t");
         },
         currentBlocksJson(state) {
             if (state.currentPageJson.blocks){
