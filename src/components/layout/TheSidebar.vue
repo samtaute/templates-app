@@ -7,15 +7,10 @@
                     class="titleImage" @click.stop="prevent">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" @click.stop="createBlock" href="#">fotoscape_block</a></li>
-                <li><a class="dropdown-item" @click.stop="createOutbrainBlock">outbrain_block</a></li>
-                <li><a class="dropdown-item" @click.stop="createAdUnit">ad_unit</a></li>
-                <li><a class="dropdown-item" @click.stop="createHeaderBlock">HeaderBlock</a></li>
-                <li><a class="dropdown-item" @click.stop="createJokesWidget">Jokes Widget</a></li>
-                <li><a class="dropdown-item" @click.stop="createMemesWidget">Memes Widget</a></li>
+                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item" @click.stop="createBlock(blockModels[blockType])" href="#">fotoscape_block</a></li>
             </ul>
         </div>
-        <sidebar-block-creator v-if="worksetVisibilityStatus === 'open'"></sidebar-block-creator>
+        <block-workset v-if="worksetVisibilityStatus === 'open'"></block-workset>
         <div class="widgetTitle" @click="toggleFilesVisibility" :class="filesVisibilityStatus">Files</div>
         <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
 
@@ -25,8 +20,9 @@
 </template>
 <script>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
-import SidebarBlockCreator from '../SidebarBlockCreator.vue'
+import BlockWorkset from '../BlockWorkset.vue'
 import PlatformsFilter from '../PlatformsFilter.vue'
+import blockModels from '../../utilities/blockModels'
 
 
 
@@ -34,14 +30,15 @@ export default {
 
     components: {
         // SidebarJsonManager,
-        SidebarBlockCreator,
+        BlockWorkset,
         PlatformsFilter
     },
     data() {
         return {
             platformsVisibilityStatus: 'open',
             worksetVisibilityStatus: 'open',
-            filesVisibilityStatus: 'open'
+            filesVisibilityStatus: 'open',
+            blockModels:blockModels,
         }
     },
     methods: {
@@ -54,15 +51,8 @@ export default {
         toggleFilesVisibility() {
             this.filesVisibilityStatus = this.filesVisibilityStatus === 'open' ? 'closed' : 'open'
         },
-        createBlock() {
-            this.$store.dispatch('createBlock', {
-                "blockType": "fotoscape_block",
-                "settings": {
-                    "layout": "edge-description",
-                    "count": 1,
-                    "category": "news",
-                }
-            },)
+        createBlock(block) {
+            this.$store.dispatch('createBlock', block)
             this.worksetVisibilityStatus = 'open';
         },
         selectFile(evt) {
