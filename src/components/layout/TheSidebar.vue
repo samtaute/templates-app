@@ -52,7 +52,8 @@ export default {
             this.filesVisibilityStatus = this.filesVisibilityStatus === 'open' ? 'closed' : 'open'
         },
         createBlock(block) {
-            this.$store.dispatch('createBlock', block)
+            let clone = JSON.parse(JSON.stringify(block));
+            this.$store.dispatch('createBlock', clone)
             this.worksetVisibilityStatus = 'open';
         },
         selectFile(evt) {

@@ -4,17 +4,23 @@
         <div v-for="setting of elementSettings" :key="setting" class="setting">
             <div class="setting__label">{{ setting }}:</div>
             <input class="setting__input" @keyup.enter="enterSetting(setting, $event)" :list="setting + index"
-                :id="setting + 'options' + index" :placeHolder=element.settings[setting]> <a class="addSettingButton" @click="deleteSetting(setting)" href="#">x</a>
+                :id="setting + 'options' + index" :placeHolder=element.settings[setting]> <a class="addSettingButton"
+                @click="deleteSetting(setting)" href="#">x</a>
             <datalist :id="setting + index">
-                <option v-for="option in settings[setting]" :value="option" :key="option">{{ option }}</option>
+                <div v-if="settings[setting]">
+                    <option v-for="option in settings[setting]['options']" :value="option" :key="option">{{ option }}
+                    </option>
+                </div>
             </datalist>
         </div>
         <a class="addSettingButton" @click="addSettingRow" data-bs-toggle="dropdown">+</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li v-for="setting in unusedSettings" :key="setting"><a class="dropdown-item" @click.stop="createSetting(setting)" href="#">{{ setting }}</a></li>
+            <li v-for="setting in unusedSettings" :key="setting"><a class="dropdown-item"
+                    @click.stop="createSetting(setting)" href="#">{{ setting }}</a></li>
         </ul>
 
     </div>
+    {{ element.id }}
 </template>
 
 <script>
@@ -34,15 +40,28 @@ export default {
             }
             else return [];
         },
-        unusedSettings(){
-            const allSettings = Object.keys(this.settings); 
-            let blockSettings = []; 
-            if(this.element.settings){
-                blockSettings = Object.keys(this.element.settings); 
+        unusedSettings() {
+            let possibleSettings = [];
+
+            for (let setting in this.settings) {
+                if (this.settings[setting].targets.includes(this.element.blockType)) {
+                    possibleSettings.push(this.settings[setting].name);
+                }
+
+            }
+            let blockSettings = [];
+            if (this.element.settings) {
+                blockSettings = Object.keys(this.element.settings);
             }
 
-          
-            return allSettings.filter(item=>!blockSettings.includes(item))
+            possibleSettings = possibleSettings.filter(item => !blockSettings.includes(item)); 
+
+            if (possibleSettings.length === 0) {
+                return ["None"]
+            }
+
+
+            return possibleSettings; 
         }
     },
     methods: {
@@ -52,7 +71,7 @@ export default {
                 input = Number(input);
             }
 
-            if (!this.settings[setting] || this.settings[setting].includes(input)) {
+            if (!this.settings[setting] || !this.settings[setting]['options'] || this.settings[setting]['options'].includes(input)) {
                 const returnBlock = this.element;
                 returnBlock.settings[setting] = input;
 
@@ -65,12 +84,15 @@ export default {
             }
         },
         createSetting(setting) {
-            let newBlock  = this.element; 
-            newBlock.settings[setting] = ''; 
-            this.$store.dispatch('replaceBlock', newBlock.id)
+            if (setting != 'None') {
+                let newBlock = this.element;
+                newBlock.settings[setting] = '';
+                this.$store.dispatch('replaceBlock', newBlock.id)
+            }
+
         },
-        deleteSetting(setting){
-            let newBlock  = this.element; 
+        deleteSetting(setting) {
+            let newBlock = this.element;
             delete newBlock.settings[setting];
             this.$store.dispatch('replaceBlock', newBlock.id)
         }
@@ -93,12 +115,13 @@ input::placeholder {
     opacity: 1;
 }
 
-.addSettingButton{
+.addSettingButton {
     text-decoration: none;
-    color: black; 
-    margin-left: 3rem; 
-    opacity:.5; 
+    color: black;
+    margin-left: 3rem;
+    opacity: .5;
 }
+
 .addSettingButton:hover {
     opacity: 1;
     cursor: pointer;
