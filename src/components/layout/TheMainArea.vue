@@ -23,7 +23,7 @@ export default{
     flex-wrap: nowrap;
     background:lightyellow;
     flex-grow: 1;
-    margin-left: 22rem; 
+    margin-left: 24.5rem; 
 }
 
 </style>

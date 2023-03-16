@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import settings from '../../settings'
+// import settings from '../../settings'
 import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
 import TemplateBlockSettings from '../template/TemplateBlockSettings.vue'
 
@@ -44,127 +44,127 @@ export default {
             } else return false;
 
         },
-        layouts() {
-            return settings.layouts.filter(layout => layout != this.layout);
-        },
+        // layouts() {
+        //     return settings.layouts.filter(layout => layout != this.layout);
+        // },
 
         //todo make this a utility function
-        category() {
-            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
-                    return this.element.settings.category;
-                } else if (this.element.blockType === 'fotoscape_block') {
-                    return 'standard'
-                }
-            }
-            return 'none';
+        // category() {
+        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
+        //             return this.element.settings.category;
+        //         } else if (this.element.blockType === 'fotoscape_block') {
+        //             return 'standard'
+        //         }
+        //     }
+        //     return 'none';
 
-        },
-        layout() {
-            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'layout')) {
-                    return this.element.settings.layout;
-                }
-            }
-            return 'none';
-        },
-        categories() {
-            return this.$store.getters.allCategories.filter(category => category != this.category);
-        },
+        // },
+        // layout() {
+        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'layout')) {
+        //             return this.element.settings.layout;
+        //         }
+        //     }
+        //     return 'none';
+        // },
+        // categories() {
+        //     return this.$store.getters.allCategories.filter(category => category != this.category);
+        // },
 
-        widgetIds() {
-            return this.$store.getters.allWidgetIds.filter(id => id != this.widgetId);
-        },
-        allPlatforms() {
-            return this.$store.getters.allPlatforms
-        },
-        count() {
-            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'count')) {
-                    return this.element.settings.count;
-                }
-            }
-            return 'none';
-        },
+        // widgetIds() {
+        //     return this.$store.getters.allWidgetIds.filter(id => id != this.widgetId);
+        // },
+        // allPlatforms() {
+        //     return this.$store.getters.allPlatforms
+        // },
+        // count() {
+        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'count')) {
+        //             return this.element.settings.count;
+        //         }
+        //     }
+        //     return 'none';
+        // },
 
-        widgetId() {
-            if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-                if (Object.prototype.hasOwnProperty.call(this.element.settings, 'widgetId')) {
-                    return this.element.settings.widgetId;
-                }
-            }
-            return 'none';
+        // widgetId() {
+        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
+        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'widgetId')) {
+        //             return this.element.settings.widgetId;
+        //         }
+        //     }
+        //     return 'none';
 
-        },
-        platforms() {
-            return this.$store.getters.allPlatforms;
-        },
+        // // },
+        // platforms() {
+        //     return this.$store.getters.allPlatforms;
+        // },
     },
     methods: {
-        submitPlatforms() {
-            this.$store.commit('updatePlatformsOnBlock', this.checkedPlatforms);
-        },
+        // submitPlatforms() {
+        //     this.$store.commit('updatePlatformsOnBlock', this.checkedPlatforms);
+        // },
         duplicateBlock() {
-            this.$store.commit('createBlock', this.element);
+            this.$store.dispatch('createBlock', this.element);
 
         },
-        activateElement() {
-            let container = this.$parent._sortable.options.container;
+        // activateElement() {
+        //     let container = this.$parent._sortable.options.container;
 
-            if (container === 'newBlocks') {
-                return;
-            }
-            this.$store.commit('updateActiveIndex', this.index);
-            this.checkedPlatforms = this.element.platforms;
+        //     if (container === 'newBlocks') {
+        //         return;
+        //     }
+        //     this.$store.commit('updateActiveIndex', this.index);
+        //     this.checkedPlatforms = this.element.platforms;
 
-        },
+        // },
         deleteBlock() {
             console.log(this.element.id);
             this.$store.dispatch('deleteBlock', this.element.id);
             // this.$parent.$emit('delete', this.index)
         },
-        updateBlock(evt) {
-            evt.stopPropagation()
+        // updateBlock(evt) {
+        //     evt.stopPropagation()
 
-            let newElement = this.element;
+        //     let newElement = this.element;
 
-            if (this.layout != 'none') {
-                const layoutValue = document.querySelector('#layout-select').value;
-                newElement.settings.layout = layoutValue;
+        //     if (this.layout != 'none') {
+        //         const layoutValue = document.querySelector('#layout-select').value;
+        //         newElement.settings.layout = layoutValue;
 
-            }
+        //     }
 
-            if (this.count != 'none') {
-                const countValue = document.querySelector('#count-select').value;
-                newElement.settings.count = parseInt(countValue);
+        //     if (this.count != 'none') {
+        //         const countValue = document.querySelector('#count-select').value;
+        //         newElement.settings.count = parseInt(countValue);
 
-            }
-
-
-
-            if (this.element.blockType === 'header_block') {
-                const subheaderValue = document.querySelector('#subheader-input').value;
-                newElement.settings.subheader = subheaderValue;
-            }
-
-            if (this.category != 'none') {
-                const categoryValue = document.querySelector('#category-select').value;
-                newElement.settings.category = categoryValue;
-            }
-            if (this.element.blockType === 'outbrain_block') {
-                const widgetValue = document.querySelector('#widget-select').value;
-                newElement.settings.widgetId = widgetValue;
-            }
+        //     }
 
 
-            this.$store.commit('updateBlock', newElement)
-        },
-        stopProp(evt) {
-            evt.stopPropagation();
-        },
-        togglePlatform(platform) {
-            this.$store.dispatch('togglePlatformOnBlock', platform);
-        }
+
+        //     if (this.element.blockType === 'header_block') {
+        //         const subheaderValue = document.querySelector('#subheader-input').value;
+        //         newElement.settings.subheader = subheaderValue;
+        //     }
+
+        //     if (this.category != 'none') {
+        //         const categoryValue = document.querySelector('#category-select').value;
+        //         newElement.settings.category = categoryValue;
+        //     }
+        //     if (this.element.blockType === 'outbrain_block') {
+        //         const widgetValue = document.querySelector('#widget-select').value;
+        //         newElement.settings.widgetId = widgetValue;
+        //     }
+
+
+        //     this.$store.commit('updateBlock', newElement)
+        // },
+        // stopProp(evt) {
+        //     evt.stopPropagation();
+        // },
+        // togglePlatform(platform) {
+        //     this.$store.dispatch('togglePlatformOnBlock', platform);
+        // }
     }
 }
 
@@ -176,10 +176,6 @@ export default {
     padding: 0;
     box-sizing: border-box;
     margin-top: 4px;
-}
-
-h4 {
-    margin: 0;
 }
 
 .header {

@@ -110,7 +110,7 @@ section {
     position: fixed;
     height: 200vh;
     background-color: #f1f3f4;
-    width: 22rem;
+    width: 24.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;

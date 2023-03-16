@@ -123,6 +123,7 @@ export default {
             context.commit('replaceBlock', payload);
         },
 
+        //takes block json, processes it, and pushes it to the workset
         createBlock(context, blockJson) {
             const processedBlock = processBlockJson(blockJson)
             context.commit('pushToWorkset', processedBlock);
