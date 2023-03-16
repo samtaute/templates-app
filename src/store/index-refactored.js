@@ -1,6 +1,6 @@
 import startingPlatforms from '../platforms-all'
 import settings from '../settings'
-import {processPageJson, processBlockJson} from '../utilities/processing'
+import { processPageJson, processBlockJson } from '../utilities/processing'
 
 
 export default {
@@ -17,9 +17,8 @@ export default {
             worksetArray: [],
 
             //template state
-            activeTemplateIndex: -1,
             platforms: startingPlatforms,
-            platformsFilterArray:[], 
+            platformsFilterArray: [],
 
             activePlatform: null,
             allBlockSettings: settings,
@@ -31,102 +30,112 @@ export default {
     },
     getters: {
         currentPageJsonToString(state) {
-            return JSON.stringify(state.currentPageJson, (key, value)=>{
-                if (key === 'id'){
-                    return ''; 
+            return JSON.stringify(state.currentPageJson, (key, value) => {
+                if (key === 'id') {
+                    return '';
                 }
                 else return value
             }, "\t");
         },
         currentBlocksJson(state) {
-            if (state.currentPageJson.blocks){
+            if (state.currentPageJson.blocks) {
                 return state.currentPageJson.blocks;
             }
             else return []
         },
-        currentWorkset(state){
-            return state.worksetArray; 
+        currentWorkset(state) {
+            return state.worksetArray;
         },
-        platformsFilterArray(state){
-            return state.platformsFilterArray; 
+        platformsFilterArray(state) {
+            return state.platformsFilterArray;
         },
-        activePlatform(state){
-            return state.activePlatform; 
-        }
+        activePlatform(state) {
+            return state.activePlatform;
+        },
 
+        allPlatforms(state) {
+            let products = Object.keys(state.platforms);
+
+            let returnArray = [];
+
+            for (let prod of products) {
+                returnArray = returnArray.concat(state.platforms[prod]);
+            }
+            return returnArray;
+        },
 
 
     },
     mutations: {
         setFullJson(state, newJson) {
-            let clone = JSON.parse(JSON.stringify(newJson)); 
-            state.currentPageJson = clone; 
+            let clone = JSON.parse(JSON.stringify(newJson));
+            state.currentPageJson = clone;
         },
 
         setBlocksJson(state, newBlocks) {
             state.currentPageJson.blocks = newBlocks;
         },
-        setWorkset(state, newWorkset){
-            state.worksetArray = newWorkset; 
-        }, 
+        setWorkset(state, newWorkset) {
+            state.worksetArray = newWorkset;
+        },
 
         //payload includes id and block keys.
-        replaceBlock(state, payload){
-            for(let block of state.worksetArray){
-                if (block.id === payload.id){
-                    block = payload.block; 
+        replaceBlock(state, payload) {
+            for (let block of state.worksetArray) {
+                if (block.id === payload.id) {
+                    block = payload.block;
                 }
             }
-            for(let block of state.currentPageJson.blocks){
-                if (block.id === payload.id){
-                    block = payload.block; 
+            for (let block of state.currentPageJson.blocks) {
+                if (block.id === payload.id) {
+                    block = payload.block;
                 }
             }
         },
 
 
         //Update block arrays
-        pushToWorkset(state, processedBlock){
+        pushToWorkset(state, processedBlock) {
             state.worksetArray.push(processedBlock);
         },
-        pushToPlatformsFilterArray(state, platform){
-            state.platformsFilterArray.push(platform); 
+        pushToPlatformsFilterArray(state, platform) {
+            state.platformsFilterArray.push(platform);
         },
-        removeFromPlatformsFilterArray(state, platform){
+        removeFromPlatformsFilterArray(state, platform) {
             state.platformsFilterArray = state.platformsFilterArray.filter(plat => plat != platform)
         },
 
         activatePlatform(state, platform) {
-            state.activePlatform = platform; 
+            state.activePlatform = platform;
         },
 
     },
     actions: {
         submitPageJson(context, pageJson) {
             //Clean up platforms, fotoscape category, etc. before setting the pageJson in the store.
-            let cleanPage = processPageJson(pageJson); 
+            let cleanPage = processPageJson(pageJson);
 
             context.commit('setFullJson', cleanPage);
             context.commit('setBlocksJson', cleanPage.blocks);
         },
         //payload includes id, block fields
-        replaceBlock(context, payload){
+        replaceBlock(context, payload) {
             context.commit('replaceBlock', payload);
         },
 
-        createBlock(context, blockJson){
+        createBlock(context, blockJson) {
             const processedBlock = processBlockJson(blockJson)
-            context.commit('pushToWorkset', processedBlock); 
+            context.commit('pushToWorkset', processedBlock);
         },
 
         //deleteBlock takes an id and filters all blockLists by that id.
-        deleteBlock(context, id){
-            const updatedBlockList = context.getters.currentBlocksJson.filter(block=>block.id!=id);
-            context.commit('setBlocksJson', updatedBlockList); 
-            const updatedWorkset = context.getters.currentWorkset.filter(block=> block.id != id); 
+        deleteBlock(context, id) {
+            const updatedBlockList = context.getters.currentBlocksJson.filter(block => block.id != id);
+            context.commit('setBlocksJson', updatedBlockList);
+            const updatedWorkset = context.getters.currentWorkset.filter(block => block.id != id);
 
 
-            context.commit('setWorkset', updatedWorkset); 
+            context.commit('setWorkset', updatedWorkset);
         },
 
 
@@ -139,16 +148,16 @@ export default {
 
 
         //Used when removing a platform from TemplateBlockPlatforms to check whether platform being removed should also be removed from the platformsFilterArray
-        checkFilterArray(context, platform){
-            for (let block of context.getters.currentBlocksJson){
-                if (block.platforms && block.platforms.includes(platform)){
+        checkFilterArray(context, platform) {
+            for (let block of context.getters.currentBlocksJson) {
+                if (block.platforms && block.platforms.includes(platform)) {
                     return
                 }
-                if (block.excludePlatforms && block.excludePlatforms.includes(platform)){
+                if (block.excludePlatforms && block.excludePlatforms.includes(platform)) {
                     return
                 }
             }
-            context.commit('removeFromPlatformsFilterArray',platform) 
+            context.commit('removeFromPlatformsFilterArray', platform)
         },
 
 
