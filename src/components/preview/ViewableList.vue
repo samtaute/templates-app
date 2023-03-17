@@ -12,10 +12,9 @@ export default{
     },
     computed: {
         blocks(){
-            return this.$store.getters.blocks; 
+            return this.$store.getters.currentBlocksJson; 
         }
-    }
-
+    },
 }
 
 

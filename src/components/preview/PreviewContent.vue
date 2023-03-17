@@ -1,11 +1,6 @@
 <template>
-    <div id="page-preview-container">
-        <button type="button" class="btn btn-primary" @click="loadPreview">Toggle Preview</button>
-
-
-        <viewable-list v-if="previewActiveComputed">
+        <viewable-list>
         </viewable-list>
-    </div>
 
 </template>
 
@@ -18,32 +13,25 @@ export default {
     },
     computed: {
         blocks() {
-            return this.$store.getters.blocks;
+            return this.$store.getters.currentBlocksJson;
         },
-        loading() {
-            return this.$store.state.loading
-        },
-        previewActiveComputed() {
-            return this.previewActive;
-        }
     },
 
     data() {
         return {
             fotoscapeContent: {},
-            previewActive: false,
         }
+    },
+    mounted(){
+        const promise = new Promise((resolve)=>{
+            resolve(this.loadPreview())
+        })
+        
+        promise.then(this.$store.dispatch("updatePageLoaded"))
     },
 
     methods: {
         loadPreview() {
-            if (this.previewActive) {
-                this.previewActive = false;
-                this.$store.state.fotoscapeObject = {};
-            }
-            this.previewActive = false;
-            this.$store.state.loading = true;
-
             let categoryArray = [];
             for (let block of this.blocks) {
                 if (block.blockType === 'fotoscape_block') {
@@ -79,10 +67,6 @@ export default {
 
 
         },
-        loadBlocks() {
-            this.previewActive = true;
-        }
-
     },
 
 

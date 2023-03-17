@@ -3,12 +3,13 @@
         <div class="tab-content" id="myTabContent">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="selectComponent('preview-json')" type="button"
                         role="tab" aria-controls="home" aria-selected="true">JSON</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                        role="tab" aria-controls="contact" aria-selected="false">Preview</button>
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" type="button" role="tab"
+                        aria-controls="contact" aria-selected="false"
+                        @click="selectComponent('preview-content')">Preview</button>
                 </li>
             </ul>
         </div>
@@ -16,15 +17,29 @@
         </component>
     </section>
 </template>
-<script setup>
-import { shallowRef } from 'vue'
+<script>
 import PreviewJson from './PreviewJson.vue'
+import PreviewContent from '../PreviewContent.vue'
 
-const selectedComponent = shallowRef(PreviewJson)
+export default {
+    data() {
+        return{
+            selectedComponent: 'preview-json'
+        }
+
+    },
+    components: {
+        PreviewJson,
+        PreviewContent, 
+    },
+    methods:{
+        selectComponent(component){
+            this.selectedComponent = component; 
+        }
+    }
 
 
-
-
+}
 </script>
 
 <style scoped>
@@ -37,4 +52,5 @@ const selectedComponent = shallowRef(PreviewJson)
     border-radius: 10px;
     border: 1px solid rgb(222, 226, 230);
 
-}</style>
+}
+</style>

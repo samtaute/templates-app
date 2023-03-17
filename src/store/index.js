@@ -25,7 +25,7 @@ const store = createStore({
             allBlockSettings: settings,
 
             //state for fotoscapes obj
-            apiContent: {}
+            fotoscapeContent: {}
         }
 
     },
@@ -113,6 +113,9 @@ const store = createStore({
 
     },
     actions: {
+        updatePageLoaded(){
+            console.log('loaded')
+        },
         submitPageJson(context, pageJson) {
             //Clean up platforms, fotoscape category, etc. before setting the pageJson in the store.
             let cleanPage = processPageJson(pageJson);
