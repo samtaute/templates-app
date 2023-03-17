@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import settings from '../../settings'
+import settings from '../../models/settings'
 
 export default {
     props: ['element', 'index'],

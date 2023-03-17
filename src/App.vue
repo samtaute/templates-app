@@ -9,7 +9,7 @@
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMainArea from './components/layout/TheMainArea.vue'
 import TheHeader from './components/layout/TheHeader.vue'
-import base from './base'
+import base from './models/base'
 // import TheToolbar from './components/TheToolbar.vue'
 
 
@@ -28,7 +28,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 *{
   font-family: sans-serif;
@@ -47,17 +46,6 @@ body {
   min-height: 100vh;
 
 
-}
-
-
-#the-toolbar {
-  position: fixed;
-  padding: 5px;
-  top: 4.5rem;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  z-index: 9999;
 }
 
 /* .cricket-button {

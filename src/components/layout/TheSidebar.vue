@@ -22,7 +22,7 @@
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import BlockWorkset from '../BlockWorkset.vue'
 import PlatformsFilter from '../PlatformsFilter.vue'
-import blockModels from '../../utilities/blockModels'
+import blockModels from '../../models/blockModels'
 
 
 
