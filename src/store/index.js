@@ -21,7 +21,7 @@ const store = createStore({
             platforms: startingPlatforms,
             platformsFilterArray: [],
 
-            activePlatform: null,
+            activePlatform: 'ALL',
             allBlockSettings: settings,
 
             //state for fotoscapes obj
@@ -48,7 +48,8 @@ const store = createStore({
             return state.worksetArray;
         },
         platformsFilterArray(state) {
-            return state.platformsFilterArray;
+            let array = state.platformsFilterArray;
+            return [...array]
         },
         activePlatform(state) {
             return state.activePlatform;

@@ -12,9 +12,8 @@
         </div>
         <block-workset v-if="worksetVisibilityStatus === 'open'"></block-workset>
         <div class="widgetTitle" @click="toggleFilesVisibility" :class="filesVisibilityStatus">Files</div>
-        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
-
-
+        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput"/>
+       <a download='info.json' :href="textFile">download</a>
 
     </section>
 </template>
@@ -65,6 +64,15 @@ export default {
                 this.$store.dispatch('submitPageJson', textContent);
             }
             reader.readAsText(selectedFile);
+        }
+    },
+    computed:{
+        textFile(){
+            var textFile;
+            var data = new Blob([this.$store.getters.currentPageJsonToString], {type: 'application/json'});
+            // window.URL.revokeObjectURL(textFile);
+            textFile = URL.createObjectURL(data); 
+            return textFile; 
         }
     }
 

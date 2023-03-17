@@ -6,10 +6,13 @@
         </div>
 </template>
 <script>
+
 export default {
     computed: {
         platforms() {
-            return this.$store.getters.platformsFilterArray;
+            let array = this.$store.getters.platformsFilterArray;
+            array.push('ALL')
+            return array;
         },
         pageLoaded() {
             return this.$store.getters.pageLoaded;
@@ -20,6 +23,7 @@ export default {
     },
     methods: {
         selectPlatform(selectedPlatform) {
+            //Template  block handles "ALL" option
             this.$store.dispatch('activatePlatform', selectedPlatform)
         }
     }

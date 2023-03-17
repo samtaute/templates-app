@@ -8,8 +8,8 @@
             </div>
         </div>
 
-            <template-block-platforms :element="element" :index="index"></template-block-platforms>
-            <template-block-settings :element="element" :index="index"></template-block-settings>
+        <template-block-platforms :element="element" :index="index"></template-block-platforms>
+        <template-block-settings :element="element" :index="index"></template-block-settings>
 
 
 
@@ -31,16 +31,21 @@ export default {
     },
     computed: {
         //used to filter block
+        //todo: refactor to make more simple
         elementHasActivePlatform() {
             let activePlatform = this.$store.getters.activePlatform;
-            if (!activePlatform) {
+            if (!activePlatform || activePlatform === 'ALL') {
                 return true;
             } else if (!this.element.platforms && !this.element.excludePlatforms) {
                 return true;
-            } else if (this.element.platforms && this.element.platforms.includes(activePlatform)) {
-                return true;
-            } else if (this.element.excludePlatforms && this.element.excludePlatforms.includes(activePlatform)) {
-                return false;
+            } else if (this.element.platforms) {
+                if (this.element.platforms.includes(activePlatform) || this.element.platforms.length === 0) {
+                    return true;
+                } else return false;
+            } else if (this.element.excludePlatforms) {
+                if (this.element.excludePlatforms.includes(activePlatform)) {
+                    return false;
+                } else return true;
             } else return false;
 
         },
