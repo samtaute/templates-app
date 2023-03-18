@@ -124,7 +124,7 @@ export default {
 
         // },
         deleteBlock() {
-            console.log(this.element.id);
+            // console.log(this.element.id);
             this.$store.dispatch('deleteBlock', this.element.id);
             // this.$parent.$emit('delete', this.index)
         },

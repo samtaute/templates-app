@@ -15,7 +15,7 @@ export default{
     props:['element'],
     computed:{
         blockInfo(){
-            console.log(JSON.stringify(this.element, null, 2))
+            // console.log(JSON.stringify(this.element, null, 2))
             return JSON.stringify(this.element, null, 2); 
         }
 

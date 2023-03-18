@@ -111,16 +111,15 @@ export default {
             //this.$store.dispatch('updateObject')
 
             // this.$store.commit('incrementOffset');
-
             return this.$store.state.fotoscapeObject[this.category]['content'][idx];
         }
     },
-    mounted() {
-        this.$store.commit('incrementOffset', {
-            category: this.category,
-            count: this.count,
-        })
-    }
+    // mounted() {
+    //     this.$store.commit('incrementOffset', {
+    //         category: this.category,
+    //         count: this.count,
+    //     })
+    // }
 }
 
 </script>

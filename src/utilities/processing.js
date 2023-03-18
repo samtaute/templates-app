@@ -51,7 +51,9 @@ export function processBlockJson(rawBlock) {
 
 }
 
-function loadPreview(page) {
+export function loadPreview(page) {
+    store.state.contentLoaded = false; 
+
     let categoryArray = [];
     let fotoscapeContent={}; 
     for (let block of page.blocks) {
@@ -61,7 +63,7 @@ function loadPreview(page) {
             }
         }
     }
-    let baseUrl = `https://fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
+    let baseUrl = `https://origin.fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
     for (let category of categoryArray) {
         let requestUrl = baseUrl + category;
         fetch(requestUrl).then((response) => {

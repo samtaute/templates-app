@@ -49,6 +49,7 @@ export default {
     props: ['contentData', 'layout'],
     computed: {
         thumbnailUrl() {
+            console.log(this.contentData)
             return this.contentData.images[0].link;
         },
         link() {

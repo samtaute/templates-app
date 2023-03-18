@@ -2,7 +2,7 @@
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import settings from '../models/settings'
-import { processPageJson, processBlockJson } from '../utilities/processing'
+import { processPageJson, processBlockJson} from '../utilities/processing'
 
 const store = createStore({
     state() {
