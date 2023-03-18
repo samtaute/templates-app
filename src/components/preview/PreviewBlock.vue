@@ -1,16 +1,16 @@
 <template>
-    <div v-if="element.platforms.includes(activePlatform) || activePlatform === 'all'">
+    <!-- <div v-if="element.platforms.includes(activePlatform) || activePlatform === 'all'"> -->
+    <div>
+
         <preview-ad-unit v-if="element.blockType === 'ad_unit'" :element='element'
             :key="element.blockType"></preview-ad-unit>
         <fotoscape-block v-if="element.blockType === 'fotoscape_block'" :element='element'
             :key="element.blockType"></fotoscape-block>
         <sponsored-block v-if="element.blockType === 'outbrain_block'" :element='element'></sponsored-block>
         <unknown-block :element='element' v-if="unknown"></unknown-block>
-        <preview-block-header v-if="element.blockType==='header_block'" :element='element'></preview-block-header>
-        
+        <preview-block-header v-if="element.blockType === 'header_block'" :element='element'></preview-block-header>
+
     </div>
-
-
 </template>
 <script>
 import FotoscapeBlock from './blocktypes/FotoscapeBlock.vue'
@@ -33,20 +33,20 @@ export default {
         activePlatform() {
             return this.$store.getters.activePlatform;
         },
-        reveal(){
-            let widgetTypes = ['memes_widget_block','fortune_cookie_block','jokes_widget_block']
-            if(widgetTypes.includes(this.element.blockType)){
-                return true; 
-            }else{
-                return false; 
+        reveal() {
+            let widgetTypes = ['memes_widget_block', 'fortune_cookie_block', 'jokes_widget_block']
+            if (widgetTypes.includes(this.element.blockType)) {
+                return true;
+            } else {
+                return false;
             }
         },
-        unknown(){
-            let knownBlocks = ['outbrain_block','fotoscape_block','ad_unit','memes_widget_block','fortune_cookie_block','jokes_widget_block','header_block'];
-            if (!knownBlocks.includes(this.element.blockType)){
-                return true; 
-            }else{
-                return false; 
+        unknown() {
+            let knownBlocks = ['outbrain_block', 'fotoscape_block', 'ad_unit', 'memes_widget_block', 'fortune_cookie_block', 'jokes_widget_block', 'header_block'];
+            if (!knownBlocks.includes(this.element.blockType)) {
+                return true;
+            } else {
+                return false;
             }
 
         }
@@ -56,6 +56,4 @@ export default {
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

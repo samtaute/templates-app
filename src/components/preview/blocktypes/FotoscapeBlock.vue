@@ -125,7 +125,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 /* carousel layout */
 .carousel.preview-block-container {
     display: flex;
@@ -592,7 +592,7 @@ a:visited {
 
 .header-container {
     overflow-x: hidden;
-    max-width: 28.125rem
+    /* max-width: 28.125rem */
 }
 
 .general-container,

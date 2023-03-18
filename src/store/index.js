@@ -25,7 +25,8 @@ const store = createStore({
             allBlockSettings: settings,
 
             //state for fotoscapes obj
-            fotoscapeContent: {}
+            fotoscapeObject: {},
+            contentLoaded: false
         }
 
     },
@@ -65,7 +66,9 @@ const store = createStore({
             }
             return returnArray;
         },
-
+        contentLoadingStatus(state){
+            return state.contentLoaded; 
+        }
 
     },
     mutations: {

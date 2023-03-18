@@ -1,51 +1,84 @@
 import { v4 as uuidv4 } from 'uuid'
 import store from '../store/index'
 
-export function processPageJson(rawPage){
-    if(typeof rawPage === 'string'){
+export function processPageJson(rawPage) {
+    if (typeof rawPage === 'string') {
         rawPage = JSON.parse(rawPage)
-    } 
-    if (rawPage.blocks === null){
+    }
+    if (rawPage.blocks === null) {
         console.log('Error processiing raw page')
         console.log(rawPage)
 
         // potentially return usable pageJson object here
-    }else{
-        let blockList = rawPage.blocks; 
-        for (let block of blockList){
-            processBlockJson(block); 
+    } else {
+        let blockList = rawPage.blocks;
+        for (let block of blockList) {
+            processBlockJson(block);
         }
-        return rawPage; 
+        loadPreview(rawPage)
+        return rawPage;
     }
 }
 
-export function processBlockJson(rawBlock){
+export function processBlockJson(rawBlock) {
     //add uuid
-    rawBlock.id=uuidv4(); 
+    rawBlock.id = uuidv4();
 
     //Add platforms and excludePlatforms to filterArray. 
-    if (rawBlock.platforms){
-        for (let platform of rawBlock.platforms){
-            if(!store.getters.platformsFilterArray.includes(platform)){
+    if (rawBlock.platforms) {
+        for (let platform of rawBlock.platforms) {
+            if (!store.getters.platformsFilterArray.includes(platform)) {
                 store.commit('pushToPlatformsFilterArray', platform)
             }
         }
     }
-    if (rawBlock.excludePlatforms){
-        for (let platform of rawBlock.excludePlatforms){
-            if(!store.getters.platformsFilterArray.includes(platform)){
-                 store.commit('pushToPlatformsFilterArray', platform)
+    if (rawBlock.excludePlatforms) {
+        for (let platform of rawBlock.excludePlatforms) {
+            if (!store.getters.platformsFilterArray.includes(platform)) {
+                store.commit('pushToPlatformsFilterArray', platform)
             }
         }
     }
 
     //Check that standard is made explicit on Fotoscape blocks
-    if (rawBlock.blockType === 'fotoscape_block'){
-        if(rawBlock.settings.category === undefined){
+    if (rawBlock.blockType === 'fotoscape_block') {
+        if (rawBlock.settings.category === undefined) {
             rawBlock.settings.category = 'standard'
         }
     }
-    return rawBlock; 
+
+    return rawBlock;
 
 }
 
+function loadPreview(page) {
+    let categoryArray = [];
+    let fotoscapeContent={}; 
+    for (let block of page.blocks) {
+        if (block.blockType === 'fotoscape_block') {
+            if (!categoryArray.includes(block.settings.category)) {
+                categoryArray.push(block.settings.category);
+            }
+        }
+    }
+    let baseUrl = `https://fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
+    for (let category of categoryArray) {
+        let requestUrl = baseUrl + category;
+        fetch(requestUrl).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+        }).then((data) => {
+            fotoscapeContent[category] = {
+                offset: 0,
+                content: data.items,
+            }
+        }).then(() => {
+            store.state.fotoscapeObject = fotoscapeContent;
+            // this.$store.state.loading = false;
+        }).then(()=>{
+            store.state.contentLoaded=true; 
+        });
+
+    }
+}

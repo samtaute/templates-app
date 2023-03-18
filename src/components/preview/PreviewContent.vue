@@ -1,7 +1,6 @@
 <template>
-        <viewable-list>
+        <viewable-list v-if="contentLoaded">
         </viewable-list>
-
 </template>
 
 <script>
@@ -12,62 +11,55 @@ export default {
         ViewableList
     },
     computed: {
-        blocks() {
-            return this.$store.getters.currentBlocksJson;
+        contentLoaded() {
+            return this.$store.getters.contentLoadingStatus;
         },
     },
 
-    data() {
-        return {
-            fotoscapeContent: {},
-        }
-    },
-    mounted(){
-        const promise = new Promise((resolve)=>{
-            resolve(this.loadPreview())
-        })
-        
-        promise.then(this.$store.dispatch("updatePageLoaded"))
-    },
+    // data() {
+    //     return {
+    //         fotoscapeContent: {},
+    //     }
+    // },
 
-    methods: {
-        loadPreview() {
-            let categoryArray = [];
-            for (let block of this.blocks) {
-                if (block.blockType === 'fotoscape_block') {
-                    if (block.settings.category === undefined) {
-                        block.settings.category = 'standard'
-                    }
-                    if (!categoryArray.includes(block.settings.category)) {
-                        categoryArray.push(block.settings.category);
-                    }
-                }
-            }
-            let baseUrl = `https://fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
-            for (let category of categoryArray) {
-                let requestUrl = baseUrl + category;
-                fetch(requestUrl).then((response) => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }).then((data) => {
-                    this.fotoscapeContent[category] = {
-                        offset: 0,
-                        content: data.items,
-                    }
-                }).then(() => {
-                    this.$store.state.fotoscapeObject = this.fotoscapeContent;
-                    this.$store.state.loading = false;
-                }).then(() => {
-                    setTimeout(() => this.previewActive = true, 1000)
-                }
-                );
+    // methods: {
+    //     loadPreview() {
+    //         let categoryArray = [];
+    //         for (let block of this.blocks) {
+    //             if (block.blockType === 'fotoscape_block') {
+    //                 if (block.settings.category === undefined) {
+    //                     block.settings.category = 'standard'
+    //                 }
+    //                 if (!categoryArray.includes(block.settings.category)) {
+    //                     categoryArray.push(block.settings.category);
+    //                 }
+    //             }
+    //         }
+    //         let baseUrl = `https://fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
+    //         for (let category of categoryArray) {
+    //             let requestUrl = baseUrl + category;
+    //             fetch(requestUrl).then((response) => {
+    //                 if (response.ok) {
+    //                     return response.json();
+    //                 }
+    //             }).then((data) => {
+    //                 this.fotoscapeContent[category] = {
+    //                     offset: 0,
+    //                     content: data.items,
+    //                 }
+    //             }).then(() => {
+    //                 this.$store.state.fotoscapeObject = this.fotoscapeContent;
+    //                 this.$store.state.loading = false;
+    //             }).then(() => {
+    //                 setTimeout(() => this.previewActive = true, 1000)
+    //             }
+    //             );
 
-            }
+    //         }
 
 
-        },
-    },
+    //     },
+    // },
 
 
 }
