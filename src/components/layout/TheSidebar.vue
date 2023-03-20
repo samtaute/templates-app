@@ -7,13 +7,16 @@
                     class="titleImage" @click.stop="prevent">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item" @click.stop="createBlock(blockModels[blockType])" href="#">fotoscape_block</a></li>
+                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
+                        @click.stop="createBlock(blockModels[blockType])" href="#">fotoscape_block</a></li>
             </ul>
         </div>
         <block-workset v-if="worksetVisibilityStatus === 'open'"></block-workset>
         <div class="widgetTitle" @click="toggleFilesVisibility" :class="filesVisibilityStatus">Files</div>
-        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput"/>
-       <a download='info.json' :href="textFile">download</a>
+        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
+        <file-drop-area></file-drop-area>
+      
+
 
     </section>
 </template>
@@ -22,7 +25,7 @@
 import BlockWorkset from '../BlockWorkset.vue'
 import PlatformsFilter from '../PlatformsFilter.vue'
 import blockModels from '../../models/blockModels'
-
+import FileDropArea from '../FilesDropArea.vue'
 
 
 export default {
@@ -30,14 +33,15 @@ export default {
     components: {
         // SidebarJsonManager,
         BlockWorkset,
-        PlatformsFilter
+        PlatformsFilter,
+        FileDropArea
     },
     data() {
         return {
             platformsVisibilityStatus: 'open',
             worksetVisibilityStatus: 'open',
             filesVisibilityStatus: 'open',
-            blockModels:blockModels,
+            blockModels: blockModels,
         }
     },
     methods: {
@@ -64,17 +68,16 @@ export default {
                 this.$store.dispatch('submitPageJson', textContent);
             }
             reader.readAsText(selectedFile);
-        }
+        },
+        uploadFiles(evt){
+            let dt = evt.dataTransfer
+            let files = dt.files
+
+            console.log(files); 
+        },
+
     },
-    computed:{
-        textFile(){
-            var textFile;
-            var data = new Blob([this.$store.getters.currentPageJsonToString], {type: 'application/json'});
-            // window.URL.revokeObjectURL(textFile);
-            textFile = URL.createObjectURL(data); 
-            return textFile; 
-        }
-    }
+
 
 }
 
@@ -82,6 +85,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .widgetTitle {
     border-color: #e5e5e5;
     border-bottom: 1px solid #e5e5e5;

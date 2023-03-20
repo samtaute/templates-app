@@ -26,7 +26,7 @@ const store = createStore({
 
             //state for fotoscapes obj
             fotoscapeObject: {},
-            contentLoaded: false
+            contentLoaded: false,
         }
 
     },
