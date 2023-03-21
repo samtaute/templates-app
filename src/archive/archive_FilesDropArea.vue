@@ -2,6 +2,7 @@
     <base-title @click="toggleVisibility" :class="{ open: isVisible }">Files</base-title>
     <!-- <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
     <button @click="openDirectory">Choose Directory</button> -->
+    <p>Drag and drop template files below</p>
     <div v-if="isVisible" id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive" :class="{ highlighted: isHighlighted }"
         @drop.prevent="onDrop" @dragleave.prevent="setInactive"></div>
     <label for="files">Choose a file</label><button type="button" @click="loadFile">submit</button>
