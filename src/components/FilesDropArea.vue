@@ -6,14 +6,17 @@
         <!-- <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
     <button @click="openDirectory">Choose Directory</button> -->
         <template #content>
-            <div v-if="isVisible" id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive"
-                :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave.prevent="setInactive"></div>
-            <div class="column">
-                <label for="files">Choose a file</label><button type="button" @click="loadFile">submit</button>
-                <select v-model="selectedFile" name="files" id="files">
-                    <option v-for="file in fileList" :key="file">{{ file.name }}</option>
-                </select>
-                <a :download="selectedFile" :href="textFile">download</a>
+            <div class="column-container">
+                <p>Drag and drop template files below</p>
+                <div id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive"
+                    :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave="setInactive"></div>
+        
+                    <select v-model="selectedFile" name="files" id="files">
+                        <option v-for="file in fileList" :key="file">{{ file.name }}</option>
+                    </select>
+                    <button type="button" @click="loadFile">submit</button>
+
+                    <a :download="selectedFile" :href="textFile">download</a>
             </div>
 
         </template>
@@ -37,6 +40,8 @@ export default {
         },
         onDrop(evt) {
             this.fileList = [...evt.dataTransfer.files]
+            this.isHighlighted = false;
+
         },
         preventDefaults(e) {
             e.preventDefault()
@@ -91,7 +96,6 @@ export default {
     border-radius: 20px;
     width: 80%;
     font-family: sans-serif;
-    margin-top: 20px;
     padding: 20px;
 }
 
@@ -99,8 +103,8 @@ export default {
     border-color: purple;
 }
 
-.column{
-    display: flex; 
-    flex-direction: column; 
+.column-container {
+    display: flex;
+    flex-direction: column;
 }
 </style>
