@@ -41,13 +41,10 @@ export default {
             dragging: false,
             enabled: true,
             blockModels: blockModels,
-        };
+        }
     },
 
     methods: {
-        toggleVisibility() {
-            this.isVisible = !this.isVisible;
-        },
         checkMove: function (e) {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
         },
