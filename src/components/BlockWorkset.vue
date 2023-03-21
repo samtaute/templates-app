@@ -9,7 +9,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
-                        @click="createBlock(blockModels[blockType])" href="#">{{blockType}}</a></li>
+                        @click="createBlock(blockModels[blockType], $event)" href="#">{{blockType}}</a></li>
             </ul>
             <div v-if="this.$store.getters.currentWorkset.length === 0"><span>Add Blocks</span></div>
             <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
