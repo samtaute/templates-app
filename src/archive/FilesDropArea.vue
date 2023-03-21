@@ -1,23 +1,14 @@
 <template>
-    <base-sidebar-widget>
-        <template #header>
-            Files
-        </template>
-        <!-- <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
+    <base-title @click="toggleVisibility" :class="{ open: isVisible }">Files</base-title>
+    <!-- <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
     <button @click="openDirectory">Choose Directory</button> -->
-        <template #content>
-            <div v-if="isVisible" id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive"
-                :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave.prevent="setInactive"></div>
-            <div class="column">
-                <label for="files">Choose a file</label><button type="button" @click="loadFile">submit</button>
-                <select v-model="selectedFile" name="files" id="files">
-                    <option v-for="file in fileList" :key="file">{{ file.name }}</option>
-                </select>
-                <a :download="selectedFile" :href="textFile">download</a>
-            </div>
-
-        </template>
-    </base-sidebar-widget>
+    <div v-if="isVisible" id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive" :class="{ highlighted: isHighlighted }"
+        @drop.prevent="onDrop" @dragleave.prevent="setInactive"></div>
+    <label for="files">Choose a file</label><button type="button" @click="loadFile">submit</button>
+    <select v-model="selectedFile" name="files" id="files">
+        <option v-for="file in fileList" :key="file">{{ file.name }}</option>
+    </select>
+    <a :download="selectedFile" :href="textFile">download</a>
 </template>
 
 <script>
@@ -28,7 +19,7 @@ export default {
             events: ['dragenter', 'dragover', 'dragleave', 'drop'],
             fileList: [],
             selectedFile: "",
-            isVisible: true,
+            isVisible: true, 
         }
     },
     methods: {
@@ -91,16 +82,11 @@ export default {
     border-radius: 20px;
     width: 80%;
     font-family: sans-serif;
-    margin-top: 20px;
+    margin-top: 20px; 
     padding: 20px;
 }
 
 #drop-area.highlighted {
     border-color: purple;
-}
-
-.column{
-    display: flex; 
-    flex-direction: column; 
 }
 </style>

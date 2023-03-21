@@ -1,19 +1,35 @@
 <template>
-    <div v-if="this.$store.getters.currentWorkset.length === 0"><span>No blocks</span></div>
-        <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
-            class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
-            @start="dragging = true" @end="dragging = false">
-            <template #item="{ element, index }">
-                <template-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
-                    :index="index">
-                </template-block>
-            </template>
-        </draggable>
+    <base-sidebar-widget>
+        <template #header>
+            Block Workset
+        </template>
+        <template #content>
+            <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../assets/Plus.svg"
+                    class="title-image">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
+                        @click="createBlock(blockModels[blockType])" href="#">{{blockType}}</a></li>
+            </ul>
+            <div v-if="this.$store.getters.currentWorkset.length === 0"><span>Add Blocks</span></div>
+            <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
+                class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
+                @start="dragging = true" @end="dragging = false">
+                <template #item="{ element, index }">
+                    <template-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
+                        :index="index">
+                    </template-block>
+                </template>
+            </draggable>
+        </template>
+
+    </base-sidebar-widget>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import TemplateBlock from './template/TemplateBlock.vue'
+import blockModels from '@/models/blockModels';
 
 export default {
     components: {
@@ -24,57 +40,22 @@ export default {
         return {
             dragging: false,
             enabled: true,
+            blockModels: blockModels,
         };
     },
 
     methods: {
+        toggleVisibility() {
+            this.isVisible = !this.isVisible;
+        },
         checkMove: function (e) {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
         },
-        createOutbrainBlock() {
-
-            this.$store.commit('createBlock', {
-                "blockType": "outbrain_block",
-                "platforms": this.allPlatforms,
-                "settings": {
-                    "layout": "list-medium",
-                    "widget_id": "JS_9"
-                }
-            },)
-
+        createBlock(block, evt) {
+            let clone = JSON.parse(JSON.stringify(block));
+            this.$store.dispatch('createBlock', clone)
+            evt.target.blur(); 
         },
-        createAdUnit() {
-            this.$store.commit('createBlock', {
-                "blockType": "ad_unit",
-                "platforms": this.allPlatforms,
-            },)
-
-        },
-        createHeaderBlock() {
-            this.$store.commit('createBlock', {
-                "blockType": "header_block",
-                "platforms": this.allPlatforms,
-                "settings": {
-                    "subheader": "Replace text"
-                }
-            },)
-
-        },
-        createJokesWidget() {
-
-            this.$store.commit('createBlock', {
-                "blockType": "jokes_widget_block",
-                "platforms": this.allPlatforms,
-            },)
-
-        },
-        createMemesWidget() {
-            this.$store.commit('createBlock', {
-                "blockType": "memes_widget_block",
-                "platforms": this.allPlatforms,
-            },)
-
-        }
     },
 
     computed: {
@@ -100,22 +81,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-#block-creator-dropdown {
-    align-items: flex-start;
-
-}
-
-#sidebar-block-creator {
-    border: 2px solid grey;
-    flex-direction: column;
-    padding: 5px;
-    border-radius: 5px;
-    width: 25rem;
-    min-height: 25rem;
-    margin: 2rem 2rem;
-    display: flex;
-
-}
-</style>

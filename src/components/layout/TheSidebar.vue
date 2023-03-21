@@ -1,19 +1,7 @@
 <template>
     <section>
-        <div class="widgetTitle" @click="togglePlatformsVisibility" :class="platformsVisibilityStatus">Platforms</div>
-        <platforms-filter v-if="platformsVisibilityStatus === 'open'"></platforms-filter>
-        <div class="widgetTitle dropdown" @click="toggleWorksetVisibility" :class="worksetVisibilityStatus">Block Workset
-            <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
-                    class="titleImage" @click.stop="prevent">
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
-                        @click.stop="createBlock(blockModels[blockType])" href="#">fotoscape_block</a></li>
-            </ul>
-        </div>
-        <block-workset v-if="worksetVisibilityStatus === 'open'"></block-workset>
-        <div class="widgetTitle" @click="toggleFilesVisibility" :class="filesVisibilityStatus">Files</div>
-        <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
+        <platforms-filter></platforms-filter>
+        <block-workset></block-workset>
         <file-drop-area></file-drop-area>
       
 
@@ -54,11 +42,7 @@ export default {
         toggleFilesVisibility() {
             this.filesVisibilityStatus = this.filesVisibilityStatus === 'open' ? 'closed' : 'open'
         },
-        createBlock(block) {
-            let clone = JSON.parse(JSON.stringify(block));
-            this.$store.dispatch('createBlock', clone)
-            this.worksetVisibilityStatus = 'open';
-        },
+      
         selectFile(evt) {
             let selectedFile = evt.target.files[0];
             if (!selectedFile) return
@@ -75,6 +59,9 @@ export default {
 
             console.log(files); 
         },
+        toggleVisibility() {
+            this.isVisible = !this.isVisible;
+        }
 
     },
 
@@ -122,17 +109,5 @@ section {
     padding: 5px;
 }
 
-.titleImage {
-    position: relative;
-    top: 2px;
-    width: 14px;
-    cursor: pointer;
-    margin: 0px 12px;
-    padding-bottom: 4px;
-    opacity: 50%;
-}
 
-.titleImage:hover {
-    opacity: 1;
-}
 </style>

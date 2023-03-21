@@ -1,22 +1,21 @@
 <template>
-    <base-sidebar-widget>
-        <template #header>
-            Platforms
-        </template>
-        <template #content>
-            <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm"
-                :class="{ active: platform === activePlatform }" :key="platform" @click="selectPlatform(platform)">{{
-                    platform
-                }}</button>
-            <div v-if="this.$store.getters.platformsFilterArray.length === 0"><span>No Platforms Available for
-                    Filtering</span>
-            </div>
-        </template>
-    </base-sidebar-widget>
+    <base-title @click="toggleVisibility" :class="{ open: isVisible }">Platforms</base-title>
+    <div class="buttonContainer" v-if="isVisible">
+        <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm"
+            :class="{ active: platform === activePlatform }" :key="platform" @click="selectPlatform(platform)">{{ platform
+            }}</button>
+        <div v-if="this.$store.getters.platformsFilterArray.length === 0"><span>No Platforms Available for Filtering</span>
+        </div>
+    </div>
 </template>
-
 <script>
+
 export default {
+    data() {
+        return {
+            isVisible: true,
+        }
+    },
     computed: {
         platforms() {
             let array = this.$store.getters.platformsFilterArray;
@@ -35,13 +34,13 @@ export default {
             //Template  block handles "ALL" option
             this.$store.dispatch('activatePlatform', selectedPlatform)
         },
-
-
+        toggleVisibility() {
+            this.isVisible = !this.isVisible;
+        }
     }
 }
 
 </script>
-
 <style scoped>
 span {
     font-size: small;
@@ -60,7 +59,7 @@ span {
     opacity: 50%;
 }
 
-/* .buttonContainer {
+.buttonContainer {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
@@ -68,6 +67,4 @@ span {
     border-bottom: 1px solid #e5e5e5;
     padding: .5rem .2rem;
 
-} */
-</style>
-
+}</style>
