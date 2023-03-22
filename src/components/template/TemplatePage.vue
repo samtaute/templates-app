@@ -3,7 +3,7 @@
         <draggable v-model='myList' :disabled="!enabled" item-key="name" group="blocks" class="list-group layout-container"
             ghost-class="ghost" :move="checkMove" @start="dragging = true" @end="dragging = false">
             <template #item="{ element, index }">
-                <template-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
+                <template-block :delete="deleteBlock"  class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
                     :index="index">
                 </template-block>
             </template>
@@ -29,6 +29,9 @@ export default {
     methods: {
         checkMove: function (e) {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
+        },
+        deleteBlock(id){
+            this.$store.dispatch('deleteBlock', id)
         }
     },
 
@@ -51,8 +54,7 @@ export default {
         activePlatform() {
             return this.$store.getters.activePlatform;
         }
-    },
-
+    }
 
 
 }

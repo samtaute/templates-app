@@ -16,7 +16,7 @@
                 class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
                 @start="dragging = true" @end="dragging = false">
                 <template #item="{ element, index }">
-                    <template-block class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
+                    <template-block :delete="deleteBlock" class="list-group-item" :class="{ 'not-draggable': !enabled }" :element="element"
                         :index="index">
                     </template-block>
                 </template>
@@ -53,6 +53,9 @@ export default {
             this.$store.dispatch('createBlock', clone)
             evt.target.blur(); 
         },
+        deleteBlock(id){
+            this.$store.dispatch('deleteBlock', id)
+        }
     },
 
     computed: {

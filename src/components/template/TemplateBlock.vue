@@ -7,11 +7,10 @@
                 <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success">Duplicate</button>
             </div>
         </div>
-
         <template-block-platforms :element="element" :index="index"></template-block-platforms>
-        <template-block-settings :element="element" :index="index"></template-block-settings>
 
-
+        <template-section-settings v-if="element.blockType === 'section_block'" :element="element" :index="index"></template-section-settings>
+        <template-block-settings v-else :element="element" :index="index"></template-block-settings>
 
         <!-- {{ element.id }} -->
     </div>
@@ -20,14 +19,17 @@
 // import settings from '../../settings'
 import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
 import TemplateBlockSettings from '../template/TemplateBlockSettings.vue'
+import TemplateSectionSettings from './TemplateSectionSettings.vue'
+
 
 
 export default {
-
-    props: ['element', 'index'],
+    name: "TemplateBlock",
+    props: ['element', 'index', 'delete'],
     components: {
         TemplateBlockPlatforms,
         TemplateBlockSettings,
+        TemplateSectionSettings,
     },
     computed: {
         //used to filter block
@@ -49,127 +51,21 @@ export default {
             } else return false;
 
         },
-        // layouts() {
-        //     return settings.layouts.filter(layout => layout != this.layout);
-        // },
-
-        //todo make this a utility function
-        // category() {
-        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'category')) {
-        //             return this.element.settings.category;
-        //         } else if (this.element.blockType === 'fotoscape_block') {
-        //             return 'standard'
-        //         }
-        //     }
-        //     return 'none';
-
-        // },
-        // layout() {
-        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'layout')) {
-        //             return this.element.settings.layout;
-        //         }
-        //     }
-        //     return 'none';
-        // },
-        // categories() {
-        //     return this.$store.getters.allCategories.filter(category => category != this.category);
-        // },
-
-        // widgetIds() {
-        //     return this.$store.getters.allWidgetIds.filter(id => id != this.widgetId);
-        // },
-        // allPlatforms() {
-        //     return this.$store.getters.allPlatforms
-        // },
-        // count() {
-        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'count')) {
-        //             return this.element.settings.count;
-        //         }
-        //     }
-        //     return 'none';
-        // },
-
-        // widgetId() {
-        //     if (Object.prototype.hasOwnProperty.call(this.element, 'settings')) {
-        //         if (Object.prototype.hasOwnProperty.call(this.element.settings, 'widgetId')) {
-        //             return this.element.settings.widgetId;
-        //         }
-        //     }
-        //     return 'none';
-
-        // // },
-        // platforms() {
-        //     return this.$store.getters.allPlatforms;
-        // },
     },
     methods: {
-        // submitPlatforms() {
-        //     this.$store.commit('updatePlatformsOnBlock', this.checkedPlatforms);
-        // },
         duplicateBlock() {
             this.$store.dispatch('createBlock', this.element);
 
         },
-        // activateElement() {
-        //     let container = this.$parent._sortable.options.container;
-
-        //     if (container === 'newBlocks') {
-        //         return;
-        //     }
-        //     this.$store.commit('updateActiveIndex', this.index);
-        //     this.checkedPlatforms = this.element.platforms;
-
-        // },
+        //delete function is passed as a prop by parent component of the Template Block. 
         deleteBlock() {
-            // console.log(this.element.id);
-            this.$store.dispatch('deleteBlock', this.element.id);
-            // this.$parent.$emit('delete', this.index)
+            this.delete(this.element.id); 
+            // if (this.element.id){
+            //     this.$store.dispatch('deleteBlock', this.element.id);
+            // }else{
+                
+            // }
         },
-        // updateBlock(evt) {
-        //     evt.stopPropagation()
-
-        //     let newElement = this.element;
-
-        //     if (this.layout != 'none') {
-        //         const layoutValue = document.querySelector('#layout-select').value;
-        //         newElement.settings.layout = layoutValue;
-
-        //     }
-
-        //     if (this.count != 'none') {
-        //         const countValue = document.querySelector('#count-select').value;
-        //         newElement.settings.count = parseInt(countValue);
-
-        //     }
-
-
-
-        //     if (this.element.blockType === 'header_block') {
-        //         const subheaderValue = document.querySelector('#subheader-input').value;
-        //         newElement.settings.subheader = subheaderValue;
-        //     }
-
-        //     if (this.category != 'none') {
-        //         const categoryValue = document.querySelector('#category-select').value;
-        //         newElement.settings.category = categoryValue;
-        //     }
-        //     if (this.element.blockType === 'outbrain_block') {
-        //         const widgetValue = document.querySelector('#widget-select').value;
-        //         newElement.settings.widgetId = widgetValue;
-        //     }
-
-
-        //     this.$store.commit('updateBlock', newElement)
-        // },
-        // stopProp(evt) {
-        //     evt.stopPropagation();
-        // },
-        // togglePlatform(platform) {
-        //     this.$store.dispatch('togglePlatformOnBlock', platform);
-        // }
     }
 }
 
