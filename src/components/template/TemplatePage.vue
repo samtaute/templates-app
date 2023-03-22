@@ -62,7 +62,7 @@ export default {
 <style>
 #page-template-container {
     height: 100%;
-    width: 25rem;
+    width: 26rem;
     margin: 2rem 2rem;
     display: inline-block;
 }

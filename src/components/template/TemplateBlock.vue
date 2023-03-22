@@ -1,5 +1,5 @@
 <template>
-    <div class="block-container" v-if="elementHasActivePlatform" @click="activateElement">
+    <div class="block-container" :class="this.element.blockType" v-if="elementHasActivePlatform" @click="activateElement">
         <div class="header">
             {{ element.blockType }}
             <div class="header__buttons">
@@ -50,7 +50,7 @@ export default {
                 } else return true;
             } else return false;
 
-        },
+        }
     },
     methods: {
         duplicateBlock() {
@@ -94,7 +94,10 @@ export default {
     width: 100%; 
     justify-content: flex-end; */
 }
-
+.section_block{
+background: lightblue;
+border: .6rem solid lightblue; 
+}
 button {
     margin: 2px;
 }
