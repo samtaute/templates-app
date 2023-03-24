@@ -27,6 +27,9 @@ const store = createStore({
             //state for fotoscapes obj
             fotoscapeObject: {},
             contentLoaded: false,
+
+            //state for savedpages
+            pageDirectory: {}, 
         }
 
     },
@@ -68,13 +71,20 @@ const store = createStore({
         },
         contentLoadingStatus(state){
             return state.contentLoaded; 
+        },
+        pageDirectory(state){
+            return state.pageDirectory; 
         }
 
     },
     mutations: {
         setFullJson(state, newJson) {
-            let clone = JSON.parse(JSON.stringify(newJson));
+            const clone = JSON.parse(JSON.stringify(newJson));
+            
+            const filename = clone.filename; 
             state.currentPageJson = clone;
+//this might be a hack, but the purpose is to make sure the page in the directory is the same in the workarea. 
+            state.pageDirectory[filename]=clone; 
         },
 
         setBlocksJson(state, newBlocks) {
@@ -113,6 +123,13 @@ const store = createStore({
         activatePlatform(state, platform) {
             state.activePlatform = platform;
         },
+        updateDirectory(state, payload){
+            let json = JSON.parse(payload.textContent)
+            let pageTitle = payload.filename;
+            // console.log(typeof pageJson)
+            state.pageDirectory[pageTitle]=json; 
+            // console.log(JSON.stringify(state.pageDirectory[pageTitle]))
+        }
 
     },
     actions: {
@@ -168,6 +185,15 @@ const store = createStore({
             }
             context.commit('removeFromPlatformsFilterArray', platform)
         },
+        addPageToDirectory(context, payload){
+            // let json = JSON.parse(payload.textContent);
+            // console.log(json); 
+            context.commit('updateDirectory', payload)
+        },
+        loadPageFromDirectory(context, pageName){
+
+            context.dispatch('submitPageJson', context.getters.pageDirectory[pageName])
+        }
 
 
     }

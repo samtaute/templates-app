@@ -9,14 +9,16 @@
             <div class="column-container">
                 <p>Drag and drop template files below</p>
                 <div id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive"
-                    :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave="setInactive"></div>
-        
-                    <select v-model="selectedFile" name="files" id="files">
-                        <option v-for="file in fileList" :key="file">{{ file.name }}</option>
-                    </select>
-                    <button type="button" @click="loadFile">submit</button>
+                    :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave="setInactive">
+                </div>
+                <div class="page-load-area">
+                    <div v-for="page in keys" :key="page">
+                        <button class="btn btn-outline-secondary" type="button" @click="loadPage(page)">{{ page }} </button>
+                        <a :download="page" :href="generateDownloadFile(page)">download</a>
+                    </div>
+                </div>
+                <!-- <button type="button" @click="loadFile">submit</button> -->
 
-                    <a :download="selectedFile" :href="textFile">download</a>
             </div>
 
         </template>
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -41,7 +44,19 @@ export default {
         onDrop(evt) {
             this.fileList = [...evt.dataTransfer.files]
             this.isHighlighted = false;
-
+            for (let file of this.fileList) {
+                //extract string from file
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    const textContent = evt.target.result;
+                    const payload = {
+                        textContent,
+                        filename: file.name,
+                    }
+                    this.$store.dispatch('addPageToDirectory', payload);
+                }
+                reader.readAsText(file);
+            }
         },
         preventDefaults(e) {
             e.preventDefault()
@@ -52,25 +67,42 @@ export default {
         setInactive() {
             this.isHighlighted = false;
         },
-        loadFile() {
-            var fileToUpload;
+        loadPage(pageName) {
+            this.$store.dispatch('loadPageFromDirectory', pageName);
 
-            for (let file of this.fileList) {
-                if (file.name === this.selectedFile) {
-                    fileToUpload = file
-                }
-            }
-
-            if (!fileToUpload) {
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const textContent = evt.target.result;
-                this.$store.dispatch('submitPageJson', textContent);
-            }
-            reader.readAsText(fileToUpload);
         },
+        generateDownloadFile(pageName) {
+            var textFile;
+            // console.log(this.$store.getters.pageDirectory[pageName])
+            if (this.$store.getters.pageDirectory[pageName]) {
+                const blobText = JSON.stringify(this.$store.getters.pageDirectory[pageName], null, 2)
+                console.log(typeof blobText); 
+                var data = new Blob([blobText], { type: 'application/json' });
+                // window.URL.revokeObjectURL(textFile);
+                textFile = URL.createObjectURL(data);
+                return textFile;
+            }
+
+        }
+        // loadFile() {
+        //     var fileToUpload;
+
+        //     for (let file of this.fileList) {
+        //         if (file.name === this.selectedFile) {
+        //             fileToUpload = file
+        //         }
+        //     }
+
+        //     if (!fileToUpload) {
+        //         return;
+        //     }
+        //     const reader = new FileReader();
+        //     reader.onload = (evt) => {
+        //         const textContent = evt.target.result;
+        //         this.$store.dispatch('submitPageJson', textContent);
+        //     }
+        //     reader.readAsText(fileToUpload);
+        // },
     },
     mounted() {
         for (let evt of this.events) {
@@ -78,12 +110,13 @@ export default {
         }
     },
     computed: {
-        textFile() {
-            var textFile;
-            var data = new Blob([this.$store.getters.currentPageJsonToString], { type: 'application/json' });
-            // window.URL.revokeObjectURL(textFile);
-            textFile = URL.createObjectURL(data);
-            return textFile;
+        storeFiles() {
+            console.log(Object.keys(this.$store.getters.pageDirectory))
+            return this.$store.getters.pageDirectory;
+        },
+        keys() {
+            let returnObj = Object.keys(this.$store.getters.pageDirectory)
+            return returnObj;
         }
     }
 }
@@ -106,5 +139,11 @@ export default {
 .column-container {
     display: flex;
     flex-direction: column;
+}
+
+.page-load-area {
+    display: flex;
+    flex-direction: column;
+
 }
 </style>
