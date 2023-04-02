@@ -93,6 +93,19 @@ const store = createStore({
         setWorkset(state, newWorkset) {
             state.worksetArray = newWorkset;
         },
+        mutateBlock(state, element){
+            for (let block of state.worksetArray) {
+                if (block.id === element.id) {
+                    block = element;
+                }
+            }
+            for (let block of state.currentPageJson.blocks) {
+                if (block.id === element.id) {
+                    block = element;
+                }
+            }
+
+        },
 
         //payload includes id and block keys.
         replaceBlock(state, payload) {
@@ -107,8 +120,6 @@ const store = createStore({
                 }
             }
         },
-
-
         //Update block arrays
         pushToWorkset(state, processedBlock) {
             state.worksetArray.push(processedBlock);
@@ -124,7 +135,10 @@ const store = createStore({
             state.activePlatform = platform;
         },
         updateDirectory(state, payload){
-            let json = JSON.parse(payload.textContent)
+            let json = payload.textContent; 
+            if (typeof payload.textContent === 'string'){
+                json = JSON.parse(payload.textContent)
+            }
             let pageTitle = payload.filename;
             // console.log(typeof pageJson)
             state.pageDirectory[pageTitle]=json; 
@@ -133,12 +147,11 @@ const store = createStore({
 
     },
     actions: {
-        updatePageLoaded(){
-            console.log('loaded')
-        },
         submitPageJson(context, pageJson) {
             //Clean up platforms, fotoscape category, etc. before setting the pageJson in the store.
             let cleanPage = processPageJson(pageJson);
+
+            context.commit('updateDirectory', cleanPage)
 
             context.commit('setFullJson', cleanPage);
             context.commit('setBlocksJson', cleanPage.blocks);
@@ -146,6 +159,10 @@ const store = createStore({
         //payload includes id, block fields
         replaceBlock(context, payload) {
             context.commit('replaceBlock', payload);
+        },
+
+        updateBlock(context, payload){
+            context.commit('mutateBlock', payload)
         },
 
         //takes block json, processes it, and pushes it to the workset

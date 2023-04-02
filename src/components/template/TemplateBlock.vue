@@ -1,5 +1,5 @@
 <template>
-    <div class="block-container" :class="this.element.blockType" v-if="elementHasActivePlatform" @click="activateElement">
+    <div class="block-container" :class="this.element.blockType" v-if="elementHasActivePlatform">
         <div class="header">
             {{ element.blockType }}
             <div class="header__buttons">
@@ -9,8 +9,9 @@
         </div>
         <template-block-platforms :element="element" :index="index"></template-block-platforms>
 
-        <template-section-settings v-if="element.blockType === 'section_block'" :element="element" :index="index"></template-section-settings>
-        <template-block-settings v-else :element="element" :index="index"></template-block-settings>
+        <!-- <template-section-settings v-if="element.blockType === 'section_block'" :element="element" :index="index"></template-section-settings> -->
+        <!-- <template-experiment-settings v-else-if="element.blockType ==='experiment_block'" :element="element" :index="index"></template-experiment-settings> -->
+        <template-block-settings :element="element" :index="index"></template-block-settings>
 
         <!-- {{ element.id }} -->
     </div>
@@ -19,7 +20,7 @@
 // import settings from '../../settings'
 import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
 import TemplateBlockSettings from '../template/TemplateBlockSettings.vue'
-import TemplateSectionSettings from './TemplateSectionSettings.vue'
+// import TemplateSectionSettings from './TemplateSectionSettings.vue'
 
 
 
@@ -29,7 +30,7 @@ export default {
     components: {
         TemplateBlockPlatforms,
         TemplateBlockSettings,
-        TemplateSectionSettings,
+        // TemplateSectionSettings,
     },
     computed: {
         //used to filter block

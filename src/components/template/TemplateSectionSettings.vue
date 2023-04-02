@@ -59,9 +59,9 @@ export default {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
         },
         deleteBlock(id){
-            console.log("delete")
             this.list = this.list.filter((block)=>block.id != id)
         }
+        
     },
     mounted() {
         let returnArray = []; 

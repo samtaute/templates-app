@@ -1,23 +1,28 @@
 
 <template>
     <div class="settings">
-        <div v-for="setting of elementSettings" :key="setting" class="setting">
+        <template-block-setting v-for="setting of elementSettings" :setting="setting"
+            :value="element.settings[setting]" :options="settings[element.blockType]"
+            :element="element" :key="setting"></template-block-setting>
+        <!-- <div v-for="setting of elementSettings" :key="setting" class="setting">
             <div class="setting__label">{{ setting }}:</div>
-            <input class="setting__input" @keyup.enter="enterSetting(setting, $event)" :list="setting + index"
-                :id="setting + 'options' + index" :placeHolder=element.settings[setting]> <a class="addSettingButton"
-                @click="deleteSetting(setting)" href="#">x</a>
-            <datalist :id="setting + index">
-                <div v-if="settings[setting]">
-                    <option v-for="option in settings[setting]['options']" :value="option" :key="option">{{ option }}
-                    </option>
-                </div>
-            </datalist>
+            <span v-if="typeof element.settings[setting] === 'string'">
+                <input class="setting__input" @keyup.enter="enterSetting(setting, $event)" :list="setting + index"
+                    :id="setting + 'options' + index" :placeHolder=element.settings[setting]> <a class="addSettingButton"
+                    @click="deleteSetting(setting)" href="#">x</a>
+                <datalist :id="setting + index">
+                    <div v-if="settings[setting]">
+                        <option v-for="option in settings[setting]['options']" :value="option" :key="option">{{ option }}
+                        </option>
+                    </div>
+                </datalist>
+            </span>
         </div>
         <a class="addSettingButton" @click="addSettingRow" data-bs-toggle="dropdown">+</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li v-for="setting in unusedSettings" :key="setting"><a class="dropdown-item"
                     @click.stop="createSetting(setting)" href="#">{{ setting }}</a></li>
-        </ul>
+        </ul> -->
 
     </div>
     {{ element.id }}
@@ -25,9 +30,13 @@
 
 <script>
 import settings from '../../models/settings'
+import TemplateBlockSetting from './TemplateBlockSetting.vue'
 
 export default {
     props: ['element', 'index'],
+    components: {
+        TemplateBlockSetting
+    },
     data() {
         return {
             settings: settings,
@@ -54,14 +63,14 @@ export default {
                 blockSettings = Object.keys(this.element.settings);
             }
 
-            possibleSettings = possibleSettings.filter(item => !blockSettings.includes(item)); 
+            possibleSettings = possibleSettings.filter(item => !blockSettings.includes(item));
 
             if (possibleSettings.length === 0) {
                 return ["None"]
             }
 
 
-            return possibleSettings; 
+            return possibleSettings;
         }
     },
     methods: {
