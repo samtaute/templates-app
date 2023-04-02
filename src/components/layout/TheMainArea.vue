@@ -1,18 +1,19 @@
 <template>
     <div class="main-area">
-        <template-list v-for="page in Object.keys(this.$store.getters.pageDirectory)" :list=this.$store.getters.pageDirectory[page] :key="page" :getter="get" :setter="set" :update-block="updateBlock" :delete-block="deleteBlock"></template-list>
+        <directory-template-list v-for="page in Object.keys(this.$store.getters.pageDirectory)" :pageName="page" :key="page"></directory-template-list> 
         <preview-container></preview-container>
     </div>
 </template>
 
 <script>
-import TemplateList from '../refactoredtemplate/TemplateList.vue'
+// import TemplateList from '../refactoredtemplate/TemplateList.vue'
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
+import DirectoryTemplateList from '../refactoredtemplate/DirectoryTemplateList.vue';
 
 
 export default {
     components: {
-        TemplateList,
+        DirectoryTemplateList, 
         PreviewContainer
     },
 

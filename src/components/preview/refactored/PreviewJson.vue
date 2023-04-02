@@ -11,7 +11,7 @@ import { computed } from 'vue'
 const store = useStore();
 
 const pageJson = computed(() => {
-    let json = store.getters.currentBlocksJson;
+    let json = store.getters.pageDirectory;
     return JSON.stringify(json, (key, value) => {
         if (key === 'id') {
             return undefined;

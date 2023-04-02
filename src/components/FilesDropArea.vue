@@ -18,7 +18,6 @@
                     </div>
                 </div>
                 <!-- <button type="button" @click="loadFile">submit</button> -->
-
             </div>
 
         </template>
@@ -48,10 +47,10 @@ export default {
                 //extract string from file
                 const reader = new FileReader();
                 reader.onload = (evt) => {
-                    const textContent = evt.target.result;
+                    const json = JSON.parse(evt.target.result);
                     const payload = {
-                        textContent,
-                        filename: file.name,
+                        name: file.name,
+                        json: json,
                     }
                     this.$store.dispatch('addPageToDirectory', payload);
                 }

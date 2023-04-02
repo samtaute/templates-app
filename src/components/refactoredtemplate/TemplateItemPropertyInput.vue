@@ -94,7 +94,7 @@ export default {
             }
         }
     },
-    inject:['update'],
+    inject:['updateItem'],
     mounted() {
         document.addEventListener('click', this.handleClickOutside);
         this.results = this.items;

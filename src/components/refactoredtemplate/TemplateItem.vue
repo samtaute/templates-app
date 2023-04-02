@@ -3,7 +3,7 @@
         <div class="header">
             {{ element.blockType }}
             <div class="header__buttons">
-                <button @click="deleteBlock(element.id)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
                 <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success">Duplicate</button>
             </div>
         </div>
@@ -20,7 +20,8 @@ import models from '../../models/blockModels'
 // import TemplateItemProperty from './TemplateItemProperty.vue'
 
 export default {
-    props: ['element', 'deleteBlock','updateBlock'],
+    props: ['element'],
+    inject:['deleteItem', 'updateItem'], 
     data(){
         return {
             skipProperties: ['blockType','platforms','excludePlatforms'],
@@ -32,11 +33,9 @@ export default {
     },
     methods:{
         updateSetting(lab, val){
-            console.log('test2')
             let updatedBlock = this.element; 
             updatedBlock[lab]=val;
-            console.log(updatedBlock);  
-            this.updateBlock(updatedBlock);
+            this.updateItem(updatedBlock);
         }
     },
     computed: {

@@ -134,6 +134,19 @@ const store = createStore({
         activatePlatform(state, platform) {
             state.activePlatform = platform;
         },
+
+               // {
+        //     payload:{
+        //         name: string,
+        //         json: Object
+        //     }
+        // }
+        addPageToDirectory(state, payload){
+            const pageName = payload.name; 
+            const page = payload.json; 
+
+            state.pageDirectory[pageName] = page; 
+        },
         updateDirectory(state, payload){
             let json = payload.textContent; 
             if (typeof payload.textContent === 'string'){
@@ -143,6 +156,33 @@ const store = createStore({
             // console.log(typeof pageJson)
             state.pageDirectory[pageTitle]=json; 
             // console.log(JSON.stringify(state.pageDirectory[pageTitle]))
+        },
+        // let payload = {
+        //     name: pageName,
+        //     blocks: newValue, 
+        // }
+        mutateDirectoryPage(state, payload){
+            state.pageDirectory[payload.name].blocks = payload.blocks; 
+        },
+
+
+        // const payload = {
+        //     targetList: props.pageName, 
+        //     updatedBlock: updatedBlock
+        // }
+        mutateListItem(state, payload){
+            for (let block of state.pageDirectory[payload.targetList]['blocks']){
+                if (block.id === payload.updatedBlock.id){
+                    block = payload.updatedBlock; 
+                }
+            }
+        },
+                // const payload = {
+        //     targetList: props.pageName,
+        //     targetId: id
+        // }
+        deleteItembyId(state, payload){
+            state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item)=>item.id != payload.targetId); 
         }
 
     },
@@ -202,16 +242,40 @@ const store = createStore({
             }
             context.commit('removeFromPlatformsFilterArray', platform)
         },
+
+        // {
+        //     payload:{
+        //         name: string,
+        //         json: Object
+        //     }
+        // }
         addPageToDirectory(context, payload){
-            // let json = JSON.parse(payload.textContent);
-            // console.log(json); 
-            context.commit('updateDirectory', payload)
+            const processedPage = processPageJson(payload.json)
+            payload.json = processedPage; 
+
+            context.commit('addPageToDirectory', payload)
         },
         loadPageFromDirectory(context, pageName){
 
             context.dispatch('submitPageJson', context.getters.pageDirectory[pageName])
+        },
+        // let payload = {
+        //     name: pageName,
+        //     blocks: newValue, 
+        // }
+        setBlocksOnPage(context, payload){
+            context.commit('mutateDirectoryPage', payload); 
+        },
+        updateListItem(context, payload){
+            context.commit('mutateListItem',payload)
+        },
+        // const payload = {
+        //     targetList: props.pageName,
+        //     targetId: id
+        // }
+        deleteListItem(context, payload){
+            context.commit('deleteItembyId', payload)
         }
-
 
     }
 
