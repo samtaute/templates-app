@@ -9,7 +9,7 @@ export default {
     },
     section_block: {
         "blockType": "section_block",
-        "blocks": [
+        "items": [
             {
                 "blockType": "fotoscape_block",
                 "settings": {
@@ -31,6 +31,7 @@ export default {
     },
     experiment_block: {
         "blockType": "experiment_block",
+
         "settings": {
             "id": "2023_01",
             "variantPercent": 50,

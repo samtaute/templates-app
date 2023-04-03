@@ -11,7 +11,6 @@
                 <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
                         @click="createBlock(blockModels[blockType], $event)" href="#">{{ blockType }}</a></li>
             </ul>
-            <div v-if="this.localList === 0"><span>Add Blocks</span></div>
             <directory-template-list pageName="workset"></directory-template-list>
             <!-- <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
                 class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"

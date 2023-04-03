@@ -1,5 +1,5 @@
 <template>
-    <draggable
+<draggable
         v-model='localList'
         :disabled="!enabled"
         item-key="id"
@@ -19,15 +19,14 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import TemplateItem from './TemplateItem.vue'
 import blockModels from '@/models/blockModels';
 
 
 export default {
     components: {
         draggable,
-        TemplateItem,
     },
+    props:['list'], 
     provide() {
         return {
             deleteItem: this.deleteItem,
@@ -69,6 +68,10 @@ export default {
             return this.$store.getters.allPlatforms;
         }
     },
+    mounted(){
+        console.log(this.list); 
+        this.localList = this.list; 
+    }
 
 
 

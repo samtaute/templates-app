@@ -22,7 +22,6 @@
 <script setup>
 import { defineProps, computed, ref, provide } from 'vue'
 import { useStore } from 'vuex'
-import TemplateItem from './TemplateItem.vue'
 import draggable from 'vuedraggable'
 
 const store = useStore();
