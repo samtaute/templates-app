@@ -1,6 +1,6 @@
 <template>
     <div class="main-area">
-        <directory-template-list v-for="page in Object.keys(this.$store.getters.pageDirectory)" :pageName="page" :key="page"></directory-template-list> 
+        <directory-template-list v-for="page in directoryPages" :pageName="page" :key="page"></directory-template-list> 
         <preview-container></preview-container>
     </div>
 </template>
@@ -33,6 +33,11 @@ export default {
             this.$store.dispatch('deleteBlock',id); 
         }
     },
+    computed:{
+        directoryPages(){
+            return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
+        }
+    }
 }
 </script>
 <style scoped>

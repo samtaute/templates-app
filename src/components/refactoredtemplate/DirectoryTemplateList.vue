@@ -54,13 +54,17 @@ const itemList = computed({
 });
 
 
-function update(updatedBlock){
+function updateItem(updatedBlock){
     const payload = {
         targetList: props.pageName, 
         updatedBlock: updatedBlock
     }
     store.dispatch('updateListItem', payload)
 }
+function updateValue(obj, lab, val){
+    obj[lab] = val; 
+}
+
 function deleteItem(id){
     const payload = {
         targetList: props.pageName,
@@ -69,8 +73,10 @@ function deleteItem(id){
     store.dispatch('deleteListItem', payload)
 }
 
-provide('updateItem', update)
+provide('updateItem', updateItem)
 provide('deleteItem', deleteItem)
+provide('updateValue', updateValue)
+
 
 
 

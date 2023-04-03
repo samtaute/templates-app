@@ -11,10 +11,8 @@
                 <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
                         @click="createBlock(blockModels[blockType], $event)" href="#">{{ blockType }}</a></li>
             </ul>
-            <div v-if="this.$store.getters.currentWorkset.length === 0"><span>Add Blocks</span></div>
-            <template-list :getter="get" :setter="set">
-
-            </template-list>
+            <div v-if="this.localList === 0"><span>Add Blocks</span></div>
+            <directory-template-list pageName="workset"></directory-template-list>
             <!-- <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
                 class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
                 @start="dragging = true" @end="dragging = false">
@@ -34,40 +32,22 @@
 // import draggable from 'vuedraggable'
 // import TemplateBlock from './template/TemplateBlock.vue'
 import blockModels from '@/models/blockModels';
-import TemplateList from './refactoredtemplate/TemplateList.vue';
+import DirectoryTemplateList from './refactoredtemplate/DirectoryTemplateList.vue';
+// import LocalTemplateList from './refactoredtemplate/LocalTemplateList.vue';
+
 
 export default {
     components: {
         // draggable,
         // TemplateBlock,
-        TemplateList
+        DirectoryTemplateList,
     },
     data() {
         return {
             dragging: false,
             enabled: true,
             blockModels: blockModels,
-        }
-    },
 
-    methods: {
-        checkMove: function (e) {
-            window.console.log("Future index: " + e.draggedContext.futureIndex);
-        },
-        createBlock(block, evt) {
-            let clone = JSON.parse(JSON.stringify(block));
-            this.$store.dispatch('createBlock', clone)
-            evt.target.blur();
-        },
-        //always takes an id
-        deleteItem(id) {
-            this.$store.dispatch('deleteBlock', id)
-        },
-        get() {
-            return this.$store.getters.currentWorkset;
-        },
-        set(value) {
-            this.$store.commit('setWorkset', value)
         }
     },
 
@@ -78,6 +58,13 @@ export default {
         allPlatforms() {
             return this.$store.getters.allPlatforms;
         }
+    },
+    methods: {
+        createBlock(block, evt) {
+            let clone = JSON.parse(JSON.stringify(block));
+            this.$store.dispatch('createBlock', clone)
+            evt.target.blur();
+        },
     }
 
 }
