@@ -9,7 +9,7 @@
                         style="width: 18px" src='../../assets/duplicate-icon.png'></button>
             </div>
         </div>
-        <template-block-platforms :element=element></template-block-platforms>
+        <template-item-platforms :element=element></template-item-platforms>
         <local-template-list v-if="element.items" :list="element.items"></local-template-list>
 
         <template-item-property v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
@@ -20,7 +20,7 @@
 </template>
 <script>
 import models from '../../models/blockModels'
-import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
+import TemplateItemPlatforms from './TemplateItemPlatforms.vue'
 import LocalTemplateList from './LocalTemplateList.vue'
 // import TemplateItemHeader from './TemplateItemHeader.vue'
 // import TemplateItemProperty from './TemplateItemProperty.vue'
@@ -34,7 +34,7 @@ export default {
         }
     },
     components: {
-        TemplateBlockPlatforms,
+        TemplateItemPlatforms,
         LocalTemplateList
         // TemplateItemHeader,
         // TemplateItemProperty,
@@ -90,11 +90,12 @@ export default {
     padding: 0;
     box-sizing: border-box;
     margin-top: 4px;
-    width: 22rem;
+    min-width: 22rem;
     padding: .2rem 0 .5rem 0; 
 }
 
-.section_block {
+.section_block,
+.ticker_block {
     background: lightblue;
     border: .6rem solid lightblue;
 }

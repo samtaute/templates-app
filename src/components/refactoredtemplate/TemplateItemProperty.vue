@@ -19,8 +19,9 @@
             <li v-for="config of possibleConfigs" :key="config"><a class="dropdown-item"
                     @click="addSetting(config, null)" href="#">{{ config }}</a></li>
         </ul>
-        <span @click="deleteSetting()" id="deleteSettingDropdown"> - </span>
+        <span class="delete-button" @click="deleteSetting()" id="deleteSettingDropdown"> - </span>
     </div>
+    <local-template-list v-if="element.items" :list="element.items"></local-template-list>
 
     <div class="property--object" v-if="isObject && !skip.includes(label)">
         <template-item-property v-for="property in Object.keys(value)" :label="property"
@@ -32,11 +33,15 @@
 </template>
 
 <script>
+import LocalTemplateList from './LocalTemplateList.vue'
 import settings from '../../models/settings'
 import { v4 as uuidv4 } from 'uuid'
 
 
 export default {
+    components:{
+        LocalTemplateList,
+    },
     inject: ['updateItem', 'updateValue'],
     data() {
         return {
@@ -46,13 +51,13 @@ export default {
     },
     props: {
         label: String,
-        value: [String, Object, Number],
+        value: [String, Object, Number, Boolean],
         index: [Number],
         element: Object,
         skip: {
             type: Array,
             default() {
-                return [];
+                return ['items'];
             }
         }
 
@@ -158,5 +163,13 @@ label {
 input {
     width: 8rem;
     align-self: flex-end;
+}
+
+.delete-button{
+    opacity: .5;
+}
+.delete-button:hover{
+    opacity: 1; 
+    cursor: pointer;
 }
 </style>

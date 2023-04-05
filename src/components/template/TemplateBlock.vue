@@ -7,7 +7,7 @@
                 <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success">Duplicate</button>
             </div>
         </div>
-        <template-block-platforms :element="element" :index="index"></template-block-platforms>
+        <template-item-platforms :element="element" :index="index"></template-item-platforms>
 
         <!-- <template-section-settings v-if="element.blockType === 'section_block'" :element="element" :index="index"></template-section-settings> -->
         <!-- <template-experiment-settings v-else-if="element.blockType ==='experiment_block'" :element="element" :index="index"></template-experiment-settings> -->
@@ -18,7 +18,7 @@
 </template>
 <script>
 // import settings from '../../settings'
-import TemplateBlockPlatforms from '../template/TemplateBlockPlatforms.vue'
+import TemplateItemPlatforms from '../refactoredtemplate/TemplateItemPlatforms.vue'
 import TemplateBlockSettings from '../template/TemplateBlockSettings.vue'
 // import TemplateSectionSettings from './TemplateSectionSettings.vue'
 

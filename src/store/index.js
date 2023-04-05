@@ -105,19 +105,7 @@ const store = createStore({
 
         },
 
-        //payload includes id and block keys.
-        replaceBlock(state, payload) {
-            for (let block of state.worksetArray) {
-                if (block.id === payload.id) {
-                    block = payload.block;
-                }
-            }
-            for (let block of state.currentPageJson.blocks) {
-                if (block.id === payload.id) {
-                    block = payload.block;
-                }
-            }
-        },
+
         //Update block arrays
         pushToWorkset(state, processedBlock) {
             state.pageDirectory['workset']['blocks'].push(processedBlock);

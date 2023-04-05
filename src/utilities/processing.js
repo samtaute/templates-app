@@ -21,8 +21,10 @@ export function processPageJson(rawPage) {
 }
 
 export function processBlockJson(rawBlock) {
-    //add uuid
-    rawBlock.id = uuidv4();
+    //add uuid if none exists
+    if (!rawBlock.id) {
+        rawBlock.id = uuidv4();
+    }
 
     //Add platforms and excludePlatforms to filterArray. 
     if (rawBlock.platforms) {
@@ -52,10 +54,10 @@ export function processBlockJson(rawBlock) {
 }
 
 export function loadPreview(page) {
-    store.state.contentLoaded = false; 
+    store.state.contentLoaded = false;
 
     let categoryArray = [];
-    let fotoscapeContent={}; 
+    let fotoscapeContent = {};
     for (let block of page.blocks) {
         if (block.blockType === 'fotoscape_block') {
             if (!categoryArray.includes(block.settings.category)) {
@@ -78,8 +80,8 @@ export function loadPreview(page) {
         }).then(() => {
             store.state.fotoscapeObject = fotoscapeContent;
             // this.$store.state.loading = false;
-        }).then(()=>{
-            store.state.contentLoaded=true; 
+        }).then(() => {
+            store.state.contentLoaded = true;
         });
 
     }

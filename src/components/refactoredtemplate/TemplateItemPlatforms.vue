@@ -73,10 +73,6 @@ export default {
 
                 processBlockJson(returnBlock);
 
-                this.$store.dispatch('replaceBlock', {
-                    index: this.id,
-                    block: returnBlock,
-                })
                 evt.target.value = ''
             }
         },

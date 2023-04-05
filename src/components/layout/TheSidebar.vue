@@ -56,7 +56,8 @@ export default {
 
 section {
     position: fixed;
-    height: 200vh;
+    height: 95vh;
+    overflow-y: scroll;
     background-color: #f1f3f4;
     width: 26rem;
     display: flex;

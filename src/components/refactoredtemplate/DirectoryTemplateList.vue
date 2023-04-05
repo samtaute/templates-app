@@ -1,5 +1,8 @@
 <template>
+    <section class="list-container">
+    <div class="list-header" @click="showList = !showList">{{ pageName }}</div>
     <draggable
+        v-if="showList"
         v-model='itemList'
         :disabled="!enabled"
         item-key="name"
@@ -16,6 +19,7 @@
             </template-item>
         </template>
     </draggable>
+    </section>
 </template>
 
 
@@ -26,6 +30,8 @@ import draggable from 'vuedraggable'
 
 const store = useStore();
 const props = defineProps(['pageName'])
+
+const showList=ref(true); 
 
 
 //draggable dependencies
@@ -84,4 +90,17 @@ provide('updateValue', updateValue)
 
 </script>
 
-<style scoped></style>
+
+<style scoped>
+    .list-header{
+        max-width: 21rem; 
+        font-weight: bold;
+        font-size: large;
+    }
+    .list-header:hover{
+        cursor: pointer;
+    }
+    .list-container{
+        margin: 0px .5rem; 
+    }
+</style>
