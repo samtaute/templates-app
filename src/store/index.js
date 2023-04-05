@@ -28,9 +28,7 @@ const store = createStore({
                     blocks: []
                 }
                
-            }, 
-            workset: [] 
-        }
+            },         }
 
     },
     getters: {

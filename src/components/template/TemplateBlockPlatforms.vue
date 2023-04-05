@@ -133,6 +133,9 @@ export default {
     margin: 0px 4px;
 
 }
+.platforms__label{
+    font-size: .9rem; 
+}
 
 .platformOptionsContainer {
     display: flex;

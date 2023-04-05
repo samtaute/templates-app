@@ -60,6 +60,7 @@ function updateItem(updatedBlock){
     }
     store.dispatch('updateListItem', payload)
 }
+//object, label, value
 function updateValue(obj, lab, val){
     obj[lab] = val; 
 }
@@ -75,6 +76,8 @@ function deleteItem(id){
 provide('updateItem', updateItem)
 provide('deleteItem', deleteItem)
 provide('updateValue', updateValue)
+
+
 
 
 

@@ -91,6 +91,7 @@ export default {
     box-sizing: border-box;
     margin-top: 4px;
     width: 22rem;
+    padding: .2rem 0 .5rem 0; 
 }
 
 .section_block {
