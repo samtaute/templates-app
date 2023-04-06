@@ -5,7 +5,7 @@ import store from './store/index.js'
 import "bootstrap/dist/js/bootstrap.js";
 import BaseSidebarWidget from './components/ui/BaseSidebarWidget'
 import TemplateItem from './components/refactoredtemplate/TemplateItem'
-import TemplateItemProperty from './components/refactoredtemplate/TemplateItemProperty'
+import TemplateItemConfig from './components/refactoredtemplate/TemplateItemConfig'
 
 const app = createApp(App); 
 
@@ -13,7 +13,7 @@ const app = createApp(App);
 app
 .component('BaseSidebarWidget', BaseSidebarWidget)
 .component('TemplateItem', TemplateItem)
-.component('TemplateItemProperty',TemplateItemProperty)
+.component('TemplateItemConfig',TemplateItemConfig)
 
 app.use(store);
 app.mount('#app');

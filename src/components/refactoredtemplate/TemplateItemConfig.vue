@@ -21,10 +21,10 @@
         </ul>
         <span class="delete-button" @click="deleteProperty()" id="deleteSettingDropdown"> - </span>
     </div>
-    <local-template-list v-if="element.items" :list="element.items"></local-template-list>
+    <template-list-local v-if="element.items" :list="element.items"></template-list-local>
 
     <div class="property--object" v-if="isObject && !skip.includes(label)">
-        <template-item-property
+        <template-item-config
             v-for="property in Object.keys(value)"
             :label="property"
             :element="element"
@@ -32,19 +32,19 @@
             :parent=value
             :value="value[property]">
 
-        </template-item-property>
+        </template-item-config>
     </div>
 </template>
 
 <script>
-import LocalTemplateList from './LocalTemplateList.vue'
+import TemplateListLocal from './TemplateListLocal.vue'
 import settings from '../../models/settings'
 import { v4 as uuidv4 } from 'uuid'
 
 
 export default {
     components: {
-        LocalTemplateList,
+        TemplateListLocal,
     },
     data() {
         return {

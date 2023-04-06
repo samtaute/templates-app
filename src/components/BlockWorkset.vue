@@ -11,7 +11,7 @@
                 <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
                         @click="createBlock(blockModels[blockType], $event)" href="#">{{ blockType }}</a></li>
             </ul>
-            <directory-template-list pageName="workset"></directory-template-list>
+            <template-list pageName="workset"></template-list>
             <!-- <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
                 class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
                 @start="dragging = true" @end="dragging = false">
@@ -31,7 +31,7 @@
 // import draggable from 'vuedraggable'
 // import TemplateBlock from './template/TemplateBlock.vue'
 import blockModels from '@/models/blockModels';
-import DirectoryTemplateList from './refactoredtemplate/DirectoryTemplateList.vue';
+import TemplateList from './refactoredtemplate/TemplateList.vue';
 // import LocalTemplateList from './refactoredtemplate/LocalTemplateList.vue';
 
 
@@ -39,7 +39,7 @@ export default {
     components: {
         // draggable,
         // TemplateBlock,
-        DirectoryTemplateList,
+        TemplateList,
     },
     data() {
         return {

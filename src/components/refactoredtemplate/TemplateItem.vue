@@ -10,18 +10,18 @@
             </div>
         </div>
         <template-item-platforms :element=element></template-item-platforms>
-        <local-template-list v-if="element.items" :list="element.items"></local-template-list>
+        <template-list-local v-if="element.items" :list="element.items"></template-list-local>
 
-        <template-item-property v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
+        <template-item-config v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
             :element="element" :parent="element" :key="key" :value="value" :index="index">
 
-        </template-item-property>
+        </template-item-config>
     </section>
 </template>
 <script>
 import models from '../../models/blockModels'
 import TemplateItemPlatforms from './TemplateItemPlatforms.vue'
-import LocalTemplateList from './LocalTemplateList.vue'
+import TemplateListLocal from './TemplateListLocal.vue'
 // import TemplateItemHeader from './TemplateItemHeader.vue'
 // import TemplateItemProperty from './TemplateItemProperty.vue'
 
@@ -35,7 +35,7 @@ export default {
     },
     components: {
         TemplateItemPlatforms,
-        LocalTemplateList
+        TemplateListLocal
         // TemplateItemHeader,
         // TemplateItemProperty,
     },

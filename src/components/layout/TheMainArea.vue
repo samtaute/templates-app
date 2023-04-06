@@ -1,6 +1,6 @@
 <template>
     <div class="main-area">
-        <directory-template-list v-for="page in directoryPages" :pageName="page" :key="page"></directory-template-list> 
+        <template-list v-for="page in directoryPages" :pageName="page" :key="page"></template-list> 
         <preview-container></preview-container>
     </div>
 </template>
@@ -8,12 +8,12 @@
 <script>
 // import TemplateList from '../refactoredtemplate/TemplateList.vue'
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
-import DirectoryTemplateList from '../refactoredtemplate/DirectoryTemplateList.vue';
+import TemplateList from '../refactoredtemplate/TemplateList.vue';
 
 
 export default {
     components: {
-        DirectoryTemplateList, 
+        TemplateList, 
         PreviewContainer
     },
     computed:{
