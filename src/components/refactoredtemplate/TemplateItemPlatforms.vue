@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-import { processBlockJson } from '@/utilities/processing';
+import { processItem } from '@/utilities/processing';
 export default {
     props: ['element', 'index'],
     computed: {
@@ -71,7 +71,7 @@ export default {
 
                 }
 
-                processBlockJson(returnBlock);
+                processItem(returnBlock);
 
                 evt.target.value = ''
             }
@@ -89,7 +89,7 @@ export default {
             }
             //todo: 
             this.$store.dispatch('checkFilterArray', platform);
-            processBlockJson(returnBlock);
+            processItem(returnBlock);
             this.$store.dispatch('replaceBlock', {
                 id: returnBlock.id,
                 block: returnBlock,

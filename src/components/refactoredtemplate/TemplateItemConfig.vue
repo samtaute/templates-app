@@ -36,85 +36,81 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import TemplateListLocal from './TemplateListLocal.vue'
 import settings from '../../models/settings'
 import { v4 as uuidv4 } from 'uuid'
+import { computed, defineProps } from 'vue'
 
+const id = uuidv4();
 
-export default {
-    components: {
-        TemplateListLocal,
-    },
-    data() {
-        return {
-            settings: settings,
-            id: null,
+const props = defineProps({
+    label: String,
+    value: [String, Object, Number, Boolean],
+    index: Number,
+    element: Object,
+    parent: Object,
+    skip: {
+        type: Array,
+        default() {
+            return ['items']
         }
-    },
-    props: {
-        label: String,
-        value: [String, Object, Number, Boolean],
-        index: [Number],
-        element: Object,
-        parent: Object,
-        skip: {
-            type: Array,
-            default() {
-                return ['items'];
-            }
+    }
+})
+
+const isObject = computed(() => {
+    return typeof props.value === 'object'
+});
+
+const possibleConfigs = computed(()=> {
+    let possibleSettings = [];
+
+    for (let setting in settings) {
+        if (settings[setting].targets.includes(props.element.blockType)) {
+            possibleSettings.push(settings[setting].name);
         }
 
-    },
-    computed: {
-        isObject() {
-            return typeof this.value === 'object';
-        },
-        possibleConfigs() {
-            let possibleSettings = [];
-
-            for (let setting in this.settings) {
-                if (this.settings[setting].targets.includes(this.element.blockType)) {
-                    possibleSettings.push(this.settings[setting].name);
-                }
-
-            }
-            let blockSettings = [];
-            if (this.element.settings) {
-                blockSettings = Object.keys(this.element.settings);
-            }
-
-            possibleSettings = possibleSettings.filter(item => !blockSettings.includes(item));
-
-            if (possibleSettings.length === 0) {
-                return ["None"]
-            }
-
-
-            return possibleSettings;
-        }
-    },
-
-    mounted() {
-        this.id = uuidv4();
-    },
-    methods: {
-        updateProperty(evt) {
-            let temp = this.parent;
-            temp[this.label] = evt.target.value;
-            evt.target.blur();
-        },
-        addProperty(label) {
-            let temp = this.parent;
-            temp[label] = "";
-        },
-
-        deleteProperty() {
-            delete this.parent[this.label];
-        }
-        //todo implement setting
+    }
+    let blockSettings = [];
+    if (props.element.settings) {
+        blockSettings = Object.keys(props.element.settings);
     }
 
+    possibleSettings = possibleSettings.filter(item => !blockSettings.includes(item));
+
+    if (possibleSettings.length === 0) {
+        return ["None"]
+    }
+
+
+    return possibleSettings;
+});
+// props: {
+//     label: String,
+//     value:
+//     index: [Number],
+//     element: Object,
+//     parent: Object,
+//     skip: {
+//         type: Array,
+//         default() {
+//             return ['items'];
+//         }
+//     }
+
+// },
+
+function updateProperty(evt){
+    let temp = props.parent;
+        temp[props.label] = evt.target.value;
+        evt.target.blur();
+}
+function addProperty(label){
+    let temp=props.parent; 
+    temp[label]=""; 
+}
+function deleteProperty(){
+    delete props.parent[props.label];
 }
 
 </script>
