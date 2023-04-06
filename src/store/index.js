@@ -2,7 +2,7 @@
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import settings from '../models/settings'
-import { processPageJson, processBlockJson} from '../utilities/processing'
+import { processPage, processItem } from '../utilities/processing'
 
 const store = createStore({
     state() {
@@ -27,8 +27,9 @@ const store = createStore({
                 workset: {
                     blocks: []
                 }
-               
-            },         }
+
+            },
+        }
 
     },
     getters: {
@@ -67,49 +68,34 @@ const store = createStore({
             }
             return returnArray;
         },
-        contentLoadingStatus(state){
-            return state.contentLoaded; 
+        contentLoadingStatus(state) {
+            return state.contentLoaded;
         },
-        pageDirectory(state){
-            return state.pageDirectory; 
+        pageDirectory(state) {
+            return state.pageDirectory;
         }
 
     },
     mutations: {
-        setFullJson(state, newJson) {
-            const clone = JSON.parse(JSON.stringify(newJson));
-            
-            const filename = clone.filename; 
-            state.currentPageJson = clone;
-//this might be a hack, but the purpose is to make sure the page in the directory is the same in the workarea. 
-            state.pageDirectory[filename]=clone; 
+        // pushToList takes a payload object with keys of 'item' and 'listId'
+        // and pushes the item to list in the listDirectory with corresponding id. 
+        pushToList(state, payload) {
+            let listHandle = payload.listHandle;
+            let item = payload.item;
+
+            state.pageDirectory[listHandle]['blocks'].push(item);
         },
 
-        setBlocksJson(state, newBlocks) {
-            state.currentPageJson.blocks = newBlocks;
-        },
-        setWorkset(state, newWorkset) {
-            state.worksetArray = newWorkset;
-        },
-        mutateBlock(state, element){
-            for (let block of state.worksetArray) {
-                if (block.id === element.id) {
-                    block = element;
-                }
-            }
-            for (let block of state.currentPageJson.blocks) {
-                if (block.id === element.id) {
-                    block = element;
-                }
-            }
-
+        // //  payload = {
+        //     pageHandle: props.pageName,
+        //     blocks: newValue,
+        // }
+        replaceList(state, payload) {
+            state.pageDirectory[payload.pageHandle].blocks = payload.blocks;
         },
 
 
-        //Update block arrays
-        pushToWorkset(state, processedBlock) {
-            state.pageDirectory['workset']['blocks'].push(processedBlock);
-        },
+
         pushToPlatformsFilterArray(state, platform) {
             state.platformsFilterArray.push(platform);
         },
@@ -121,90 +107,55 @@ const store = createStore({
             state.activePlatform = platform;
         },
 
-               // {
-        //     payload:{
-        //         name: string,
-        //         json: Object
-        //     }
-        // }
-        addPageToDirectory(state, payload){
-            const pageName = payload.name; 
-            const page = payload.json; 
+        //pushToDirectory takes a payload with keys of "pageHandle" and "page" and pushes the page to the directory
+        addToDirectory(state, payload) {
+            const pageHandle = payload.pageHandle;
+            const page = payload.page;
 
-            state.pageDirectory[pageName] = page; 
+            state.pageDirectory[pageHandle] = page;
         },
-        updateDirectory(state, payload){
-            let json = payload.textContent; 
-            if (typeof payload.textContent === 'string'){
-                json = JSON.parse(payload.textContent)
-            }
-            let pageTitle = payload.filename;
-            // console.log(typeof pageJson)
-            state.pageDirectory[pageTitle]=json; 
-            // console.log(JSON.stringify(state.pageDirectory[pageTitle]))
-        },
-        // let payload = {
-        //     name: pageName,
-        //     blocks: newValue, 
-        // }
-        mutateDirectoryPage(state, payload){
-            state.pageDirectory[payload.name].blocks = payload.blocks; 
-        },
-
-
-        // const payload = {
-        //     targetList: props.pageName, 
-        //     updatedBlock: updatedBlock
-        // }
-        mutateListItem(state, payload){
-            for (let block of state.pageDirectory[payload.targetList]['blocks']){
-                if (block.id === payload.updatedBlock.id){
-                    block = payload.updatedBlock; 
-                }
-            }
-        },
-                // const payload = {
-        //     targetList: props.pageName,
-        //     targetId: id
-        // }
-        deleteItembyId(state, payload){
-            state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item)=>item.id != payload.targetId); 
+     
+        deleteItembyId(state, payload) {
+            state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item) => item.id != payload.targetId);
         }
 
     },
     actions: {
-        submitPageJson(context, pageJson) {
-            //Clean up platforms, fotoscape category, etc. before setting the pageJson in the store.
-            let cleanPage = processPageJson(pageJson);
-
-            context.commit('updateDirectory', cleanPage)
-
-            context.commit('setFullJson', cleanPage);
-            context.commit('setBlocksJson', cleanPage.blocks);
-        },
-        //payload includes id, block fields
-        replaceBlock(context, payload) {
-            context.commit('replaceBlock', payload);
-        },
-
-        updateBlock(context, payload){
-            context.commit('mutateBlock', payload)
-        },
-
         //takes block json, processes it, and pushes it to the workset
-        createBlock(context, blockJson) {
-            const processedBlock = processBlockJson(blockJson)
-            context.commit('pushToWorkset', processedBlock);
+        createItem(context, item) {
+            processItem(item);
+            let payload = {
+                item,
+                listHandle: 'workset'
+            }
+            context.commit('pushToList', payload);
         },
 
-        //deleteBlock takes an id and filters all blockLists by that id.
-        deleteBlock(context, id) {
-            const updatedBlockList = context.getters.currentBlocksJson.filter(block => block.id != id);
-            context.commit('setBlocksJson', updatedBlockList);
-            const updatedWorkset = context.getters.currentWorkset.filter(block => block.id != id);
+        //createList takes a json object representing a neptune page, processes it and creates an entry for it in the listDirectory. 
+        addPageToDirectory(context, json) {
+            processPage(json);
+            let payload = {
+                pageHandle: json.filename,
+                page: json,
+            }
+            context.commit('addToDirectory', payload)
+        },
 
+        //replaceList is used by the "setter" function in draggable. Takes a payload containing a page handle and an array representing a item list. 
+        // //  payload = {
+        //     pageHandle: props.pageName,
+        //     blocks: newValue,
+        // }
+        replaceList(context, payload) {
+            context.commit('replaceList', payload);
+        },
 
-            context.commit('setWorkset', updatedWorkset);
+        // payload={
+        //     targetList: props.pageName,
+        //     targetId: id
+        // }
+        deleteListItem(context, payload) {
+            context.commit('deleteItembyId', payload)
         },
 
 
@@ -228,40 +179,11 @@ const store = createStore({
             }
             context.commit('removeFromPlatformsFilterArray', platform)
         },
-
-        // {
-        //     payload:{
-        //         name: string,
-        //         json: Object
-        //     }
-        // }
-        addPageToDirectory(context, payload){
-            const processedPage = processPageJson(payload.json)
-            payload.json = processedPage; 
-
-            context.commit('addPageToDirectory', payload)
-        },
-        loadPageFromDirectory(context, pageName){
-
-            context.dispatch('submitPageJson', context.getters.pageDirectory[pageName])
-        },
-        // let payload = {
-        //     name: pageName,
-        //     blocks: newValue, 
-        // }
-        setBlocksOnPage(context, payload){
-            context.commit('mutateDirectoryPage', payload); 
-        },
-        updateListItem(context, payload){
-            context.commit('mutateListItem',payload)
-        },
         // const payload = {
         //     targetList: props.pageName,
         //     targetId: id
         // }
-        deleteListItem(context, payload){
-            context.commit('deleteItembyId', payload)
-        }
+
 
     }
 

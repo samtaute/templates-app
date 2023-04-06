@@ -21,7 +21,8 @@ export default {
     TheMainArea,
   },
   mounted(){
-    this.$store.dispatch('submitPageJson', base); 
+    //todo:
+    this.$store.dispatch('addPageToDirectory', base); 
   }
 
 }

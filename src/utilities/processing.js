@@ -1,26 +1,28 @@
 import { v4 as uuidv4 } from 'uuid'
 import store from '../store/index'
 
-export function processPageJson(rawPage) {
+export function processPage(rawPage) {
     if (typeof rawPage === 'string') {
         rawPage = JSON.parse(rawPage)
     }
+    if (!rawPage.filename){
+        console.log('Error - No filename')
+        return; 
+    }
     if (rawPage.blocks === null) {
-        console.log('Error processiing raw page')
+        console.log('No page blocks')
         console.log(rawPage)
 
         // potentially return usable pageJson object here
     } else {
         let blockList = rawPage.blocks;
         for (let block of blockList) {
-            processBlockJson(block);
+            processItem(block);
         }
-        // loadPreview(rawPage)
-        return rawPage;
     }
 }
 
-export function processBlockJson(rawBlock) {
+export function processItem(rawBlock) {
     //add uuid if none exists
     if (!rawBlock.id) {
         rawBlock.id = uuidv4();

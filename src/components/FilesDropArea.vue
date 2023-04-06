@@ -52,6 +52,7 @@ export default {
                         name: file.name,
                         json: json,
                     }
+                    //todo:
                     this.$store.dispatch('addPageToDirectory', payload);
                 }
                 reader.readAsText(file);
@@ -66,10 +67,7 @@ export default {
         setInactive() {
             this.isHighlighted = false;
         },
-        loadPage(pageName) {
-            this.$store.dispatch('loadPageFromDirectory', pageName);
-
-        },
+        
         generateDownloadFile(pageName) {
             var textFile;
             // console.log(this.$store.getters.pageDirectory[pageName])

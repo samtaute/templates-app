@@ -33,6 +33,7 @@ export default {
     methods: {
         selectPlatform(selectedPlatform) {
             //Template  block handles "ALL" option
+            //todo:
             this.$store.dispatch('activatePlatform', selectedPlatform)
         },
 

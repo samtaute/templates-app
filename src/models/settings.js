@@ -2,6 +2,7 @@ export default {
     widgetId: {
         name: 'widgetId',
         targets: ['outbrain_block'],
+        parents: ['settings'],
         options: [
             'JS_1',
             'JS_2',

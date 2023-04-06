@@ -13,7 +13,7 @@
         <local-template-list v-if="element.items" :list="element.items"></local-template-list>
 
         <template-item-property v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
-            :element="element" :key="key" :value="value" :index="index">
+            :element="element" :parent="element" :key="key" :value="value" :index="index">
 
         </template-item-property>
     </section>
@@ -27,7 +27,7 @@ import LocalTemplateList from './LocalTemplateList.vue'
 
 export default {
     props: ['element'],
-    inject: ['deleteItem', 'updateItem'],
+    inject: ['deleteItem'],
     data() {
         return {
             skipProperties: ['blockType', 'platforms', 'excludePlatforms','items'],
@@ -42,13 +42,9 @@ export default {
     methods: {
         duplicateBlock() {
             let clone = JSON.parse(JSON.stringify(this.element));
-            this.$store.dispatch('createBlock', clone)
+            //todo: 
+            this.$store.dispatch('createItem', clone)
         },
-        updateSetting(lab, val) {
-            let updatedBlock = this.element;
-            updatedBlock[lab] = val;
-            this.updateItem(updatedBlock);
-        }
     },
 
     computed: {

@@ -16,23 +16,6 @@ export default {
         DirectoryTemplateList, 
         PreviewContainer
     },
-
-    //methods passed 
-    methods: {
-        get() {
-            return this.$store.getters.currentBlocksJson;
-        },
-        set(newBlockList) {
-            this.$store.commit('setBlocksJson', newBlockList)
-        },
-        updateBlock(element){
-            console.log(element)
-            this.$store.dispatch('updateBlock', element);
-        },
-        deleteBlock(id){
-            this.$store.dispatch('deleteBlock',id); 
-        }
-    },
     computed:{
         directoryPages(){
             return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')

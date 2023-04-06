@@ -61,7 +61,8 @@ export default {
     methods: {
         createBlock(block, evt) {
             let clone = JSON.parse(JSON.stringify(block));
-            this.$store.dispatch('createBlock', clone)
+            //todo
+            this.$store.dispatch('createItem', clone)
             evt.target.blur();
         },
     }

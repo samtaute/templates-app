@@ -24,7 +24,7 @@
 
 
 <script setup>
-import { defineProps, computed, ref, provide } from 'vue'
+import { defineProps, computed, ref, provide} from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 
@@ -50,26 +50,13 @@ const itemList = computed({
     },
     set(newValue) {
         let payload = {
-            name: props.pageName,
+            pageHandle: props.pageName,
             blocks: newValue,
         }
- 
-        store.dispatch('setBlocksOnPage', payload)
+        //todo: 
+        store.dispatch('replaceList', payload)
     }
 });
-
-
-function updateItem(updatedBlock){
-    const payload = {
-        targetList: props.pageName, 
-        updatedBlock: updatedBlock
-    }
-    store.dispatch('updateListItem', payload)
-}
-//object, label, value
-function updateValue(obj, lab, val){
-    obj[lab] = val; 
-}
 
 function deleteItem(id){
     const payload = {
@@ -78,11 +65,7 @@ function deleteItem(id){
     }
     store.dispatch('deleteListItem', payload)
 }
-
-provide('updateItem', updateItem)
 provide('deleteItem', deleteItem)
-provide('updateValue', updateValue)
-
 
 
 

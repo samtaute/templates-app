@@ -87,7 +87,7 @@ export default {
                 returnBlock.excludePlatforms = returnBlock.excludePlatforms.filter((plat) => plat != platform)
 
             }
-
+            //todo: 
             this.$store.dispatch('checkFilterArray', platform);
             processBlockJson(returnBlock);
             this.$store.dispatch('replaceBlock', {

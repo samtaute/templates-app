@@ -8,7 +8,7 @@
             :id="label + id + '-choice'"
             :name="label + id + '-choice'"
             :value="value"
-            @keydown.enter="updateSetting(label, $event)">
+            @keydown.enter="updateProperty($event)">
         <datalist v-if="settings[label]" :id="label + id">
             <option :key=option v-for="option in settings[label]['options']">{{ option }}</option>
         </datalist>
@@ -17,16 +17,20 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li v-for="config of possibleConfigs" :key="config"><a class="dropdown-item"
-                    @click="addSetting(config, null)" href="#">{{ config }}</a></li>
+                    @click.prevent="addProperty(config)" href="#">{{ config }}</a></li>
         </ul>
-        <span class="delete-button" @click="deleteSetting()" id="deleteSettingDropdown"> - </span>
+        <span class="delete-button" @click="deleteProperty()" id="deleteSettingDropdown"> - </span>
     </div>
     <local-template-list v-if="element.items" :list="element.items"></local-template-list>
 
     <div class="property--object" v-if="isObject && !skip.includes(label)">
-        <template-item-property v-for="property in Object.keys(value)" :label="property"
-            :element="value"
-            :key="property" :value="value[property]">
+        <template-item-property
+            v-for="property in Object.keys(value)"
+            :label="property"
+            :element="element"
+            :key="property"
+            :parent=value
+            :value="value[property]">
 
         </template-item-property>
     </div>
@@ -39,10 +43,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 export default {
-    components:{
+    components: {
         LocalTemplateList,
     },
-    inject: ['updateItem', 'updateValue'],
     data() {
         return {
             settings: settings,
@@ -54,6 +57,7 @@ export default {
         value: [String, Object, Number, Boolean],
         index: [Number],
         element: Object,
+        parent: Object,
         skip: {
             type: Array,
             default() {
@@ -95,16 +99,18 @@ export default {
         this.id = uuidv4();
     },
     methods: {
-        updateSetting(label, evt) {
-            this.updateValue(this.element, label, evt.target.value);
+        updateProperty(evt) {
+            let temp = this.parent;
+            temp[this.label] = evt.target.value;
             evt.target.blur();
         },
-        addSetting(label) {
-            this.updateValue(this.element, label)
+        addProperty(label) {
+            let temp = this.parent;
+            temp[label] = "";
         },
-        //todo should let parent component implement this change. Same with update updateValue method on parent
-        deleteSetting() {
-            delete this.element[this.label];
+
+        deleteProperty() {
+            delete this.parent[this.label];
         }
         //todo implement setting
     }
@@ -165,11 +171,12 @@ input {
     align-self: flex-end;
 }
 
-.delete-button{
+.delete-button {
     opacity: .5;
 }
-.delete-button:hover{
-    opacity: 1; 
+
+.delete-button:hover {
+    opacity: 1;
     cursor: pointer;
 }
 </style>
