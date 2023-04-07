@@ -11,8 +11,9 @@
         </div>
         <template-item-platforms :element=element></template-item-platforms>
         <template-list-local v-if="element.items" :list="element.items"></template-list-local>
+
         <template-item-config v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
-            :element="element" :parent="element" :key="key" :value="value" :index="index">
+            :element="element" :parent="element" :key="key" :indent="0" :value="value" :index="index">
 
         </template-item-config>
     </section>
@@ -31,7 +32,7 @@ const store = useStore();
 
 const deleteItem = inject('deleteItem')
 
-const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items']
+const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items','id']
 
 function duplicateBlock() {
     let clone = JSON.parse(JSON.stringify(this.element));

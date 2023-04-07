@@ -51,8 +51,29 @@ export function processItem(rawBlock) {
         }
     }
 
+    rawBlock = sortKeys(rawBlock); 
+
     return rawBlock;
 
+}
+
+//reorders keys
+function sortKeys(item){
+    var key = Object.keys(item)
+        .sort((key1, key2) => {
+            if (key1 === 'id') return -1;
+            else if (key2==='id') return +1;
+            else return 0;  
+        }); 
+    var temp = {}; 
+    for (var i=0; i<key.length; i++){
+        temp[key[i]] = item[key[i]];
+        delete item[key[i]]
+    }
+    for (var j = 0; j < key.length; j++){
+        item[key[j]] = temp[key[j]];
+    }
+    return item
 }
 
 export function loadPreview(page) {
