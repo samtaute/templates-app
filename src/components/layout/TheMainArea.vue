@@ -6,9 +6,8 @@
 </template>
 
 <script>
-// import TemplateList from '../refactoredtemplate/TemplateList.vue'
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
-import TemplateList from '../refactoredtemplate/TemplateList.vue';
+import TemplateList from '../template/TemplateList.vue';
 
 
 export default {

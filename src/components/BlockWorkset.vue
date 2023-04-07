@@ -28,11 +28,9 @@
 </template>
 
 <script>
-// import draggable from 'vuedraggable'
-// import TemplateBlock from './template/TemplateBlock.vue'
+
 import blockModels from '@/models/blockModels';
-import TemplateList from './refactoredtemplate/TemplateList.vue';
-// import LocalTemplateList from './refactoredtemplate/LocalTemplateList.vue';
+import TemplateList from './template/TemplateList.vue';
 
 
 export default {

@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import store from './store/index.js'
 import "bootstrap/dist/js/bootstrap.js";
 import BaseSidebarWidget from './components/ui/BaseSidebarWidget'
-import TemplateItem from './components/refactoredtemplate/TemplateItem'
-import TemplateItemConfig from './components/refactoredtemplate/TemplateItemConfig'
+import TemplateItem from './components/template/TemplateItem'
+import TemplateItemConfig from './components/template/TemplateItemConfig'
 
 const app = createApp(App); 
 
