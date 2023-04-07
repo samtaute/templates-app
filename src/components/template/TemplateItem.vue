@@ -10,12 +10,15 @@
             </div>
         </div>
         <template-item-platforms :element=element></template-item-platforms>
-        <template-list-local v-if="element.items" :list="element.items"></template-list-local>
+        <template-list-local :list="element.items"></template-list-local>
 
         <template-item-config v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
             :element="element" :parent="element" :key="key" :indent="0" :value="value" :index="index">
 
         </template-item-config>
+
+
+
     </section>
 </template>
 <script setup>
@@ -32,11 +35,11 @@ const store = useStore();
 
 const deleteItem = inject('deleteItem')
 
-const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items','id']
+const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items', 'id']
 
 function duplicateBlock() {
     let clone = JSON.parse(JSON.stringify(this.element));
- 
+
     store.dispatch('createItem', clone)
 
 }
@@ -45,7 +48,7 @@ const title = computed(() => {
     return props.element.blockType;
 })
 
-const elementHasActivePlatform = computed(()=>{
+const elementHasActivePlatform = computed(() => {
     let activePlatform = store.getters.activePlatform;
     if (!activePlatform || activePlatform === 'ALL') {
         return true;

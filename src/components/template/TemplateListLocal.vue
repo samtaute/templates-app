@@ -19,7 +19,6 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import blockModels from '@/models/blockModels';
 
 
 export default {
@@ -38,7 +37,6 @@ export default {
         return {
             dragging: false,
             enabled: true,
-            blockModels: blockModels,
             localList: [],
         };
     },

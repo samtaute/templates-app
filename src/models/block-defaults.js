@@ -21,9 +21,9 @@ export default {
             {
                 "blockType": "fotoscape_block",
                 "settings": {
-                    "layout": "edge-description",
+                    "layout": "edge",
                     "count": 1,
-                    "category": "news",
+                    "category": "standard",
                 }
             }
 

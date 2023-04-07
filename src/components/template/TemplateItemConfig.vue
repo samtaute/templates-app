@@ -14,7 +14,7 @@
         <span class="delete-button" @click="deleteProperty()" id="deleteSettingDropdown"> - </span>
 
     </div>
-    <template-list-local v-if="element.items" :list="element.items"></template-list-local>
+    <!-- <template-list-local v-if="element.items" :list="element.items"></template-list-local> -->
 
     <div class="property--object" v-if="isObject && !skip.includes(label)">
         <label class="form-label object-label" :class="{ open: isVisible }" @click="toggleVisibility">{{ label }}:</label>
@@ -44,7 +44,6 @@
 </template>
 
 <script setup>
-import TemplateListLocal from './TemplateListLocal.vue'
 import blockModels from '../../models/block-models'
 import { v4 as uuidv4 } from 'uuid'
 import { computed, defineProps, ref } from 'vue'

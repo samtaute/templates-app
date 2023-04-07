@@ -8,20 +8,10 @@
                     class="title-image">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li v-for="blockType of Object.keys(blockModels)" :key="blockType"><a class="dropdown-item"
-                        @click="createBlock(blockModels[blockType], $event)" href="#">{{ blockType }}</a></li>
+                <li v-for="blockType of Object.keys(blockDefaults)" :key="blockType"><a class="dropdown-item"
+                        @click="createBlock(blockDefaults[blockType], $event)" href="#">{{ blockType }}</a></li>
             </ul>
             <template-list pageName="workset"></template-list>
-            <!-- <draggable v-model='newBlocks' container='newBlocks' :disabled="!enabled" item-key="name"
-                class="list-group layout-container" ghost-class="ghost" group="blocks" :move="checkMove"
-                @start="dragging = true" @end="dragging = false">
-                <template #item="{ element, index }">
-                    <template-block :delete="deleteBlock" class="list-group-item" :class="{ 'not-draggable': !enabled }"
-                        :element="element"
-                        :index="index">
-                    </template-block>
-                </template>
-            </draggable> -->
         </template>
 
     </base-sidebar-widget>
@@ -29,7 +19,7 @@
 
 <script>
 
-import blockModels from '@/models/blockModels';
+import blockDefaults from '@/models/block-defaults';
 import TemplateList from './template/TemplateList.vue';
 
 
@@ -43,7 +33,7 @@ export default {
         return {
             dragging: false,
             enabled: true,
-            blockModels: blockModels,
+            blockDefaults: blockDefaults,
 
         }
     },

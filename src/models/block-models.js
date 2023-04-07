@@ -16,19 +16,12 @@ export default {
                     background_color:['red','blue','purple']
                 },
                 daily_top:{
-                    subtitle: "test", 
-                    settings_icon_url: "test", 
-                    button_title: "test", 
+                    subtitle: undefined, 
+                    settings_icon_url: undefined, 
+                    button_title: undefined, 
                     brought_by: [true, false]
                 }
-
-
             }
-
-
-
-
-
         }
     }
 }
