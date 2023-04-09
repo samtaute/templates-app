@@ -72,15 +72,11 @@ export default {
                 return list; 
             },
             set(newValue){
-                console.log(this.listName)
                 this.$store.state.pageDirectory[this.listName]['blocks'].find((item)=> item.id === this.element.id)['items'] = newValue; 
             }
        
         }
     },
-    mounted(){
-        this.localList = this.list; 
-    }
 
 
 
