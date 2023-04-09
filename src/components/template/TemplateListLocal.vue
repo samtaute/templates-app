@@ -1,6 +1,6 @@
 <template>
 <draggable
-        v-model='localList'
+        v-model="directoryList"
         :disabled="!enabled"
         item-key="id"
         group="blocks"
@@ -25,19 +25,20 @@ export default {
     components: {
         draggable,
     },
-    props:['list'], 
+    props:['list', 'element'], 
+
     provide() {
         return {
             deleteItem: this.deleteItem,
             updateItem: this.updateItem
         }
     },
+    inject:['listName'], 
 
     data() {
         return {
             dragging: false,
             enabled: true,
-            localList: [],
         };
     },
 
@@ -64,10 +65,20 @@ export default {
         },
         allPlatforms() {
             return this.$store.getters.allPlatforms;
+        },
+        directoryList:{
+            get(){
+                let list = this.$store.state.pageDirectory[this.listName]['blocks'].find((item)=> item.id === this.element.id)['items']
+                return list; 
+            },
+            set(newValue){
+                console.log(this.listName)
+                this.$store.state.pageDirectory[this.listName]['blocks'].find((item)=> item.id === this.element.id)['items'] = newValue; 
+            }
+       
         }
     },
     mounted(){
-        console.log(this.list); 
         this.localList = this.list; 
     }
 

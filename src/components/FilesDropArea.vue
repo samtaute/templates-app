@@ -48,12 +48,13 @@ export default {
                 const reader = new FileReader();
                 reader.onload = (evt) => {
                     const json = JSON.parse(evt.target.result);
-                    const payload = {
-                        name: file.name,
-                        json: json,
-                    }
+                    // const payload = {
+                    //     name: file.name,
+                    //     json: json,
+                    // }
+                    // console.log(payload); 
                     //todo:
-                    this.$store.dispatch('addPageToDirectory', payload);
+                    this.$store.dispatch('addPageToDirectory', json);
                 }
                 reader.readAsText(file);
             }

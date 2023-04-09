@@ -65,7 +65,11 @@ function deleteItem(id){
     }
     store.dispatch('deleteListItem', payload)
 }
-provide('deleteItem', deleteItem)
+
+
+
+provide('deleteItem', deleteItem);
+provide('listName', props.pageName)
 
 
 
