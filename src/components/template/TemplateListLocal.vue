@@ -1,5 +1,5 @@
 <template>
-<draggable
+    <draggable
         v-model="directoryList"
         :disabled="!enabled"
         item-key="id"
@@ -25,7 +25,7 @@ export default {
     components: {
         draggable,
     },
-    props:['list', 'element'], 
+    props: ['list', 'element'],
 
     provide() {
         return {
@@ -33,7 +33,7 @@ export default {
             updateItem: this.updateItem
         }
     },
-    inject:['listName'], 
+    inject: ['listName'],
 
     data() {
         return {
@@ -66,15 +66,15 @@ export default {
         allPlatforms() {
             return this.$store.getters.allPlatforms;
         },
-        directoryList:{
-            get(){
-                let list = this.$store.state.pageDirectory[this.listName]['blocks'].find((item)=> item.id === this.element.id)['items']
-                return list; 
+        directoryList: {
+            get() {
+                let list = this.$store.state.pageDirectory[this.listName]['blocks'].find((item) => item.id === this.element.id)['items']
+                return list;
             },
-            set(newValue){
-                this.$store.state.pageDirectory[this.listName]['blocks'].find((item)=> item.id === this.element.id)['items'] = newValue; 
+            set(newValue) {
+                this.$store.state.pageDirectory[this.listName]['blocks'].find((item) => item.id === this.element.id)['items'] = newValue;
             }
-       
+
         }
     },
 
