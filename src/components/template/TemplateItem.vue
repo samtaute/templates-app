@@ -58,6 +58,11 @@ const title = computed(() => {
 })
 
 const elementHasActivePlatform = computed(() => {
+    if(store.getters.filterActive){
+        if (!elementHighlighted.value){
+            return false; 
+        }
+    }
     let activePlatform = store.getters.activePlatform;
     if (!activePlatform || activePlatform === 'ALL') {
         return true;
@@ -78,16 +83,39 @@ const elementHasActivePlatform = computed(() => {
 const elementHighlighted = computed(() => {
     let filterKeys = Object.keys(store.getters.filters).filter((key) => store.getters.filters[key] != "none");
     if (filterKeys.length === 0) return false;
-    for (let filter of filterKeys) {
-        if (!props.element.settings) return false;
-        if (store.getters.filters[filter] != props.element.settings[filter]) {
-            // console.log(filters[filter])
-            // console.log(props.element[filter])
-            return false;
-        }
+
+    for(let filter of filterKeys){
+        if (!checkFilter(props.element, filter, store.getters.filters[filter]))
+        return false; 
     }
+
+    // for (let filter of filterKeys) {
+    //     if (!props.element.settings) return false;
+    //     if (store.getters.filters[filter] != props.element.settings[filter]) {
+    //         // console.log(filters[filter])
+    //         // console.log(props.element[filter])
+    //         return false;
+    //     }
+    // }
     return true;
 });
+
+//takes an element and recursively searches it for matching configKey/configValue. Returns true if match is found.
+function checkFilter(element, configKey, configValue){
+    console.log(configKey, configValue)
+    let elementKeys = Object.keys(element); 
+    let returnCheck = false; 
+    for(let eKey of elementKeys){
+        if(typeof element[eKey] === 'object'){
+            returnCheck = checkFilter(element[eKey], configKey, configValue)
+        }
+        if (eKey === configKey && element[eKey] === configValue){
+            return true; 
+        }
+    }
+    return returnCheck; 
+
+}
 
 </script>
 

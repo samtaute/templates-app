@@ -19,7 +19,7 @@ export default {
         directoryPages(){
             return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
         }
-    }
+    },
 }
 </script>
 <style scoped>

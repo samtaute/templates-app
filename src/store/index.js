@@ -18,22 +18,29 @@ const store = createStore({
             activePlatform: 'ALL',
 
             filters: {
-                // blockType: "none",
+                blockType: "none",
                 category: "none",
                 layout: "none" 
             },
-            filterMode: "highlight", 
+            filterActive: false, 
             
 
             //state for fotoscapes obj
             fotoscapeObject: {},
             contentLoaded: false,
+            
+            
+            editHistory: [], 
+            redoStack:[], 
 
 
         }
 
     },
     getters: {
+        filterActive(state){
+            return state.filterActive; 
+        },
         currentPageJsonToString(state) {
             return JSON.stringify(state.currentPageJson, (key, value) => {
                 if (key === 'id') {
@@ -81,6 +88,23 @@ const store = createStore({
 
     },
     mutations: {
+        back(state){
+            if (state.editHistory.length>0){
+                state.redoStack.push(JSON.parse(JSON.stringify(state.pageDirectory))); 
+                state.pageDirectory = state.editHistory.pop(); 
+            }
+        },
+        forward(state){
+            if (state.redoStack.length>0){
+                state.editHistory.push(JSON.parse(JSON.stringify(state.pageDirectory))); 
+                state.pageDirectory = state.redoStack.pop(); 
+            }
+        },
+        pushToEditHistory(state){
+            let snapshot = JSON.parse(JSON.stringify(state.pageDirectory)); 
+            state.editHistory.push(snapshot); 
+
+        },
         // pushToList takes a payload object with keys of 'item' and 'listId'
         // and pushes the item to list in the listDirectory with corresponding id. 
         pushToList(state, payload) {
@@ -162,13 +186,25 @@ const store = createStore({
 
     },
     actions: {
+        back(context){
+            context.commit('back')
+        },
+        forward(context){
+            context.commit('forward')
+        },
+        registerDirectorySnapshot(context){
+            if(context.state.editHistory.length < 10){
+                context.commit('pushToEditHistory')
+            }
+
+        },
         //used to update an existing config or add a new one.
         setItemConfigValue(context, payload){
-            //todo: save to changes array
+            context.dispatch('registerDirectorySnapshot')
             context.commit('updateItemConfigValue', payload);
         },
         deleteItemConfig(context, payload){
-            //todo: save to changes array
+            context.dispatch('registerDirectorySnapshot')
             context.commit('deleteItemConfig', payload); 
         },
         //takes block json, processes it, and pushes it to the workset
@@ -178,6 +214,7 @@ const store = createStore({
                 item,
                 listHandle: 'workset'
             }
+            context.dispatch('registerDirectorySnapshot')
             context.commit('pushToList', payload);
         },
 
@@ -190,23 +227,29 @@ const store = createStore({
             }
             context.commit('addToDirectory', payload)
         },
+        replaceList(context, payload) {
+            context.dispatch('registerDirectorySnapshot')
+            context.commit('replaceList', payload);
+        },
+
+        deleteListItem(context, payload) {
+            context.dispatch('registerDirectorySnapshot')
+            context.commit('deleteItembyId', payload)
+        },
+
+
 
         //replaceList is used by the "setter" function in draggable. Takes a payload containing a page handle and an array representing a item list. 
         // //  payload = {
         //     pageHandle: props.pageName,
         //     blocks: newValue,
         // }
-        replaceList(context, payload) {
-            context.commit('replaceList', payload);
-        },
+
 
         // payload={
         //     targetList: props.pageName,
         //     targetId: id
         // }
-        deleteListItem(context, payload) {
-            context.commit('deleteItembyId', payload)
-        },
 
 
         //Template actions
