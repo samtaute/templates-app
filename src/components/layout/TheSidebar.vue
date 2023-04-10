@@ -3,7 +3,7 @@
         <platforms-filter></platforms-filter>
         <block-workset></block-workset>
         <file-drop-area></file-drop-area>
-      
+        <filter-widget></filter-widget>
 
 
     </section>
@@ -13,6 +13,7 @@
 import BlockWorkset from '../BlockWorkset.vue'
 import PlatformsFilter from '../PlatformsFilter.vue'
 import FileDropArea from '../FilesDropArea.vue'
+import FilterWidget from '../FilterWidget.vue'
 
 
 export default {
@@ -21,7 +22,8 @@ export default {
         // SidebarJsonManager,
         BlockWorkset,
         PlatformsFilter,
-        FileDropArea
+        FileDropArea,
+        FilterWidget,
     },
 }
 

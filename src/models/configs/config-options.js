@@ -1,4 +1,4 @@
-export const blockPlatforms = [
+export const blockLayouts = [
 "carousel",
 "carousel-photocard",
 "daily-top",

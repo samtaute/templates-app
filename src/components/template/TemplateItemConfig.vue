@@ -7,7 +7,7 @@
             :id="label + id + '-choice'"
             :name="label + id + '-choice'"
             :value="value"
-            @keydown.enter="updateProperty($event)">
+            @keydown.enter="updateConfigValue($event)">
         <datalist v-if="configValueOptions" :id="label + id">
             <option :key=option v-for="option of configValueOptions">{{ option }}</option>
         </datalist>
@@ -24,9 +24,9 @@
         </a>
         <ul v-if="addConfigOptions && addConfigOptions.length>0" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li v-for="config of addConfigOptions" :key="config"><a class="dropdown-item"
-                    @click.prevent="addProperty(config)" href="#"> {{ config }}</a></li>
+                    @click.prevent="addConfig(config)" href="#"> {{ config }}</a></li>
         </ul>
-        <span class="delete-button" @click="deleteProperty()" id="deleteSettingDropdown"> - </span>
+        <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
 
         <div v-if="isVisible">
             <template-item-config
@@ -34,7 +34,7 @@
                 :label="property"
                 :element="element"
                 :key="property"
-                :parent="value"
+                :path="updatePath(property)"
                 :indent="indent + 1"
                 :value="value[property]">
             </template-item-config>
@@ -44,13 +44,14 @@
 </template>
 
 <script setup>
+import store from '@/store';
 import blockModels from '../../models/block-models'
 import { v4 as uuidv4 } from 'uuid'
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, inject, ref } from 'vue'
 
 const id = uuidv4();
 
-
+const listName = inject('listName');
 
 const isVisible = ref(true)
 function toggleVisibility() {
@@ -68,7 +69,7 @@ const props = defineProps({
     value: [String, Object, Number, Boolean],
     index: Number,
     element: Object,
-    parent: Object,
+    path: Object, 
     indent: Number,
     skip: {
         type: Array,
@@ -77,6 +78,12 @@ const props = defineProps({
         }
     }
 })
+
+function updatePath(label){
+    let newArray = [...props.path]
+    newArray.push(label)
+    return newArray; 
+}
 
 const isObject = computed(() => {
     return typeof props.value === 'object' && props.value != null;
@@ -141,26 +148,48 @@ const indentString = computed(() => {
     return `${props.indent * 1.5}rem`
 });
 
-function updateProperty(evt) {
-    let temp = props.parent;
-    temp[props.label] = evt.target.value;
+function updateConfigValue(evt) {
+    let payload = {
+        listName: listName,
+        elementId: props.element.id,
+        path: props.path,
+        value: evt.target.value, 
+    }
+    store.dispatch('setItemConfigValue', payload)
+
+
+    // let temp = props.parent;
+    // temp[props.label] = evt.target.value;
     evt.target.blur();
 }
 
 
-//start here -> 
-function addProperty(label) {
-    let temp = props.value;
-    const targetConfig = findNestedConfigObj(configObject, label);
-    if (typeof targetConfig === 'object' && !Array.isArray(targetConfig)) {
-        temp[label] = {
-        };
-    } else {
-        temp[label] = "";
+function addConfig(label) {
+
+    let copyPath = [...props.path]
+    copyPath.push(label); 
+
+
+    const targetConfig = findNestedConfigObj(configObject, label); 
+    let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : ""; 
+
+
+    let payload = {
+        listName: listName,
+        elementId: props.element.id,
+        path: copyPath,
+        value: value,
     }
+
+    store.dispatch('setItemConfigValue', payload)
 }
-function deleteProperty() {
-    delete props.parent[props.label];
+function deleteConfig() {
+    let payload = {
+        listName: listName,
+        elementId: props.element.id,
+        path: props.path,
+    }
+    store.dispatch('deleteItemConfig', payload)
 }
 
 </script>

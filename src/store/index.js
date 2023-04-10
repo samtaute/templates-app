@@ -18,7 +18,7 @@ const store = createStore({
             activePlatform: 'ALL',
 
             filters: {
-                blockType: "none",
+                // blockType: "none",
                 category: "none",
                 layout: "none" 
             },
@@ -74,6 +74,9 @@ const store = createStore({
         },
         pageDirectory(state) {
             return state.pageDirectory;
+        },
+        filters(state){
+            return state.filters
         }
 
     },
@@ -118,10 +121,56 @@ const store = createStore({
 
         deleteItembyId(state, payload) {
             state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item) => item.id != payload.targetId);
+        },
+        updateItemConfigValue(state, payload){
+            // let payload = {
+            //     listName: listName,
+            //     elementId: props.element.id,
+            //     path: props.path,
+            //     value: evt.target.value, 
+            // }
+            let {listName, elementId, path, value} = payload; 
+            let target = state.pageDirectory[listName]['blocks'].find((element=> element.id === elementId)); 
+            for (let i = 0; i < path.length; i++){
+                if (i === path.length - 1){
+                    target[path[i]]=value; 
+                }
+                else{
+                    target = target[path[i]]
+                }
+            }
+            // for (let i of path){
+            //     if (typeof target[i] != 'object'){
+            //         target[i]=value; 
+            //         break; 
+            //     }
+            //     target = target[i]
+            // }
+        },
+        deleteItemConfig(state, payload){
+            let {listName, elementId, path} = payload; 
+            let target = state.pageDirectory[listName]['blocks'].find((element=> element.id === elementId)); 
+            for (let i = 0; i < path.length; i++){
+                if (i === path.length - 1){
+                    delete target[path[i]];  
+                }
+                else{
+                    target = target[path[i]]
+                }
+            }
         }
 
     },
     actions: {
+        //used to update an existing config or add a new one.
+        setItemConfigValue(context, payload){
+            //todo: save to changes array
+            context.commit('updateItemConfigValue', payload);
+        },
+        deleteItemConfig(context, payload){
+            //todo: save to changes array
+            context.commit('deleteItemConfig', payload); 
+        },
         //takes block json, processes it, and pushes it to the workset
         createItem(context, item) {
             processItem(item);

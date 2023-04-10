@@ -1,10 +1,10 @@
-import {blockPlatforms, fotoscapeCategories} from './configs/config-options'
+import {blockLayouts, fotoscapeCategories} from './configs/config-options'
 
 export default {
     fotoscape_block:{
         settings: {
             category: fotoscapeCategories,
-            layout: blockPlatforms,
+            layout: blockLayouts,
             count: [1, 2, 3, 4,5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20],
             cta: [true,false], 
             link_destination: ['fotoscape','full_page_article','referral','stub'],

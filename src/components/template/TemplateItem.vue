@@ -1,5 +1,6 @@
 <template>
-    <section class="block-container" :class="element.blockType" v-if="elementHasActivePlatform">
+    <section class="block-container" :class="[element.blockType, { highlighted: elementHighlighted }]"
+        v-if="elementHasActivePlatform">
         <div class="header">
             <h4> {{ title }}</h4>
             <div class="header__buttons">
@@ -12,8 +13,16 @@
         <template-item-platforms :element=element></template-item-platforms>
         <template-list-local v-if="element.items" :element="element" :list="element.items"></template-list-local>
 
-        <template-item-config v-for="(value, key, index) in element" :label="key" :skip="skipProperties"
-            :element="element" :parent="element" :key="key" :indent="0" :value="value" :index="index">
+        <template-item-config
+            v-for="(value, key, index) in element"
+            :label="key"
+            :skip="skipProperties"
+            :element="element"
+            :path="[key]"
+            :key="key"
+            :indent="0"
+            :value="value"
+            :index="index">
 
         </template-item-config>
 
@@ -66,6 +75,20 @@ const elementHasActivePlatform = computed(() => {
 
 })
 
+const elementHighlighted = computed(() => {
+    let filterKeys = Object.keys(store.getters.filters).filter((key) => store.getters.filters[key] != "none");
+    if (filterKeys.length === 0) return false;
+    for (let filter of filterKeys) {
+        if (!props.element.settings) return false;
+        if (store.getters.filters[filter] != props.element.settings[filter]) {
+            // console.log(filters[filter])
+            // console.log(props.element[filter])
+            return false;
+        }
+    }
+    return true;
+});
+
 </script>
 
 <style scoped>
@@ -97,5 +120,9 @@ const elementHasActivePlatform = computed(() => {
 
 h4 {
     margin: 0;
+}
+
+.highlighted {
+    background-color: yellow;
 }
 </style>
