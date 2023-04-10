@@ -83,5 +83,5 @@ export default {
 
 }
 button{
-    margin: 0 .2rem; 
+    margin: 0 .2remx; 
 }</style>
