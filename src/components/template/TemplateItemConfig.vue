@@ -11,7 +11,7 @@
         <datalist v-if="configValueOptions" :id="label + id">
             <option :key=option v-for="option of configValueOptions">{{ option }}</option>
         </datalist>
-        <span class="delete-button" @click="deleteProperty()" id="deleteSettingDropdown"> - </span>
+        <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
 
     </div>
     <!-- <template-list-local v-if="element.items" :list="element.items"></template-list-local> -->

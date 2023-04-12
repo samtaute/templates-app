@@ -10,8 +10,11 @@ const store = createStore({
                 workset: {
                     blocks: []
                 }
-
             },
+            activePreview: '1600',
+
+            activePages: [],
+
 
             platforms: startingPlatforms,
             platformsFilterArray: [],
@@ -20,26 +23,29 @@ const store = createStore({
             filters: {
                 blockType: "none",
                 category: "none",
-                layout: "none" 
+                layout: "none"
             },
-            filterActive: false, 
-            
+            filterActive: false,
+
 
             //state for fotoscapes obj
             fotoscapeObject: {},
             contentLoaded: false,
-            
-            
-            editHistory: [], 
-            redoStack:[], 
+
+
+            editHistory: [],
+            redoStack: [],
 
 
         }
 
     },
     getters: {
-        filterActive(state){
-            return state.filterActive; 
+        activePreview(state) {
+            return state.activePreview;
+        },
+        filterActive(state) {
+            return state.filterActive;
         },
         currentPageJsonToString(state) {
             return JSON.stringify(state.currentPageJson, (key, value) => {
@@ -82,27 +88,34 @@ const store = createStore({
         pageDirectory(state) {
             return state.pageDirectory;
         },
-        filters(state){
+        filters(state) {
             return state.filters
+        },
+        activePages(state) {
+            return state.activePages;
         }
+
 
     },
     mutations: {
-        back(state){
-            if (state.editHistory.length>0){
-                state.redoStack.push(JSON.parse(JSON.stringify(state.pageDirectory))); 
-                state.pageDirectory = state.editHistory.pop(); 
+        pushToActivePages(state, pageName) {
+            state.activePages.push(pageName);
+        },
+        back(state) {
+            if (state.editHistory.length > 0) {
+                state.redoStack.push(JSON.parse(JSON.stringify(state.pageDirectory)));
+                state.pageDirectory = state.editHistory.pop();
             }
         },
-        forward(state){
-            if (state.redoStack.length>0){
-                state.editHistory.push(JSON.parse(JSON.stringify(state.pageDirectory))); 
-                state.pageDirectory = state.redoStack.pop(); 
+        forward(state) {
+            if (state.redoStack.length > 0) {
+                state.editHistory.push(JSON.parse(JSON.stringify(state.pageDirectory)));
+                state.pageDirectory = state.redoStack.pop();
             }
         },
-        pushToEditHistory(state){
-            let snapshot = JSON.parse(JSON.stringify(state.pageDirectory)); 
-            state.editHistory.push(snapshot); 
+        pushToEditHistory(state) {
+            let snapshot = JSON.parse(JSON.stringify(state.pageDirectory));
+            state.editHistory.push(snapshot);
 
         },
         // pushToList takes a payload object with keys of 'item' and 'listId'
@@ -146,20 +159,20 @@ const store = createStore({
         deleteItembyId(state, payload) {
             state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item) => item.id != payload.targetId);
         },
-        updateItemConfigValue(state, payload){
+        updateItemConfigValue(state, payload) {
             // let payload = {
             //     listName: listName,
             //     elementId: props.element.id,
             //     path: props.path,
             //     value: evt.target.value, 
             // }
-            let {listName, elementId, path, value} = payload; 
-            let target = state.pageDirectory[listName]['blocks'].find((element=> element.id === elementId)); 
-            for (let i = 0; i < path.length; i++){
-                if (i === path.length - 1){
-                    target[path[i]]=value; 
+            let { listName, elementId, path, value } = payload;
+            let target = state.pageDirectory[listName]['blocks'].find((element => element.id === elementId));
+            for (let i = 0; i < path.length; i++) {
+                if (i === path.length - 1) {
+                    target[path[i]] = value;
                 }
-                else{
+                else {
                     target = target[path[i]]
                 }
             }
@@ -171,41 +184,46 @@ const store = createStore({
             //     target = target[i]
             // }
         },
-        deleteItemConfig(state, payload){
-            let {listName, elementId, path} = payload; 
-            let target = state.pageDirectory[listName]['blocks'].find((element=> element.id === elementId)); 
-            for (let i = 0; i < path.length; i++){
-                if (i === path.length - 1){
-                    delete target[path[i]];  
+        deleteItemConfig(state, payload) {
+            let { listName, elementId, path } = payload;
+            let target = state.pageDirectory[listName]['blocks'].find((element => element.id === elementId));
+            for (let i = 0; i < path.length; i++) {
+                if (i === path.length - 1) {
+                    delete target[path[i]];
                 }
-                else{
+                else {
                     target = target[path[i]]
                 }
             }
-        }
-
+        },
+        setActivePage(state, pageName) {
+            state.activePreview = pageName;
+        },
     },
     actions: {
-        back(context){
+        setActivePage(context, pageName) {
+            context.commit('setActivePage', pageName);
+        },
+        back(context) {
             context.commit('back')
         },
-        forward(context){
+        forward(context) {
             context.commit('forward')
         },
-        registerDirectorySnapshot(context){
-            if(context.state.editHistory.length < 10){
+        registerDirectorySnapshot(context) {
+            if (context.state.editHistory.length < 10) {
                 context.commit('pushToEditHistory')
             }
 
         },
         //used to update an existing config or add a new one.
-        setItemConfigValue(context, payload){
+        setItemConfigValue(context, payload) {
             context.dispatch('registerDirectorySnapshot')
             context.commit('updateItemConfigValue', payload);
         },
-        deleteItemConfig(context, payload){
+        deleteItemConfig(context, payload) {
             context.dispatch('registerDirectorySnapshot')
-            context.commit('deleteItemConfig', payload); 
+            context.commit('deleteItemConfig', payload);
         },
         //takes block json, processes it, and pushes it to the workset
         createItem(context, item) {
@@ -226,6 +244,7 @@ const store = createStore({
                 page: json,
             }
             context.commit('addToDirectory', payload)
+            context.commit('pushToActivePages', json.filename)
         },
         replaceList(context, payload) {
             context.dispatch('registerDirectorySnapshot')
@@ -257,6 +276,9 @@ const store = createStore({
         //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
         activatePlatform(context, platform) {
             context.commit('activatePlatform', platform)
+        },
+        pushToActivePages(context, pageName) {
+            context.commit('pushToActivePages', pageName)
         },
 
 

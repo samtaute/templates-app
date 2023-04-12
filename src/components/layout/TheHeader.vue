@@ -3,7 +3,11 @@
         <div class="header-icon">
             Templates
         </div>
-        <div class="header-content">
+        <div class="btn-group page-buttons" role="group" aria-label="Basic example">
+            <button v-for="page in hiddenPages" type="button" @click="activatePage(page)" :key=page class="btn btn-secondary page-button"
+                data-toggle="button">{{ page }}</button>
+        </div>
+        <div class="header-buttons">
             <button type=button @click="back" class="btn btn-secondary">Undo</button>
             <button type=button @click="forward" class="btn btn-secondary">Redo</button>
         </div>
@@ -23,15 +27,23 @@ export default {
         },
         pageTitle() {
             return this.$store.getters.pageTitle;
+        },
+        hiddenPages(){
+            console.log(Object.keys(this.$store.getters.pageDirectory))
+            return Object.keys(this.$store.getters.pageDirectory).filter((key) => !this.$store.getters.activePages.includes(key) && key !='workset'); 
         }
     },
     methods: {
         back() {
             this.$store.dispatch('back');
         },
-        forward(){
-            this.$store.dispatch('forward'); 
-        }
+        forward() {
+            this.$store.dispatch('forward');
+        },
+        activatePage(pageName){
+            this.$store.dispatch('pushToActivePages', pageName)
+        },
+
     }
 
 }
@@ -67,21 +79,32 @@ export default {
     height: 2rem;
 }
 
-.header-content {
+.header-buttons {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: end;
-    margin-right: 2rem; 
+    margin-right: 2rem;
+}
+.page-buttons{
+    margin-left: 2rem;
 }
 
 .header-title {
     width: 100%;
     height: 2.4rem;
     display: flex;
-   
+
 
 }
-button{
-    margin: 0 .2remx; 
-}</style>
+.page-button{
+    min-width: 8rem; 
+    margin: .2rem; 
+    font-size: .8rem;
+
+}
+
+/* button {
+    margin: 0 .2remx;
+} */
+</style>

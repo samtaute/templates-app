@@ -17,7 +17,8 @@ export default {
     },
     computed:{
         directoryPages(){
-            return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
+            return this.$store.getters.activePages
+            // return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
         }
     },
 }

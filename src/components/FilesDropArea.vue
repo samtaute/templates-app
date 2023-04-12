@@ -14,7 +14,7 @@
                 <div class="page-load-area">
                     <div v-for="page in keys" :key="page">
                         <button class="btn btn-outline-secondary" type="button" @click="loadPage(page)">{{ page }} </button>
-                        <a :download="page" :href="generateDownloadFile(page)">download</a>
+                        <a :href="generateDownloadFile(page)" download>download</a>
                     </div>
                 </div>
                 <!-- <button type="button" @click="loadFile">submit</button> -->
