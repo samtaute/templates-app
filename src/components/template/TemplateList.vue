@@ -6,8 +6,11 @@
                         src='../../assets/preview.png'></button>
                 <button class="btn btn-outline-dark btn-sm" @click="minimizeList(pageName)"><img
                         src='../../assets/minimize-icon.png'></button>
+                <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
+                        src='../../assets/expand-collapse.png'></button>
             </div>
             <label class="header-label">{{ pageName }}</label>
+
 
         </div>
 
@@ -26,7 +29,8 @@
             <template #item="{ element, index }">
                 <template-item class="list-group-item" :class="{ 'not-draggable': !enabled }"
                     :element="element"
-                    :index="index">
+                    :index="index"
+                    :collapseStatus="collapseStatus">
                 </template-item>
             </template>
         </draggable>
@@ -42,10 +46,11 @@ import draggable from 'vuedraggable'
 const store = useStore();
 const props = defineProps(['pageName'])
 
+const collapseStatus = ref(false)
 const showList = ref(true);
 
 function loadPreview(page) {
-    console.log(page); 
+    console.log(page);
     store.dispatch('setActivePage', page)
 
 }
@@ -80,9 +85,13 @@ function deleteItem(id) {
     store.dispatch('deleteListItem', payload)
 }
 
-function minimizeList(pageName){
+function minimizeList(pageName) {
     //todo: avoid accessing store directly
-    store.state.activePages = store.state.activePages.filter((page)=> page != pageName); 
+    store.state.activePages = store.state.activePages.filter((page) => page != pageName);
+}
+
+function toggleCollapse(){
+   collapseStatus.value = !collapseStatus.value; 
 }
 
 
@@ -113,11 +122,12 @@ provide('listName', props.pageName)
 img {
     width: 1rem;
 }
-label{
-    margin-left: 1rem; 
+
+label {
+    margin-left: 1rem;
 }
 
-button{
+button {
     margin-right: .1rem;
 }
 

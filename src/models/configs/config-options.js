@@ -1,3 +1,13 @@
+export const widgetIds = [
+    "JS_13",
+    "JS_16",
+    "JS_9",
+    "JS_5",
+    "REELM_1",
+    "JS_17",
+    "JS_21",
+]
+
 export const blockLayouts = [
 "carousel",
 "carousel-photocard",

@@ -55,12 +55,12 @@ const store = createStore({
                 else return value
             }, "\t");
         },
-        currentBlocksJson(state) {
-            if (state.currentPageJson.blocks) {
-                return state.currentPageJson.blocks;
-            }
-            else return []
-        },
+        // currentBlocksJson(state) {
+        //     if (state.currentPageJson.blocks) {
+        //         return state.currentPageJson.blocks;
+        //     }
+        //     else return []
+        // },
         currentWorkset(state) {
             return state.worksetArray;
         },
@@ -284,15 +284,19 @@ const store = createStore({
 
         //Used when removing a platform from TemplateBlockPlatforms to check whether platform being removed should also be removed from the platformsFilterArray
         checkFilterArray(context, platform) {
-            for (let block of context.getters.currentBlocksJson) {
-                if (block.platforms && block.platforms.includes(platform)) {
-                    return
+            for (let page of Object.keys(context.getters.pageDirectory)) {
+                for (let block of context.getters.pageDirectory[page]['blocks']) {
+                    if (block.platforms && block.platforms.includes(platform)) {
+                        return
+                    }
+                    if (block.excludePlatforms && block.excludePlatforms.includes(platform)) {
+                        return
+                    }
                 }
-                if (block.excludePlatforms && block.excludePlatforms.includes(platform)) {
-                    return
-                }
+                context.commit('removeFromPlatformsFilterArray', platform)
+
             }
-            context.commit('removeFromPlatformsFilterArray', platform)
+
         },
         // const payload = {
         //     targetList: props.pageName,

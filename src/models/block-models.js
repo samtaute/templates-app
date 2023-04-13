@@ -1,4 +1,4 @@
-import {blockLayouts, fotoscapeCategories} from './configs/config-options'
+import {blockLayouts, fotoscapeCategories, widgetIds} from './configs/config-options'
 
 export default {
     fotoscape_block:{
@@ -23,5 +23,17 @@ export default {
                 }
             }
         }
+    }, 
+    outbrain_block:{
+        settings:{
+            widgetId: widgetIds,
+            layout: blockLayouts, 
+        }
     }
+
+
+
+
+
+
 }

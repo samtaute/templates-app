@@ -11,9 +11,11 @@
             </div>
         </div>
         <template-item-platforms :element=element></template-item-platforms>
-        <template-list-local v-if="element.items" :element="element" :list="element.items"></template-list-local>
 
-        <template-item-config
+        <div v-show="!collapseStatus">
+            <template-list-local v-if="element.items" :element="element" :list="element.items"></template-list-local>
+
+            <template-item-config
             v-for="(value, key, index) in element"
             :label="key"
             :skip="skipProperties"
@@ -23,8 +25,8 @@
             :indent="0"
             :value="value"
             :index="index">
-
         </template-item-config>
+        </div>
 
 
 
@@ -37,8 +39,10 @@ import TemplateItemPlatforms from './TemplateItemPlatforms.vue'
 import TemplateListLocal from './TemplateListLocal.vue'
 
 
+
 const props = defineProps({
-    element: Object
+    element: Object,
+    collapseStatus: Boolean, 
 });
 const store = useStore();
 
@@ -58,9 +62,9 @@ const title = computed(() => {
 })
 
 const elementHasActivePlatform = computed(() => {
-    if(store.getters.filterActive){
-        if (!elementHighlighted.value){
-            return false; 
+    if (store.getters.filterActive) {
+        if (!elementHighlighted.value) {
+            return false;
         }
     }
     let activePlatform = store.getters.activePlatform;
@@ -84,9 +88,9 @@ const elementHighlighted = computed(() => {
     let filterKeys = Object.keys(store.getters.filters).filter((key) => store.getters.filters[key] != "none");
     if (filterKeys.length === 0) return false;
 
-    for(let filter of filterKeys){
+    for (let filter of filterKeys) {
         if (!checkFilter(props.element, filter, store.getters.filters[filter]))
-        return false; 
+            return false;
     }
 
     // for (let filter of filterKeys) {
@@ -101,19 +105,19 @@ const elementHighlighted = computed(() => {
 });
 
 //takes an element and recursively searches it for matching configKey/configValue. Returns true if match is found.
-function checkFilter(element, configKey, configValue){
+function checkFilter(element, configKey, configValue) {
     console.log(configKey, configValue)
-    let elementKeys = Object.keys(element); 
-    let returnCheck = false; 
-    for(let eKey of elementKeys){
-        if(typeof element[eKey] === 'object'){
+    let elementKeys = Object.keys(element);
+    let returnCheck = false;
+    for (let eKey of elementKeys) {
+        if (typeof element[eKey] === 'object') {
             returnCheck = checkFilter(element[eKey], configKey, configValue)
         }
-        if (eKey === configKey && element[eKey] === configValue){
-            return true; 
+        if (eKey === configKey && element[eKey] === configValue) {
+            return true;
         }
     }
-    return returnCheck; 
+    return returnCheck;
 
 }
 

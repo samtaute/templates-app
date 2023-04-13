@@ -74,7 +74,7 @@ const props = defineProps({
     skip: {
         type: Array,
         default() {
-            return ['items']
+            return []
         }
     }
 })
