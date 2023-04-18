@@ -1,6 +1,9 @@
 <template>
     <div class="main-area">
-        <template-list v-for="page in directoryPages" :pageName="page" :key="page"></template-list> 
+        <template-list v-for="page in directoryPages" :pageName="page" :key="page"></template-list>
+       <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
+                class="title-image">
+        </a>
         <preview-container></preview-container>
     </div>
 </template>
@@ -12,11 +15,11 @@ import TemplateList from '../template/TemplateList.vue';
 
 export default {
     components: {
-        TemplateList, 
+        TemplateList,
         PreviewContainer
     },
-    computed:{
-        directoryPages(){
+    computed: {
+        directoryPages() {
             return this.$store.getters.activePages
             // return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
         }
@@ -30,6 +33,6 @@ export default {
     background: lightyellow;
     flex-grow: 1;
     margin-left: 25rem;
-    padding-left: 1.6rem; 
+    padding-left: 1.6rem;
 }
 </style>

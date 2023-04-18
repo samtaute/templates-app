@@ -4,7 +4,7 @@
             Templates
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
-            <button v-for="page in hiddenPages" type="button" @click="activatePage(page)" :key=page class="btn btn-secondary page-button"
+            <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
                 data-toggle="button">{{ page }}</button>
         </div>
         <div class="header-buttons">
@@ -43,6 +43,9 @@ export default {
         activatePage(pageName){
             this.$store.dispatch('pushToActivePages', pageName)
         },
+        deletePage(page){
+            this.$store.dispatch('deletePage', page)
+        }
 
     }
 
@@ -88,6 +91,10 @@ export default {
 }
 .page-buttons{
     margin-left: 2rem;
+    display: flex; 
+    max-width:100rem;
+
+    flex-grow: 3; 
 }
 
 .header-title {
@@ -98,7 +105,7 @@ export default {
 
 }
 .page-button{
-    min-width: 8rem; 
+    width: 8rem; 
     margin: .2rem; 
     font-size: .8rem;
 

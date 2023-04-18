@@ -98,6 +98,9 @@ const store = createStore({
 
     },
     mutations: {
+        deletePage(state, page){
+            delete state.pageDirectory[page]
+        },
         pushToActivePages(state, pageName) {
             state.activePages.push(pageName);
         },
@@ -201,6 +204,10 @@ const store = createStore({
         },
     },
     actions: {
+        deletePage(context, page){
+            context.dispatch('registerDirectorySnapshot')
+            context.commit('deletePage', page)
+        },
         setActivePage(context, pageName) {
             context.commit('setActivePage', pageName);
         },

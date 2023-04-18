@@ -1,6 +1,6 @@
 export default {
   "title": "Photos at 4pm",
-  "filename": "1600",
+  "filename": "example",
   "view": "one_column",
   "language": "en",
   "outputTargets": ["content"],
