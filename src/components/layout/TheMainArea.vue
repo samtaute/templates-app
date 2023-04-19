@@ -4,6 +4,7 @@
        <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
                 class="title-image">
         </a>
+        <modal-page-create></modal-page-create>
         <preview-container></preview-container>
     </div>
 </template>
@@ -11,12 +12,14 @@
 <script>
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
 import TemplateList from '../template/TemplateList.vue';
+import ModalPageCreate from '../ModalPageCreate.vue'
 
 
 export default {
     components: {
         TemplateList,
-        PreviewContainer
+        PreviewContainer,
+        ModalPageCreate
     },
     computed: {
         directoryPages() {

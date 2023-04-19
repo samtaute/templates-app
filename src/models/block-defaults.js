@@ -20,8 +20,8 @@ export default {
   weather_widget_block: {
     blockType: "weather_widget_block"
   },
-  fortune_cookie_block:{
-      blockType: "fortune_cookie_block"
+  fortune_cookie_block: {
+    blockType: "fortune_cookie_block"
   },
 
   outbrain_block: {
@@ -30,7 +30,16 @@ export default {
       layout: "list-medium",
       widgetId: "JS_6"
     }
+  },
 
+  fotoscape_gallery_block: {
+    "blockType": "fotoscape_gallery_block",
+    "settings": {
+      "category": "outdoor_photography",
+      "title": {
+        "text": "Featured Galleries"
+      }
+    }
   },
 
   fotoscape_block: {
@@ -47,9 +56,9 @@ export default {
       {
         blockType: "fotoscape_block",
         settings: {
-        layout: "edge-description",
-        category: "news",
-        count: 1,
+          layout: "edge-description",
+          category: "news",
+          count: 1,
         }
       },
       {
@@ -88,6 +97,30 @@ export default {
         }
       }
     }
+  },
+  //fotoscape block
+  trending_carousel: {
+    blockType: "fotoscape_block",
+    settings: {
+      layout: "trending-carousel",
+      count: 5,
+      category: "news",
+      link: { "text": "More News", "destination": "news.html#news" },
+      title: { "text": "Trending Stories" },
+      layout_config: { "trending_carousel": { "background_color": "blue" } }
+    }
+  },
+  discover_bar: {
+    "blockType": "discover_bar",
+    "settings": {
+      "title": {
+        "text": "Discover More"
+      }
+    }
+  },
+  horoscope_discover_bar:
+  {
+    "blockType": "horoscope_discover_bar"
   },
   ticker_block: {
     blockType: "ticker_block",

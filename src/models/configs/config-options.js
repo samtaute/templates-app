@@ -38,6 +38,8 @@ export const blockLayouts = [
 "trending-carousel",
 "instant-play-games"
 ]
+
+
 export const fotoscapeCategories = [
     "Wellness",
     "accuweather",
