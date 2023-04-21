@@ -1,7 +1,7 @@
 <template>
     <header class="header-container">
         <div class="header-icon">
-            Templates
+            <modal-page-create></modal-page-create>
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
             <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
@@ -14,7 +14,11 @@
     </header>
 </template>
 <script>
+import ModalPageCreate from '../ModalPageCreate.vue'
 export default {
+    components:{
+        ModalPageCreate, 
+    },
     data() {
         return {
             selectedFile: null,
@@ -75,7 +79,7 @@ export default {
     justify-self: start;
     align-self: center;
     margin-left: 1rem;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     align-items: center;
     padding: 2px;
