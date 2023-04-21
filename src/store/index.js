@@ -18,12 +18,12 @@ const store = createStore({
 
             platforms: startingPlatforms,
             platformsFilterArray: [],
-            activePlatform: 'ALL',
 
             filters: {
-                blockType: "none",
-                category: "none",
-                layout: "none"
+                platform: null,
+                blockType: null,
+                category: null,
+                layout: null,
             },
             filterActive: false,
 
@@ -69,7 +69,7 @@ const store = createStore({
             return [...array]
         },
         activePlatform(state) {
-            return state.activePlatform;
+            return state.filters.platform;
         },
 
         allPlatforms(state) {
@@ -148,7 +148,8 @@ const store = createStore({
         },
 
         activatePlatform(state, platform) {
-            state.activePlatform = platform;
+            console.log(platform); 
+            state.filters.platform = platform;
         },
 
         //pushToDirectory takes a payload with keys of "pageHandle" and "page" and pushes the page to the directory
@@ -282,7 +283,12 @@ const store = createStore({
 
         //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
         activatePlatform(context, platform) {
-            context.commit('activatePlatform', platform)
+            if (platform != context.getters.activePlatform){
+                context.commit('activatePlatform', platform)
+            }
+            else{
+                context.commit('activatePlatform', null); 
+            }
         },
         pushToActivePages(context, pageName) {
             context.commit('pushToActivePages', pageName)

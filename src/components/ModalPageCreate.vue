@@ -18,7 +18,7 @@
                         <div class="config">
                             <label class="config-label">Page Name:</label>
                             <input v-model="pageName" type="text" id="page-name-input" class="config-input form-control">
-                        </div>
+                        </div> 
                         <div class="config">
                             <label class="config-label">Template:</label>
                             <select v-model="atfTemplate" class="form-select config-input">

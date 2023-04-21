@@ -1,6 +1,5 @@
 <template>
-    <section class="block-container" :class="[element.blockType, { highlighted: elementHighlighted }]"
-        v-if="elementHasActivePlatform">
+    <section class="block-container" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]" v-if="!isFiltered">
         <div class="header">
             <h4> {{ title }}</h4>
             <div class="header__buttons">
@@ -57,17 +56,22 @@ function duplicateBlock() {
 
 }
 
+const filterActive = computed(()=>{
+    return store.getters.filterActive; 
+})
+
 const title = computed(() => {
     return props.element.blockType;
 })
 
 const elementHasActivePlatform = computed(() => {
-    if (store.getters.filterActive) {
-        if (!elementHighlighted.value) {
-            return false;
-        }
-    }
     let activePlatform = store.getters.activePlatform;
+    if(activePlatform === 'default'){
+        if(!props.element.platforms) {
+        return true;
+        }
+        else return false; 
+    }
     if (!activePlatform || activePlatform === 'ALL') {
         return true;
     } else if (!props.element.platforms && !props.element.excludePlatforms) {
@@ -84,31 +88,32 @@ const elementHasActivePlatform = computed(() => {
 
 })
 
-const elementHighlighted = computed(() => {
-    let filterKeys = Object.keys(store.getters.filters).filter((key) => store.getters.filters[key] != "none");
+const isHighlighted = computed(() => {
+    let filterKeys = Object.keys(store.getters.filters).filter((key) => store.getters.filters[key]);
     if (filterKeys.length === 0) return false;
 
     for (let filter of filterKeys) {
         if (!checkFilter(props.element, filter, store.getters.filters[filter]))
             return false;
     }
-
-    // for (let filter of filterKeys) {
-    //     if (!props.element.settings) return false;
-    //     if (store.getters.filters[filter] != props.element.settings[filter]) {
-    //         // console.log(filters[filter])
-    //         // console.log(props.element[filter])
-    //         return false;
-    //     }
-    // }
     return true;
 });
 
+const isFiltered = computed(()=>{
+    if(store.getters.filterActive){
+        return !isHighlighted.value
+    }
+    else return false; 
+})
+
 //takes an element and recursively searches it for matching configKey/configValue. Returns true if match is found.
 function checkFilter(element, configKey, configValue) {
-    console.log(configKey, configValue)
+    if (configKey === 'platform'){
+        return elementHasActivePlatform.value
+    }
     let elementKeys = Object.keys(element);
     let returnCheck = false;
+
     for (let eKey of elementKeys) {
         if (typeof element[eKey] === 'object') {
             returnCheck = checkFilter(element[eKey], configKey, configValue)

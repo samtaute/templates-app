@@ -4,6 +4,11 @@
             Platforms
         </template>
         <template #content>
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label>
+                <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
+                    id="flexSwitchCheckDefault">
+            </div>
             <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm"
                 :class="{ active: platform === activePlatform }" :key="platform" @click="selectPlatform(platform)">{{
                     platform
@@ -20,7 +25,7 @@ export default {
     computed: {
         platforms() {
             let array = this.$store.getters.platformsFilterArray;
-            array.push('ALL')
+            array.unshift('default')
             return array;
         },
         pageLoaded() {
@@ -32,10 +37,14 @@ export default {
     },
     methods: {
         selectPlatform(selectedPlatform) {
-            //Template  block handles "ALL" option
             //todo:
             this.$store.dispatch('activatePlatform', selectedPlatform)
         },
+
+        toggleFilterStatus(evt) {
+            //todo: make this an action
+            this.$store.state.filterActive = evt.target.checked;
+        }
 
 
     }
