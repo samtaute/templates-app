@@ -46,8 +46,11 @@ export default {
         checkMove: function (e) {
             window.console.log("Future index: " + e.draggedContext.futureIndex);
         },
-        deleteItem(id) {
-            this.localList = this.localList.filter((item) => item.id != id);
+        deleteItem(id) {    
+            console.log(this.listName); 
+
+            this.directoryList = this.$store.state.pageDirectory[this.listName]['blocks'].find((element)=> element.id === this.element.id)['items'].filter((item)=>item.id != id )
+            // this.$store.dispatch('deleteListItem', payload)
         },
         updateItem(updatedBlock) {
             for (let block of this.localList) {

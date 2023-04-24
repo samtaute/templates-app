@@ -2,18 +2,16 @@
     <section>
         <platforms-filter></platforms-filter>
         <block-workset></block-workset>
-        <file-drop-area></file-drop-area>
         <filter-widget></filter-widget>
-
-
+        <page-directory></page-directory>
     </section>
 </template>
 <script>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import BlockWorkset from '../BlockWorkset.vue'
 import PlatformsFilter from '../PlatformsFilter.vue'
-import FileDropArea from '../FilesDropArea.vue'
 import FilterWidget from '../FilterWidget.vue'
+import PageDirectory from '../PageDirectory.vue'
 
 
 export default {
@@ -22,8 +20,8 @@ export default {
         // SidebarJsonManager,
         BlockWorkset,
         PlatformsFilter,
-        FileDropArea,
         FilterWidget,
+        PageDirectory,
     },
 }
 
@@ -61,7 +59,7 @@ section {
     height: 100%; 
     overflow-y: scroll;
     background-color: #f1f3f4;
-    width: 26rem;
+    width: 28rem;
     display: flex;
     flex-direction: column;
     align-items: center;

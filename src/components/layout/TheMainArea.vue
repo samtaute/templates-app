@@ -1,6 +1,6 @@
 <template>
     <div class="main-area">
-        <template-list v-for="page in directoryPages" :pageName="page" :key="page"></template-list>
+        <template-list v-for="page in directoryPages" :pageName="page" :key="page+Date.now()"></template-list>
        <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
                 class="title-image">
         </a>
@@ -32,7 +32,7 @@ export default {
     flex-wrap: nowrap;
     background: lightyellow;
     flex-grow: 1;
-    margin-left: 25rem;
+    margin-left: 28rem;
     padding-left: 1.6rem;
 }
 </style>

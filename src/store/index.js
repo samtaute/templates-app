@@ -102,7 +102,11 @@ const store = createStore({
             delete state.pageDirectory[page]
         },
         pushToActivePages(state, pageName) {
-            state.activePages.push(pageName);
+            let index = state.activePages.indexOf(pageName);
+            if (index > -1){
+                state.activePages.splice(index, 1)
+            }
+            state.activePages.unshift(pageName)
         },
         back(state) {
             if (state.editHistory.length > 0) {

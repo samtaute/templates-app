@@ -1,27 +1,18 @@
 <template>
-    <base-sidebar-widget>
-        <template #header>
-            Files
-        </template>
-        <!-- <input v-if="filesVisibilityStatus === 'open'" @change="selectFile" type="file" id="fileInput" />
-    <button @click="openDirectory">Choose Directory</button> -->
-        <template #content>
             <div class="column-container">
-                <p>Drag and drop template files below</p>
+                
                 <div id="drop-area" @dragenter.prevent="setActive" @dragover.prevent="setActive"
                     :class="{ highlighted: isHighlighted }" @drop.prevent="onDrop" @dragleave="setInactive">
+                    icon
                 </div>
-                <div class="page-load-area">
+                <!-- <div class="page-load-area">
                     <div v-for="page in keys" :key="page">
                         <button class="btn btn-outline-secondary" type="button" @click="loadPage(page)">{{ page }} </button>
                         <a :href="generateDownloadFile(page)" download>download</a>
                     </div>
-                </div>
+                </div> -->
                 <!-- <button type="button" @click="loadFile">submit</button> -->
             </div>
-
-        </template>
-    </base-sidebar-widget>
 </template>
 
 <script>
@@ -69,38 +60,19 @@ export default {
             this.isHighlighted = false;
         },
         
-        generateDownloadFile(pageName) {
-            var textFile;
-            // console.log(this.$store.getters.pageDirectory[pageName])
-            if (this.$store.getters.pageDirectory[pageName]) {
-                const blobText = JSON.stringify(this.$store.getters.pageDirectory[pageName], null, 2)
-                console.log(typeof blobText); 
-                var data = new Blob([blobText], { type: 'application/json' });
-                // window.URL.revokeObjectURL(textFile);
-                textFile = URL.createObjectURL(data);
-                return textFile;
-            }
-
-        }
-        // loadFile() {
-        //     var fileToUpload;
-
-        //     for (let file of this.fileList) {
-        //         if (file.name === this.selectedFile) {
-        //             fileToUpload = file
-        //         }
+        // generateDownloadFile(pageName) {
+        //     var textFile;
+        //     // console.log(this.$store.getters.pageDirectory[pageName])
+        //     if (this.$store.getters.pageDirectory[pageName]) {
+        //         const blobText = JSON.stringify(this.$store.getters.pageDirectory[pageName], null, 2)
+        //         console.log(typeof blobText); 
+        //         var data = new Blob([blobText], { type: 'application/json' });
+        //         // window.URL.revokeObjectURL(textFile);
+        //         textFile = URL.createObjectURL(data);
+        //         return textFile;
         //     }
 
-        //     if (!fileToUpload) {
-        //         return;
-        //     }
-        //     const reader = new FileReader();
-        //     reader.onload = (evt) => {
-        //         const textContent = evt.target.result;
-        //         this.$store.dispatch('submitPageJson', textContent);
-        //     }
-        //     reader.readAsText(fileToUpload);
-        // },
+        // }
     },
     mounted() {
         for (let evt of this.events) {
@@ -127,7 +99,6 @@ export default {
     border-radius: 20px;
     width: 80%;
     font-family: sans-serif;
-    padding: 20px;
 }
 
 #drop-area.highlighted {
@@ -143,5 +114,9 @@ export default {
     display: flex;
     flex-direction: column;
 
+}
+
+img{
+    height: 3.5rem;
 }
 </style>

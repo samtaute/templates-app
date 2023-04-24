@@ -1,5 +1,5 @@
 <template>
-    <section class="list-container">
+    <section class="list-container" v-if="isVisible">
         <div class="list-header" v-if="pageName != 'workset'">
             <div class="header-buttons">
                 <button class="btn btn-outline-dark btn-sm" @click="loadPreview(pageName)"><img
@@ -77,6 +77,8 @@ const itemList = computed({
     }
 });
 
+const isVisible = ref(true); 
+
 function deleteItem(id) {
     const payload = {
         targetList: props.pageName,
@@ -85,9 +87,9 @@ function deleteItem(id) {
     store.dispatch('deleteListItem', payload)
 }
 
-function minimizeList(pageName) {
-    //todo: avoid accessing store directly
-    store.state.activePages = store.state.activePages.filter((page) => page != pageName);
+function minimizeList() {
+    // store.state.activePages = store.state.activePages.filter((page) => page != pageName);
+    isVisible.value = !isVisible.value
 }
 
 function toggleCollapse(){

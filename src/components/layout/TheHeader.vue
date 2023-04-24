@@ -1,10 +1,10 @@
 <template>
     <header class="header-container">
         <div class="header-icon">
-            <modal-page-create></modal-page-create>
+            Templates
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
-            <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
+            <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
                 data-toggle="button">{{ page }}</button>
         </div>
         <div class="header-buttons">
@@ -14,11 +14,7 @@
     </header>
 </template>
 <script>
-import ModalPageCreate from '../ModalPageCreate.vue'
 export default {
-    components:{
-        ModalPageCreate, 
-    },
     data() {
         return {
             selectedFile: null,
@@ -33,8 +29,8 @@ export default {
             return this.$store.getters.pageTitle;
         },
         hiddenPages(){
-            console.log(Object.keys(this.$store.getters.pageDirectory))
-            return Object.keys(this.$store.getters.pageDirectory).filter((key) => !this.$store.getters.activePages.includes(key) && key !='workset'); 
+            return this.$store.getters.activePages; 
+            // return Object.keys(this.$store.getters.pageDirectory).filter((key) => !this.$store.getters.activePages.includes(key) && key !='workset'); 
         }
     },
     methods: {
@@ -48,7 +44,9 @@ export default {
             this.$store.dispatch('pushToActivePages', pageName)
         },
         deletePage(page){
-            this.$store.dispatch('deletePage', page)
+            let idx = this.$store.getters.activePages.indexOf(page); 
+            //todo- avoid accessing store directly
+            this.$store.state.activePages.splice(idx, 1)
         }
 
     }

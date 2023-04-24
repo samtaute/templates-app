@@ -9,7 +9,8 @@
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMainArea from './components/layout/TheMainArea.vue'
 import TheHeader from './components/layout/TheHeader.vue'
-import base from './models/base'
+// import base from './models/base'
+import {loadNeptuneRepo} from './import'
 // import TheToolbar from './components/TheToolbar.vue'
 
 
@@ -20,19 +21,20 @@ export default {
     TheHeader,
     TheMainArea,
   },
-  mounted(){
-    //todo:
-    this.$store.dispatch('addPageToDirectory', base); 
+  mounted() {
+    // this.$store.dispatch('addPageToDirectory', base);
+    loadNeptuneRepo(); 
+
   }
 
 }
 </script>
 
 <style>
-
-*{
+* {
   font-family: sans-serif;
 }
+
 html {
   height: 100%;
 }
