@@ -23,7 +23,12 @@ export default {
   },
   mounted() {
     // this.$store.dispatch('addPageToDirectory', base);
-    loadNeptuneRepo(); 
+    if(localStorage.getItem('pageDirectory')){
+      this.$store.state.pageDirectory = JSON.parse(localStorage.getItem('pageDirectory'))
+    }else{
+      loadNeptuneRepo(); 
+    }
+
 
   }
 

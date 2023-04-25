@@ -8,6 +8,8 @@ export async function loadNeptuneRepo() {
     for (let filename of filenames){
         store.state.pageDirectory[filename]= await getRawFile(filename); 
     }
+    console.log('done with for loop')
+    localStorage.setItem('pageDirectory', JSON.stringify(store.state.pageDirectory))
 }
 async function getFilenames(){
     let filenames = [];
