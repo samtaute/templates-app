@@ -66,7 +66,15 @@ function checkMove(e) {
 
 const itemList = computed({
     get() {
-        return store.getters.pageDirectory[props.pageName]['blocks'];
+        let list = store.getters.pageDirectory[props.pageName]['blocks'];
+        if (list.length > 0) {
+            return list;
+        } else return [{
+            blockType: "header_block",
+            settings: {
+                subheader: "Placeholder"
+            }
+        }]
     },
     set(newValue) {
         let payload = {
@@ -77,7 +85,7 @@ const itemList = computed({
     }
 });
 
-const isVisible = ref(true); 
+const isVisible = ref(true);
 
 function deleteItem(id) {
     const payload = {
@@ -92,8 +100,8 @@ function minimizeList() {
     isVisible.value = !isVisible.value
 }
 
-function toggleCollapse(){
-   collapseStatus.value = !collapseStatus.value; 
+function toggleCollapse() {
+    collapseStatus.value = !collapseStatus.value;
 }
 
 

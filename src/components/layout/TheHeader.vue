@@ -5,7 +5,7 @@
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
             <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
-                data-toggle="button">{{ page }}</button>
+                data-toggle="button">{{ truncateFilename(page) }}</button>
         </div>
         <div class="header-buttons">
             <button type=button @click="back" class="btn btn-secondary">Undo</button>
@@ -14,10 +14,13 @@
     </header>
 </template>
 <script>
+import { truncateFilename } from '@/utilities/processing';
+
 export default {
     data() {
         return {
             selectedFile: null,
+            truncateFilename: truncateFilename, 
         }
     },
 

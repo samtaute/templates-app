@@ -98,12 +98,12 @@ const store = createStore({
 
     },
     mutations: {
-        deletePage(state, page){
+        deletePage(state, page) {
             delete state.pageDirectory[page]
         },
         pushToActivePages(state, pageName) {
             let index = state.activePages.indexOf(pageName);
-            if (index > -1){
+            if (index > -1) {
                 state.activePages.splice(index, 1)
             }
             state.activePages.unshift(pageName)
@@ -142,8 +142,6 @@ const store = createStore({
             state.pageDirectory[payload.pageHandle].blocks = payload.blocks;
         },
 
-
-
         pushToPlatformsFilterArray(state, platform) {
             state.platformsFilterArray.push(platform);
         },
@@ -152,7 +150,7 @@ const store = createStore({
         },
 
         activatePlatform(state, platform) {
-            console.log(platform); 
+            console.log(platform);
             state.filters.platform = platform;
         },
 
@@ -209,7 +207,12 @@ const store = createStore({
         },
     },
     actions: {
-        deletePage(context, page){
+        activatePage(context, page) {
+            processPage(context.getters.pageDirectory[page]);
+            //check if update is avaialable
+            context.commit('pushToActivePages', page);
+        },
+        deletePage(context, page) {
             context.dispatch('registerDirectorySnapshot')
             context.commit('deletePage', page)
         },
@@ -287,11 +290,11 @@ const store = createStore({
 
         //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
         activatePlatform(context, platform) {
-            if (platform != context.getters.activePlatform){
+            if (platform != context.getters.activePlatform) {
                 context.commit('activatePlatform', platform)
             }
-            else{
-                context.commit('activatePlatform', null); 
+            else {
+                context.commit('activatePlatform', null);
             }
         },
         pushToActivePages(context, pageName) {

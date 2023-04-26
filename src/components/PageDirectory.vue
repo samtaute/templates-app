@@ -47,7 +47,8 @@ let displayedPages = computed(()=>{
 })
 
 function activatePage(page){
-    store.state.activePages.push(page)
+    store.dispatch('activatePage',page)
+    // store.state.activePages.push(page)
 }
 
 // const discoverPages = computed(() => {

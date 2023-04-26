@@ -1,88 +1,93 @@
 <template>
     <section>
         <!-- Button trigger modal -->
-
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#create-page-modal">
-            Create Page
-        </button>
+        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#create-page-modal">
+            Template Assist&trade;
+        </a>
         <!-- Modal -->
-        <div class="modal fade" id="create-page-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel">Setup</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <!-- content -->
-                    <div class="configs">
-                        <div class="config">
-                            <label class="config-label">Page Name:</label>
-                            <input v-model="pageName" type="text" id="page-name-input" class="config-input form-control">
-                        </div> 
-                        <div class="config">
-                            <label class="config-label">Template:</label>
-                            <select v-model="atfTemplate" class="form-select config-input">
-                                <option v-for="section of sections" :key=section>{{ section }}</option>
-                            </select>
+        <Teleport to="body">
+            <div class="modal fade" id="create-page-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel">Setup</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="config">
-                            <label class="config-label">Monetization:</label>
-                            <select v-model='monetization' class="form-select config-input">
-                                <option selected>standard</option>
-                                <option v-for="option of monetizationLevels" :key="option">{{ option }}</option>
-                            </select>
-                        </div>
-                        <div class="config">
-                            <label class="config-label">Primary Category:</label>
-                            <select v-model="primaryCategory" class="form-select config-input">
-                                <option v-for="option of categoryOptions" :key=option>{{ option }}</option>
-                            </select>
-                        </div>
-                        <div class="config">
-                            <label class="config-label">Categories:</label>
-                            <div class="category-container">
-                                <span class="badge bg-primary" v-for="cat of secondaryCategories"
-                                    @click="deleteCategory(cat)" :key="cat">{{ cat }}</span>
-                                <input class="category-input" @keyup.enter="enterCategory"
-                                    list="secondary-category-options"
-                                    id='secondary-category-input' placeHolder="..add">
-                                <datalist id='secondary-category-options'>
-                                    <option v-for="option in categoryOptions" :value="option" :key="option">{{ option }}
-                                    </option>
-                                </datalist>
+                        <!-- content -->
+                        <div class="configs">
+                            <div class="config">
+                                <label class="config-label">Page Name:</label>
+                                <input v-model="pageName" type="text" id="page-name-input"
+                                    class="config-input form-control">
                             </div>
-                        </div>
-                        <div class="config">
-                            <label class="config-label">Include: </label>
-                            <div class="form-checks">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Ticker Block
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Reveal Widgets
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Discover Carousels
-                                    </label>
+                            <div class="config">
+                                <label class="config-label">Template:</label>
+                                <select v-model="atfTemplate" class="form-select config-input">
+                                    <option v-for="section of sections" :key=section>{{ section }}</option>
+                                </select>
+                            </div>
+                            <div class="config">
+                                <label class="config-label">Monetization:</label>
+                                <select v-model='monetization' class="form-select config-input">
+                                    <option selected>standard</option>
+                                    <option v-for="option of monetizationLevels" :key="option">{{ option }}</option>
+                                </select>
+                            </div>
+                            <div class="config">
+                                <label class="config-label">Primary Category:</label>
+                                <select v-model="primaryCategory" class="form-select config-input">
+                                    <option v-for="option of categoryOptions" :key=option>{{ option }}</option>
+                                </select>
+                            </div>
+                            <div class="config">
+                                <label class="config-label">Categories:</label>
+                                <div class="category-container">
+                                    <span class="badge bg-primary" v-for="cat of secondaryCategories"
+                                        @click="deleteCategory(cat)" :key="cat">{{ cat }}</span>
+                                    <input class="category-input" @keyup.enter="enterCategory"
+                                        list="secondary-category-options"
+                                        id='secondary-category-input' placeHolder="..add">
+                                    <datalist id='secondary-category-options'>
+                                        <option v-for="option in categoryOptions" :value="option" :key="option">{{ option }}
+                                        </option>
+                                    </datalist>
                                 </div>
                             </div>
+                            <div class="config">
+                                <label class="config-label">Include: </label>
+                                <div class="form-checks">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Ticker Block
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Reveal Widgets
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Discover Carousels
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        </Teleport>
+
     </section>
 </template>
 
@@ -199,8 +204,8 @@ function createPage() {
     column-gap: .8rem;
 }
 
-.form-checks{
-    display: flex; 
+.form-checks {
+    display: flex;
     flex-direction: column;
     max-width: 14rem;
 }

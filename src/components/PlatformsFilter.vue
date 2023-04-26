@@ -5,7 +5,7 @@
         </template>
         <template #content>
             <div class="form-check form-switch">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label>
+                <!-- <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label> -->
                 <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
                     id="flexSwitchCheckDefault">
             </div>
@@ -13,9 +13,6 @@
                 :class="{ active: platform === activePlatform }" :key="platform" @click="selectPlatform(platform)">{{
                     platform
                 }}</button>
-            <div v-if="this.$store.getters.platformsFilterArray.length === 0"><span>No Platforms Available for
-                    Filtering</span>
-            </div>
         </template>
     </base-sidebar-widget>
 </template>

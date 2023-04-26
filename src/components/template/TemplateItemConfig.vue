@@ -14,7 +14,9 @@
         <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
 
     </div>
-    <!-- <template-list-local v-if="element.items" :list="element.items"></template-list-local> -->
+
+    //start here
+    <template-list-local v-if="label === 'items'" :element="element" :list="element.settings.items"></template-list-local>
 
     <div class="property--object" v-if="isObject && !skip.includes(label)">
         <label class="form-label object-label" :class="{ open: isVisible }" @click="toggleVisibility">{{ label }}:</label>
@@ -48,6 +50,8 @@ import store from '@/store';
 import blockModels from '../../models/block-models'
 import { v4 as uuidv4 } from 'uuid'
 import { computed, defineProps, inject, ref } from 'vue'
+import TemplateListLocal from './TemplateListLocal.vue'
+
 
 const id = uuidv4();
 
@@ -74,7 +78,7 @@ const props = defineProps({
     skip: {
         type: Array,
         default() {
-            return []
+            return ['items', 'platforms','blockType']
         }
     }
 })
