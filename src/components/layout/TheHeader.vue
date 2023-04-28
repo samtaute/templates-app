@@ -32,7 +32,7 @@ export default {
             return this.$store.getters.pageTitle;
         },
         hiddenPages(){
-            return this.$store.getters.activePages; 
+            return this.$store.getters.activeDirectoryKeys; 
             // return Object.keys(this.$store.getters.pageDirectory).filter((key) => !this.$store.getters.activePages.includes(key) && key !='workset'); 
         }
     },
@@ -47,7 +47,7 @@ export default {
             this.$store.dispatch('pushToActivePages', pageName)
         },
         deletePage(page){
-            let idx = this.$store.getters.activePages.indexOf(page); 
+            let idx = this.$store.getters.activeDirectoryKeys.indexOf(page); 
             //todo- avoid accessing store directly
             this.$store.state.activePages.splice(idx, 1)
         }

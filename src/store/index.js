@@ -91,7 +91,7 @@ const store = createStore({
         filters(state) {
             return state.filters
         },
-        activePages(state) {
+        activeDirectoryKeys(state) {
             return state.activePages;
         }
 
@@ -166,14 +166,8 @@ const store = createStore({
             state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item) => item.id != payload.targetId);
         },
         updateItemConfigValue(state, payload) {
-            // let payload = {
-            //     listName: listName,
-            //     elementId: props.element.id,
-            //     path: props.path,
-            //     value: evt.target.value, 
-            // }
-            let { listName, elementId, path, value } = payload;
-            let target = state.pageDirectory[listName]['blocks'].find((element => element.id === elementId));
+            let { path, value } = payload;
+            let target = state.pageDirectory;
             for (let i = 0; i < path.length; i++) {
                 if (i === path.length - 1) {
                     target[path[i]] = value;
@@ -182,20 +176,15 @@ const store = createStore({
                     target = target[path[i]]
                 }
             }
-            // for (let i of path){
-            //     if (typeof target[i] != 'object'){
-            //         target[i]=value; 
-            //         break; 
-            //     }
-            //     target = target[i]
-            // }
         },
+
         deleteItemConfig(state, payload) {
-            let { listName, elementId, path } = payload;
-            let target = state.pageDirectory[listName]['blocks'].find((element => element.id === elementId));
+            let { directoryKey, elementId, path } = payload;
+            let target = state.pageDirectory[directoryKey]['blocks'].find((element => element.id === elementId));
             for (let i = 0; i < path.length; i++) {
                 if (i === path.length - 1) {
                     delete target[path[i]];
+                    return; 
                 }
                 else {
                     target = target[path[i]]
@@ -205,6 +194,16 @@ const store = createStore({
         setActivePage(state, pageName) {
             state.activePreview = pageName;
         },
+        deleteTemplateObject(state, payload){
+            let target = state.pageDirectory; 
+            for (let i=0; i<payload.targetPath.length; i++){
+                if (i === payload.targetPath.length - 2 ){
+                    target[payload.targetPath[i]].splice(payload.targetPath[i+1],1) 
+                    return;  
+                }
+                target = target[payload.targetPath[i]]
+            }
+        }
     },
     actions: {
         activatePage(context, page) {
@@ -322,7 +321,9 @@ const store = createStore({
         //     targetList: props.pageName,
         //     targetId: id
         // }
-
+        deleteTemplateObject(context, payload){
+            context.commit('deleteTemplateObject', payload)
+        }
 
     }
 

@@ -18,7 +18,7 @@
                 <li v-for="sectionType of Object.keys(sectionDefaults)" :key="sectionType"><a class="dropdown-item"
                         @click="createSection(sectionType)" href="#">{{ sectionType }}</a></li>
             </ul>
-            <template-list pageName="workset"></template-list>
+            <template-list :directoryKey="'workset'"></template-list>
         </template>
 
     </base-sidebar-widget>
@@ -29,6 +29,7 @@
 import blockDefaults from '@/models/block-defaults';
 import sectionDefaults from '../models/section-defaults'
 import TemplateList from './template/TemplateList.vue';
+import { processItem } from '@/utilities/processing';
 
 
 export default {
@@ -62,9 +63,13 @@ export default {
             evt.target.blur();
         },
         createSection(sectionType){
+            let items = this.sectionDefaults[sectionType]; 
+            for (let item of items){
+                processItem(item); 
+            }
             let block = {
                 blockType: sectionType,
-                items: this.sectionDefaults[sectionType]
+                items: items,
             }
             this.$store.dispatch('createItem',block)
         }

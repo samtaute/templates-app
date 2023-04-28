@@ -2,7 +2,6 @@ import blockDefaults from './block-defaults'
 
 export default {
     discover1: [
-        blockDefaults.ticker_block,
         {
 
             blockType: "fotoscape_block",
@@ -33,7 +32,6 @@ export default {
         blockDefaults.ad_unit,
     ],
     discover2: [
-        blockDefaults.ticker_block,
         {
 
             blockType: "fotoscape_block",

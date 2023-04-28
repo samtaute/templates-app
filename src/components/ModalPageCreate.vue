@@ -2,7 +2,7 @@
     <section>
         <!-- Button trigger modal -->
         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#create-page-modal">
-            Template Assist&trade;
+            Template Assist
         </a>
         <!-- Modal -->
         <Teleport to="body">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="submit()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@ function createPage() {
     store.state.pageDirectory[pageName.value] = {
         blocks: blockList,
     }
-
+    store.state.activePages.push(pageName.value); 
 }
 
 // pageDirectory: {

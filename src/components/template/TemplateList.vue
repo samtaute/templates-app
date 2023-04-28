@@ -1,20 +1,17 @@
+<!-- test -->
 <template>
     <section class="list-container" v-if="isVisible">
-        <div class="list-header" v-if="pageName != 'workset'">
+        <div class="list-header" v-if="showHeader">
             <div class="header-buttons">
-                <button class="btn btn-outline-dark btn-sm" @click="loadPreview(pageName)"><img
+                <button class="btn btn-outline-dark btn-sm" @click="loadPreview(directoryKey)"><img
                         src='../../assets/preview.png'></button>
-                <button class="btn btn-outline-dark btn-sm" @click="minimizeList(pageName)"><img
+                <button class="btn btn-outline-dark btn-sm" @click="minimizeList(directoryKey)"><img
                         src='../../assets/minimize-icon.png'></button>
                 <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
                         src='../../assets/expand-collapse.png'></button>
             </div>
-            <label class="header-label">{{ pageName }}</label>
-
-
+            <label class="header-label">{{ directoryKey }}</label>
         </div>
-
-
         <draggable
             v-if="showList"
             v-model='itemList'
@@ -30,6 +27,7 @@
                 <template-item class="list-group-item" :class="{ 'not-draggable': !enabled }"
                     :element="element"
                     :index="index"
+                    :fullPath="updatePath(index)"
                     :collapseStatus="collapseStatus">
                 </template-item>
             </template>
@@ -44,7 +42,33 @@ import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 
 const store = useStore();
-const props = defineProps(['pageName'])
+
+
+const props = defineProps({
+    fullPath: {
+        type: Object,
+        default(rawProps) {
+            return [rawProps.directoryKey, 'blocks']
+        }
+    },
+    element: Object,
+    directoryKey: {
+        type: String,
+    },
+    showHeader: {
+        type: Boolean,
+        default: false
+    }
+})
+
+provide('directoryKey', props.directoryKey)
+
+function updatePath(idx) {
+    let arr = [...props.fullPath]
+    arr = ([...arr, idx])
+    // console.log(arr); 
+    return arr;
+}
 
 const collapseStatus = ref(false)
 const showList = ref(true);
@@ -66,37 +90,44 @@ function checkMove(e) {
 
 const itemList = computed({
     get() {
-        let list = store.getters.pageDirectory[props.pageName]['blocks'];
-        if (list.length > 0) {
-            return list;
-        } else return [{
-            blockType: "header_block",
-            settings: {
-                subheader: "Placeholder"
-            }
-        }]
+        var list;
+
+        let target = store.getters.pageDirectory;
+        for (let i = 0; i < props.fullPath.length; i++) {
+            target = target[props.fullPath[i]];
+        }
+
+        list = target;
+        if (list.length === 0) {
+            //to do - execute store action instead of editing directly
+            list.push({
+                blockType: "header_block",
+                settings: {
+                    subheader: "Placeholder"
+                }
+            });
+        }
+        return list;
     },
     set(newValue) {
-        let payload = {
-            pageHandle: props.pageName,
-            blocks: newValue,
+        //to do - execute store action instead of editing directly
+
+        let target = store.state.pageDirectory;
+        for (let i = 0; i < props.fullPath.length; i++) {
+            if (i === props.fullPath.length - 1) {
+                console.log(newValue)
+                target[props.fullPath[i]] = newValue;
+                return;
+            }
+            target = target[props.fullPath[i]];
         }
-        store.dispatch('replaceList', payload)
     }
 });
 
 const isVisible = ref(true);
 
-function deleteItem(id) {
-    const payload = {
-        targetList: props.pageName,
-        targetId: id
-    }
-    store.dispatch('deleteListItem', payload)
-}
-
 function minimizeList() {
-    // store.state.activePages = store.state.activePages.filter((page) => page != pageName);
+    // store.state.activePages = store.state.activePages.filter((page) => page != directoryKey);
     isVisible.value = !isVisible.value
 }
 
@@ -106,8 +137,6 @@ function toggleCollapse() {
 
 
 
-provide('deleteItem', deleteItem);
-provide('listName', props.pageName)
 
 
 

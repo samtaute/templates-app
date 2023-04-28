@@ -48,31 +48,7 @@ let displayedPages = computed(()=>{
 
 function activatePage(page){
     store.dispatch('activatePage',page)
-    // store.state.activePages.push(page)
 }
-
-// const discoverPages = computed(() => {
-//     return pageNames.value.filter((page) => {
-//         return page.includes('discover')
-//     })
-// });
-
-
-// const categoryPages = computed(() => {
-//     return pageNames.value.filter((page) => {
-//         let regex = /\d\d\d\d/;
-//         let val = !page.includes("discover") && !page.includes('app_') && !regex.test(page)
-//         return val;
-//     })
-// })
-// const dailybriefPages = computed(() => {
-//     let regex = /\d\d\d\d/;
-//     return pageNames.value.filter((page) => regex.test(page))
-// })
-
-// const appPages = computed(() => {
-//     return pageNames.value.filter((page) => page.includes('app_'))
-// })
 
 function truncate(pageTitle) {
     let shortened = pageTitle.replace("en__", "").replace(".json", "");

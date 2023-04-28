@@ -1,6 +1,7 @@
 <template>
     <div class="main-area">
-        <template-list v-for="page in directoryPages" :pageName="page" :key="page + Date.now()"></template-list>
+        <template-list v-for="dirKey in activeDirectoryKeys" :showHeader="true" :directoryKey="dirKey"
+            :key="dirKey + Date.now()"></template-list>
 
         <div class="dropdown">
             <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../../assets/Plus.svg"
@@ -11,46 +12,35 @@
                     <li><a class="dropdown-item" @click="createPage()" href="#">Empty Template</a></li>
                     <li><modal-create-page></modal-create-page></li>
                 </ul>
-   
+
             </div>
         </div>
         <preview-container></preview-container>
     </div>
 </template>
 
-<script>
+<script setup>
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
 import TemplateList from '../template/TemplateList.vue';
 import ModalCreatePage from '../ModalPageCreate.vue';
+import { computed } from 'vue'
+import {useStore} from 'vuex'
 
+const store = useStore(); 
 
-export default {
-    components: {
-        TemplateList,
-        PreviewContainer,
-        ModalCreatePage,
-    },
-    data(){
-        return {
-            count: 0
-        }
-    },
-    computed: {
-        directoryPages() {
-            return this.$store.getters.activePages
-            // return Object.keys(this.$store.getters.pageDirectory).filter(page => page!='workset')
-        }
-    },
-    methods:{
-        createPage(){
-            let filename = 'sandbox ' + this.count; 
-            this.$store.state.pageDirectory[filename] = {
-                blocks:[], 
-            }
-            this.$store.state.activePages.unshift(filename)
-            this.count++
-        }
+const activeDirectoryKeys = computed(() => {
+    return store.getters.activeDirectoryKeys;
+})
+let count = 0; 
+
+function createPage() {
+    let filename = 'sandbox ' + count;
+
+    store.state.pageDirectory[filename] = {
+        blocks: [],
     }
+    store.state.activePages.unshift(filename)
+    count++
 }
 </script>
 <style scoped>

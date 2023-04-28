@@ -1,93 +1,125 @@
 <template>
-    <div class="property" v-if="!skip.includes(label) && !isObject">
-        <label class="form-label">{{ label }}:</label>
-        <input
-            class="form-control"
-            :list="label + id"
-            :id="label + id + '-choice'"
-            :name="label + id + '-choice'"
-            :value="value"
-            @keydown.enter="updateConfigValue($event)">
-        <datalist v-if="configValueOptions" :id="label + id">
-            <option :key=option v-for="option of configValueOptions">{{ option }}</option>
-        </datalist>
-        <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
+    <section v-if="label != 'id'" class="property">
+        <component v-if="configComponent != 'default'" :is="configComponent" :element="element" :fullPath="fullPath" :label="label"
+            :value="value" :directoryKey="directoryKey"></component>
 
-    </div>
+<!-- default -->
+        <div v-if="configComponent === 'default' && !isObject" class="config-value">
+            <label class="form-label" :class="{ open: isVisible }" @click="toggleVisibility">{{ label }}:</label>
+            <a href="#" v-if="isObject" role="button" id="newSettingDropdown" data-bs-toggle="dropdown"><img
+                    src="../../assets/Plus.svg"
+                    class="title-image">
+            </a>
+            <input
+                class="form-control"
+                :list="label + id"
+                :id="label + id + '-choice'"
+                :name="label + id + '-choice'"
+                :value="value"
+                @keydown.enter="updateConfigValue($event)">
+            <datalist
+                v-if="configValueOptions"
+                :id="label + id">
+                <option v-for="option of configValueOptions" :key=option>{{ option }}</option>
+            </datalist>
+            <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
+        </div>
+        <!-- config object -->
+        <div v-if="configComponent === 'default' && isObject" class="config-value--object">
+            <label class="form-label" :class="{ open: isVisible }" @click="toggleVisibility">{{ label }}:</label>
+            <a href="#" role="button" id="newSettingDropdown" data-bs-toggle="dropdown"><img
+                    src="../../assets/Plus.svg"
+                    class="title-image">
+            </a>
+            <ul v-if="addConfigOptions && addConfigOptions.length > 0" class="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1">
+                <li v-for="config of addConfigOptions" :key="config"><a class="dropdown-item"
+                        @click.prevent="addConfig(config)" href="#"> {{ config }}</a></li>
+            </ul>
+            <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
+            <!-- config object -->
+            <div v-if="isVisible">
+                <template-item-config
+                    v-for="key in Object.keys(value)"
+                    :label="key"
+                    :element="element"
+                    :key="key"
+                    :fullPath="updateFullPath(key)"
+                    :value="value[key]"
+                    :indent="indent + .5">
+                </template-item-config>
+            </div>
 
-    //start here
-    <template-list-local v-if="label === 'items'" :element="element" :list="element.settings.items"></template-list-local>
 
-    <div class="property--object" v-if="isObject && !skip.includes(label)">
-        <label class="form-label object-label" :class="{ open: isVisible }" @click="toggleVisibility">{{ label }}:</label>
-        <a href="#" v-if="isObject" role="button" id="newSettingDropdown" data-bs-toggle="dropdown"><img
-                src="../../assets/Plus.svg"
-                class="title-image">
-        </a>
-        <ul v-if="addConfigOptions && addConfigOptions.length>0" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li v-for="config of addConfigOptions" :key="config"><a class="dropdown-item"
-                    @click.prevent="addConfig(config)" href="#"> {{ config }}</a></li>
-        </ul>
-        <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
-
-        <div v-if="isVisible">
-            <template-item-config
-                v-for="property in Object.keys(value)"
-                :label="property"
-                :element="element"
-                :key="property"
-                :path="updatePath(property)"
-                :indent="indent + 1"
-                :value="value[property]">
-            </template-item-config>
         </div>
 
-    </div>
+    </section>
 </template>
 
 <script setup>
 import store from '@/store';
 import blockModels from '../../models/block-models'
 import { v4 as uuidv4 } from 'uuid'
-import { computed, defineProps, inject, ref } from 'vue'
-import TemplateListLocal from './TemplateListLocal.vue'
-
+import { computed, defineProps, inject, ref} from 'vue'
+import TemplateItemPlatforms from './TemplateItemPlatforms.vue'
+import TemplateList from './TemplateList.vue'
+import TemplateItemConfigHeader from './TemplateItemConfigHeader.vue'
 
 const id = uuidv4();
 
-const listName = inject('listName');
+const props = defineProps({
+    label: String,
+    fullPath: Object,
+    value: [String, Object, Number, Boolean],
+    element: Object,
+    indent: Number,
+})
+
+const directoryKey = inject('directoryKey');
+
+function updateFullPath(key){
+    let arr = [...props.fullPath]
+    arr = [...arr, key]
+    return arr;
+}
 
 const isVisible = ref(true)
 function toggleVisibility() {
     isVisible.value = !isVisible.value;
 }
 
+const configComponent = computed(() => {
+    let config;
+    switch (props.label) {
+        case 'items':
+            config = TemplateList
+            break;
+        case 'platforms':
+            config = TemplateItemPlatforms
+            break;
+        case 'excludePlatforms':
+            config = TemplateItemPlatforms
+            break;
+        // case 'control':
+        //     config = TemplateList
+        //     break;
+        // case 'variant':
+        //     config = TemplateList
+        //     break;
+        case 'blockType':
+            config = TemplateItemConfigHeader
+            break;
+        default:
+            config = 'default'
+    }
+    return config
+})
+
 var configObject = blockModels[props.element.blockType];
 // onMounted(() => {
 //     configObject = ref(blockModels[props.element.blockType])
 // });
 
-
-const props = defineProps({
-    label: String,
-    value: [String, Object, Number, Boolean],
-    index: Number,
-    element: Object,
-    path: Object, 
-    indent: Number,
-    skip: {
-        type: Array,
-        default() {
-            return ['items', 'platforms','blockType']
-        }
-    }
-})
-
-function updatePath(label){
-    let newArray = [...props.path]
-    newArray.push(label)
-    return newArray; 
-}
 
 const isObject = computed(() => {
     return typeof props.value === 'object' && props.value != null;
@@ -154,14 +186,12 @@ const indentString = computed(() => {
 
 function updateConfigValue(evt) {
     let payload = {
-        listName: listName,
+        directoryKey: directoryKey,
         elementId: props.element.id,
-        path: props.path,
-        value: evt.target.value, 
+        path: props.fullPath,
+        value: evt.target.value,
     }
-    store.dispatch('setItemConfigValue', payload)
-
-
+    store.dispatch('setItemConfigValue', payload);
     // let temp = props.parent;
     // temp[props.label] = evt.target.value;
     evt.target.blur();
@@ -170,16 +200,16 @@ function updateConfigValue(evt) {
 
 function addConfig(label) {
 
-    let copyPath = [...props.path]
-    copyPath.push(label); 
+    let copyPath = [...props.fullPath]
+    copyPath.push(label);
 
 
-    const targetConfig = findNestedConfigObj(configObject, label); 
-    let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : ""; 
+    const targetConfig = findNestedConfigObj(configObject, label);
+    let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : "";
 
 
     let payload = {
-        listName: listName,
+        directoryKey: directoryKey,
         elementId: props.element.id,
         path: copyPath,
         value: value,
@@ -189,9 +219,9 @@ function addConfig(label) {
 }
 function deleteConfig() {
     let payload = {
-        listName: listName,
+        directoryKey: directoryKey,
         elementId: props.element.id,
-        path: props.path,
+        path: props.fullPath,
     }
     store.dispatch('deleteItemConfig', payload)
 }
@@ -269,5 +299,10 @@ input {
 .delete-button:hover {
     opacity: 1;
     cursor: pointer;
+}
+
+.config-value {
+    display: flex;
+    align-items: center;
 }
 </style>

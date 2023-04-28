@@ -1,36 +1,39 @@
 <template>
-    <div v-if="!element.platforms && !element.excludePlatforms" class="platformOptionsContainer">
-        <a class="platformsOption platformsOption--include" @click="addPlatformsOption('include')">include</a> <a
-            class="platformsOption platformsOption--exclude"
-            @click="addExcludes(addPlatformsOption('exclude'))">exclude</a>
-    </div>
-    <div v-if="element.platforms" class="platforms">
-        <label class="platforms__label">Platforms: </label>
-        <div class="platforms__list">
-            <span class="platform platform--badge badge bg-primary" v-for="platform in element.platforms"
-                @click="removePlat(platform)" :key="platform">{{
-                    platform }}</span>
-            <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
-                :id="'platformsList' + element.id" placeHolder="..add">
-            <datalist :id="'unusedPlatforms' + element.id">
-                <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
-            </datalist>
+    <section>
+        <div v-if="!element.platforms && !element.excludePlatforms" class="platformOptionsContainer">
+            <a class="platformsOption platformsOption--include" @click="addPlatformsOption('include')">include</a> <a
+                class="platformsOption platformsOption--exclude"
+                @click="addExcludes(addPlatformsOption('exclude'))">exclude</a>
         </div>
-    </div>
-    <div v-if="element.excludePlatforms" class="platforms">
-        <label class="platforms__label">Exclude:</label>
-        <div class="platforms__list">
-            <span class="platform platform--badge badge bg-primary" v-for="platform in element.excludePlatforms"
-                @click="removePlat(platform)" :key="platform">{{
-                    platform }}</span>
-            <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
-                :id="'platformsList' + element.id" placeHolder="..add">
-            <datalist :id="'unusedPlatforms' + element.id">
-                <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
-            </datalist>
+        <div v-if="element.platforms" class="platforms">
+            <label class="platforms__label">Platforms: </label>
+            <div class="platforms__list">
+                <span class="platform platform--badge badge bg-primary" v-for="platform in element.platforms"
+                    @click="removePlat(platform)" :key="platform">{{
+                        platform }}</span>
+                <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
+                    :id="'platformsList' + element.id" placeHolder="..add">
+                <datalist :id="'unusedPlatforms' + element.id">
+                    <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
+                </datalist>
+            </div>
+        </div>
+        <div v-if="element.excludePlatforms" class="platforms">
+            <label class="platforms__label">Exclude:</label>
+            <div class="platforms__list">
+                <span class="platform platform--badge badge bg-primary" v-for="platform in element.excludePlatforms"
+                    @click="removePlat(platform)" :key="platform">{{
+                        platform }}</span>
+                <input class="platform--input platform" @keyup.enter="enterPlat" :list="'unusedPlatforms' + element.id"
+                    :id="'platformsList' + element.id" placeHolder="..add">
+                <datalist :id="'unusedPlatforms' + element.id">
+                    <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
+                </datalist>
+            </div>
+
         </div>
 
-    </div>
+    </section>
 </template>
 <script>
 import { processItem } from '@/utilities/processing';
@@ -42,10 +45,10 @@ export default {
             let allPlatforms = this.$store.getters.allPlatforms;
             var blockPlatforms
 
-            if(this.element.platforms){
+            if (this.element.platforms) {
                 blockPlatforms = this.element.platforms;
             }
-            if(this.element.excludePlatforms){
+            if (this.element.excludePlatforms) {
                 blockPlatforms = this.element.excludePlatforms;
             }
 
@@ -62,11 +65,11 @@ export default {
             if (this.unusedPlatforms.includes(evt.target.value)) {
                 const returnBlock = this.element;
 
-                if(this.element.platforms){
+                if (this.element.platforms) {
                     returnBlock.platforms.push(evt.target.value);
                 }
 
-                if(this.element.excludePlatforms){
+                if (this.element.excludePlatforms) {
                     returnBlock.excludePlatforms.push(evt.target.value);
 
                 }
@@ -76,14 +79,14 @@ export default {
                 evt.target.value = ''
             }
         },
-        
+
         removePlat(platform) {
             const returnBlock = this.element;
 
-            if(returnBlock.platforms){
+            if (returnBlock.platforms) {
                 returnBlock.platforms = returnBlock.platforms.filter((plat) => plat != platform)
             }
-            if(returnBlock.excludePlatforms){
+            if (returnBlock.excludePlatforms) {
                 returnBlock.excludePlatforms = returnBlock.excludePlatforms.filter((plat) => plat != platform)
 
             }
@@ -129,8 +132,9 @@ export default {
     margin: 0px 4px;
 
 }
-.platforms__label{
-    font-size: .9rem; 
+
+.platforms__label {
+    font-size: .9rem;
 }
 
 .platformOptionsContainer {
@@ -138,17 +142,19 @@ export default {
     padding-left: 2rem;
 }
 
-.platformsOption{
-    padding: 2px; 
-    cursor: pointer; 
+.platformsOption {
+    padding: 2px;
+    cursor: pointer;
 }
 
-.platformsOption--include{
+.platformsOption--include {
     font: green;
 }
-.platformsOption--exclude{
+
+.platformsOption--exclude {
     font: red;
 }
+
 .platform--badge {
     background: lightgreen;
     display: inline-flex;

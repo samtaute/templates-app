@@ -1,53 +1,52 @@
 <template>
-    <section class="block-container" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]" v-if="!isFiltered">
-        <div class="header">
-            <h4> {{ title }}</h4>
-            <div class="header__buttons">
-                <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
-                        src='../../assets/delete.png'></button>
-                <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success"><img
-                        style="width: 18px" src='../../assets/duplicate-icon.png'></button>
-            </div>
+    <section class="block-container" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]"
+        v-if="!isFiltered">
+        <div class="header__buttons">
+            <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
+                    src='../../assets/delete.png'></button>
+            <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success"><img
+                    style="width: 18px" src='../../assets/duplicate-icon.png'></button>
         </div>
-        <template-item-platforms :element=element></template-item-platforms>
-
-        <div v-show="!collapseStatus">
-            <template-list-local v-if="element.items" :element="element" :list="element.items"></template-list-local>
-
-            <template-item-config
-            v-for="(value, key, index) in element"
+        <template-item-config
+            v-for="(value, key) in element"
             :label="key"
-            :skip="skipProperties"
             :element="element"
-            :path="[key]"
             :key="key"
-            :indent="0"
             :value="value"
-            :index="index">
+            :fullPath = "updatePath(key)"
+            :indent="1">
         </template-item-config>
-        </div>
-
-
-
     </section>
 </template>
 <script setup>
-import { defineProps, inject, computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import { useStore } from 'vuex'
-import TemplateItemPlatforms from './TemplateItemPlatforms.vue'
-import TemplateListLocal from './TemplateListLocal.vue'
+
+const store = useStore();
 
 
 
 const props = defineProps({
     element: Object,
-    collapseStatus: Boolean, 
+    index: Number,
+    fullPath: Object,
 });
-const store = useStore();
 
-const deleteItem = inject('deleteItem')
+function updatePath(key){
+    let temp = [...props.fullPath]
+    return [...temp, key]
+}
+// const directoryKey = inject('directoryKey')
 
-const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items', 'id']
+// const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items', 'id']
+
+function deleteItem(id) {
+    const payload = {
+        targetPath: props.fullPath,
+        targetId: id
+    }
+    store.dispatch('deleteTemplateObject', payload)
+}
 
 function duplicateBlock() {
     let clone = JSON.parse(JSON.stringify(props.element));
@@ -56,21 +55,18 @@ function duplicateBlock() {
 
 }
 
-const filterActive = computed(()=>{
-    return store.getters.filterActive; 
+const filterActive = computed(() => {
+    return store.getters.filterActive;
 })
 
-const title = computed(() => {
-    return props.element.blockType;
-})
 
 const elementHasActivePlatform = computed(() => {
     let activePlatform = store.getters.activePlatform;
-    if(activePlatform === 'default'){
-        if(!props.element.platforms) {
-        return true;
+    if (activePlatform === 'default') {
+        if (!props.element.platforms) {
+            return true;
         }
-        else return false; 
+        else return false;
     }
     if (!activePlatform || activePlatform === 'ALL') {
         return true;
@@ -99,16 +95,16 @@ const isHighlighted = computed(() => {
     return true;
 });
 
-const isFiltered = computed(()=>{
-    if(store.getters.filterActive){
+const isFiltered = computed(() => {
+    if (store.getters.filterActive) {
         return !isHighlighted.value
     }
-    else return false; 
+    else return false;
 })
 
 //takes an element and recursively searches it for matching configKey/configValue. Returns true if match is found.
 function checkFilter(element, configKey, configValue) {
-    if (configKey === 'platform'){
+    if (configKey === 'platform') {
         return elementHasActivePlatform.value
     }
     let elementKeys = Object.keys(element);
@@ -140,26 +136,18 @@ function checkFilter(element, configKey, configValue) {
 }
 
 .section_block,
-.ticker_block {
+.ticker_block,
+.experiment_block {
     background: lightblue;
     border: .6rem solid lightblue;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    height: 2.5rem;
-    align-items: center;
-    /* background-color: #f1f3f4; */
-    padding: 0px .5rem;
-    vertical-align: center;
-}
-
-h4 {
-    margin: 0;
-}
-
 .highlighted {
     background-color: yellow;
+}
+
+.header__buttons {
+    position: absolute;
+    right: 1rem;
 }
 </style>
