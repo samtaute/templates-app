@@ -1,5 +1,5 @@
 <template>
-    <section v-if="label != 'id'" class="property">
+    <section v-if="label != 'uid'" class="property">
         <component v-if="configComponent != 'default'" :is="configComponent" :element="element" :fullPath="fullPath" :label="label"
             :value="value" :directoryKey="directoryKey"></component>
 
@@ -100,12 +100,12 @@ const configComponent = computed(() => {
         case 'excludePlatforms':
             config = TemplateItemPlatforms
             break;
-        // case 'control':
-        //     config = TemplateList
-        //     break;
-        // case 'variant':
-        //     config = TemplateList
-        //     break;
+        case 'control':
+            config = TemplateList
+            break;
+        case 'variant':
+            config = TemplateList
+            break;
         case 'blockType':
             config = TemplateItemConfigHeader
             break;
@@ -218,12 +218,7 @@ function addConfig(label) {
     store.dispatch('setItemConfigValue', payload)
 }
 function deleteConfig() {
-    let payload = {
-        directoryKey: directoryKey,
-        elementId: props.element.id,
-        path: props.fullPath,
-    }
-    store.dispatch('deleteItemConfig', payload)
+    store.dispatch('deleteItemConfig', props.fullPath)
 }
 
 </script>

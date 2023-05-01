@@ -148,6 +148,6 @@ function checkFilter(element, configKey, configValue) {
 
 .header__buttons {
     position: absolute;
-    right: 1rem;
+    right: .1rem;
 }
 </style>

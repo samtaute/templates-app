@@ -33,7 +33,7 @@ async function getFilenames() {
     return filenames;
 }
 
-async function getRawFile(filename) {
+export async function getRawFile(filename) {
     let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/files/content%2Fsrc%2Fraw%2Fpages%2Fcontent_pages%2F${filename}/raw?ref=master`;
     const rawFile = await fetch(requestUrl, {
         method: 'GET',

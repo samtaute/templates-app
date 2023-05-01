@@ -2,6 +2,7 @@
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import { processPage, processItem } from '../utilities/processing'
+import { getRawFile } from '@/import';
 
 const store = createStore({
     state() {
@@ -109,7 +110,9 @@ const store = createStore({
             state.activePages.unshift(pageName)
         },
         back(state) {
+            console.log('back')
             if (state.editHistory.length > 0) {
+                console.log('edit')
                 state.redoStack.push(JSON.parse(JSON.stringify(state.pageDirectory)));
                 state.pageDirectory = state.editHistory.pop();
             }
@@ -178,28 +181,29 @@ const store = createStore({
             }
         },
 
-        deleteItemConfig(state, payload) {
-            let { directoryKey, elementId, path } = payload;
-            let target = state.pageDirectory[directoryKey]['blocks'].find((element => element.id === elementId));
-            for (let i = 0; i < path.length; i++) {
-                if (i === path.length - 1) {
-                    delete target[path[i]];
-                    return; 
+        deleteItemConfig(state, fullPath) {
+            let target = state.pageDirectory;
+            for (let i = 0; i < fullPath.length; i++) {
+                if (i === fullPath.length - 1) {
+                    delete target[fullPath[i]];
+                    return;
                 }
                 else {
-                    target = target[path[i]]
+                    target = target[fullPath[i]]
                 }
             }
         },
         setActivePage(state, pageName) {
             state.activePreview = pageName;
         },
-        deleteTemplateObject(state, payload){
-            let target = state.pageDirectory; 
-            for (let i=0; i<payload.targetPath.length; i++){
-                if (i === payload.targetPath.length - 2 ){
-                    target[payload.targetPath[i]].splice(payload.targetPath[i+1],1) 
-                    return;  
+        deleteTemplateObject(state, payload) {
+            let target = state.pageDirectory;
+            for (let i = 0; i < payload.targetPath.length; i++) {
+                if (i === payload.targetPath.length - 2) {
+                    if (Array.isArray(target[payload.targetPath[i]])) {
+                        target[payload.targetPath[i]].splice(payload.targetPath[i + 1], 1)
+                        return;
+                    }
                 }
                 target = target[payload.targetPath[i]]
             }
@@ -208,6 +212,10 @@ const store = createStore({
     actions: {
         activatePage(context, page) {
             processPage(context.getters.pageDirectory[page]);
+
+            getRawFile(page)
+                .then((rawFile)=>context.state.pageDirectory[page]=rawFile)
+
             //check if update is avaialable
             context.commit('pushToActivePages', page);
         },
@@ -321,7 +329,7 @@ const store = createStore({
         //     targetList: props.pageName,
         //     targetId: id
         // }
-        deleteTemplateObject(context, payload){
+        deleteTemplateObject(context, payload) {
             context.commit('deleteTemplateObject', payload)
         }
 

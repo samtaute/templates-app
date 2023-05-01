@@ -31,8 +31,8 @@ export function truncateFilename(pageTitle) {
 
 export function processItem(rawBlock) {
     //add uuid if none exists
-    if (!rawBlock.id) {
-        rawBlock.id = uuidv4();
+    if (!rawBlock.uid) {
+        rawBlock.uid = uuidv4();
     }
 
     //Add platforms and excludePlatforms to filterArray. 
@@ -68,8 +68,8 @@ export function processItem(rawBlock) {
 function sortKeys(item) {
     var key = Object.keys(item)
         .sort((key1, key2) => {
-            if (key1 === 'id') return -1;
-            else if (key2 === 'id') return +1;
+            if (key1 === 'uid') return -1;
+            else if (key2 === 'uid') return +1;
             else return 0;
         });
     var temp = {};

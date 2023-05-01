@@ -12,6 +12,10 @@
             </div>
             <label class="header-label">{{ directoryKey }}</label>
         </div>
+        <div class="list-header" v-if="label">
+            {{ label }}
+        </div>
+
         <draggable
             v-if="showList"
             v-model='itemList'
@@ -52,6 +56,7 @@ const props = defineProps({
         }
     },
     element: Object,
+    label: String,
     directoryKey: {
         type: String,
     },
@@ -97,27 +102,41 @@ const itemList = computed({
             target = target[props.fullPath[i]];
         }
 
-        list = target;
-        if (list.length === 0) {
-            //to do - execute store action instead of editing directly
-            list.push({
-                blockType: "header_block",
-                settings: {
-                    subheader: "Placeholder"
-                }
-            });
+        if (Array.isArray(target)) {
+            list = target;
+            if (list.length === 0) {
+                //to do - execute store action instead of editing directly
+                list.push({
+                    blockType: "header_block",
+                    settings: {
+                        subheader: "Placeholder"
+                    }
+                });
+            }
+        } else {
+            list = [target]
         }
+
         return list;
     },
     set(newValue) {
         //to do - execute store action instead of editing directly
-
+        store.dispatch('registerDirectorySnapshot')
         let target = store.state.pageDirectory;
         for (let i = 0; i < props.fullPath.length; i++) {
             if (i === props.fullPath.length - 1) {
-                console.log(newValue)
-                target[props.fullPath[i]] = newValue;
-                return;
+                if (Array.isArray(target[props.fullPath[i]])) {
+                    target[props.fullPath[i]] = newValue;
+                    return
+                }
+                else {
+                    if (newValue.length === 0) {
+                        return;
+                    }
+                    let currValue = target[props.fullPath[i]];
+                    target[props.fullPath[i]] = newValue[0] === currValue ? newValue[1] : newValue[0];
+                    return;
+                }
             }
             target = target[props.fullPath[i]];
         }
