@@ -1,5 +1,12 @@
 <template>
     <div class="main-area">
+        <div class=alert-container>
+            <div v-for='alert of alerts' :key="alert" class="alert fade show" :class="alert.type" role="alert">
+                {{ alert.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        </div>
         <template-list v-for="dirKey in activeDirectoryKeys" :showHeader="true" :directoryKey="dirKey"
             :key="dirKey + Date.now()"></template-list>
 
@@ -24,14 +31,14 @@ import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
 import TemplateList from '../template/TemplateList.vue';
 import ModalCreatePage from '../ModalPageCreate.vue';
 import { computed } from 'vue'
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
 
-const store = useStore(); 
+const store = useStore();
 
 const activeDirectoryKeys = computed(() => {
     return store.getters.activeDirectoryKeys;
 })
-let count = 0; 
+let count = 0;
 
 function createPage() {
     let filename = 'sandbox ' + count;
@@ -42,8 +49,18 @@ function createPage() {
     store.state.activePages.unshift(filename)
     count++
 }
+
+const alerts = computed(() => {
+    return store.state.alerts;
+})
 </script>
 <style scoped>
+.alert-container {
+    position: absolute;
+    width: 30rem;
+    z-index: 999;
+}
+
 .main-area {
     display: flex;
     flex-wrap: nowrap;
@@ -51,5 +68,6 @@ function createPage() {
     flex-grow: 1;
     margin-left: 28rem;
     padding-left: 1.6rem;
+    position: relative;
 }
 </style>

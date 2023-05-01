@@ -1,7 +1,7 @@
 <template>
     <header class="header-container">
         <div class="header-icon">
-            Templates
+           Templates
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
             <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
@@ -21,6 +21,7 @@ export default {
         return {
             selectedFile: null,
             truncateFilename: truncateFilename, 
+            branchInput: ''
         }
     },
 
@@ -85,6 +86,8 @@ export default {
     align-items: center;
     padding: 2px;
     height: 2rem;
+    column-gap: .25rem; 
+    height: 100%;
 }
 
 .header-buttons {
@@ -106,8 +109,6 @@ export default {
     width: 100%;
     height: 2.4rem;
     display: flex;
-
-
 }
 .page-button{
     width: 8rem; 

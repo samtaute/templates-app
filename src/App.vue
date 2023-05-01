@@ -26,7 +26,7 @@ export default {
     if(localStorage.getItem('pageDirectory')){
       this.$store.state.pageDirectory = JSON.parse(localStorage.getItem('pageDirectory'))
     }else{
-      loadNeptuneRepo(); 
+      loadNeptuneRepo('master'); 
     }
 
 

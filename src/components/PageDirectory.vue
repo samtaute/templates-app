@@ -5,9 +5,15 @@
         </template>
         <template #content>
             <section class="directory">
-                <input type="text" v-model="searchString" placeholder="search for file..." class="form-control directory-search">
+                <div class="branch-input">
+                    <input class='form-control branch-input' v-model="branchInput" placeholder="Input branch name (optional)"><button
+                    class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Submit</button>
+                </div>
+                <input type="text" v-model="searchString" placeholder="search for file..."
+                    class="form-control directory-search">
                 <div class="button-container">
-                    <button type="button" class="badge bg-primary" v-for="page of displayedPages" :key="page" @click="activatePage(page)"><span>{{ truncate(page) }}</span></button>
+                    <button type="button" class="badge bg-primary" v-for="page of displayedPages" :key="page"
+                        @click="activatePage(page)"><span>{{ truncate(page) }}</span></button>
                 </div>
                 <!-- <div class="button-container">
                     <div class="button-column">
@@ -28,26 +34,29 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { loadNeptuneRepo } from '@/import';
 const store = useStore();
+
+const branchInput = ref(''); 
 
 const pageDirectory = computed(() => {
     return store.getters.pageDirectory;
 });
 
-const searchString = ref(""); 
+const searchString = ref("");
 
 let pageNames = computed(() => {
     return Object.keys(pageDirectory.value)
 });
 
-let displayedPages = computed(()=>{
-    return pageNames.value.filter((page)=>{
-        return page.includes(searchString.value); 
+let displayedPages = computed(() => {
+    return pageNames.value.filter((page) => {
+        return page.includes(searchString.value);
     })
 })
 
-function activatePage(page){
-    store.dispatch('activatePage',page)
+function activatePage(page) {
+    store.dispatch('activatePage', page)
 }
 
 function truncate(pageTitle) {
@@ -56,13 +65,16 @@ function truncate(pageTitle) {
 }
 
 
-
+function updateBranch(branchName) {
+    loadNeptuneRepo(branchName);
+}
 
 </script>
-<style> .directory {
+<style scoped> 
+.directory {
      display: flex;
      flex-direction: column;
-     row-gap: .3rem; 
+     row-gap: .3rem;
  }
 
  .button-container {
@@ -72,6 +84,9 @@ function truncate(pageTitle) {
      width: 24rem;
      flex-wrap: wrap;
 
+ }
+ .branch-input{
+    display: flex;
  }
 
  /* span {
@@ -84,5 +99,4 @@ function truncate(pageTitle) {
      background: lightblue;
      width: 6.5rem;
      /* height: 30rem; */
- }
-</style>
+ }</style>

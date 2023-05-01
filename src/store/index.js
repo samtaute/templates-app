@@ -37,7 +37,7 @@ const store = createStore({
             editHistory: [],
             redoStack: [],
 
-
+            alerts: [],
         }
 
     },
@@ -214,9 +214,8 @@ const store = createStore({
             processPage(context.getters.pageDirectory[page]);
 
             getRawFile(page)
-                .then((rawFile)=>context.state.pageDirectory[page]=rawFile)
-
-            //check if update is avaialable
+                .then((rawFile) => context.state.pageDirectory[page] = rawFile)
+                
             context.commit('pushToActivePages', page);
         },
         deletePage(context, page) {
