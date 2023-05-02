@@ -3,24 +3,17 @@
         <block-workset></block-workset>
         <filter-widget></filter-widget>
         <page-directory></page-directory>
+        <commit-station></commit-station>
     </section>
 </template>
-<script>
+<script setup>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import BlockWorkset from '../BlockWorkset.vue'
 import FilterWidget from '../FilterWidget.vue'
 import PageDirectory from '../PageDirectory.vue'
+import CommitStation from '../CommitStation.vue'
 
 
-export default {
-
-    components: {
-        // SidebarJsonManager,
-        BlockWorkset,
-        FilterWidget,
-        PageDirectory,
-    },
-}
 
 
 </script>

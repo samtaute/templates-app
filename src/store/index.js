@@ -16,12 +16,13 @@ const store = createStore({
 
             activePages: [],
 
+            revisedPages: [],
+
 
             platforms: startingPlatforms,
             platformsFilterArray: [],
 
             filters: {
-                platform: null,
                 blockType: null,
                 category: null,
                 layout: null,
@@ -38,10 +39,17 @@ const store = createStore({
             redoStack: [],
 
             alerts: [],
+            currentBranch: 'master',
         }
 
     },
     getters: {
+        currentBranch(state) {
+            return state.currentBranch;
+        },
+        revisedPages(state) {
+            return state.revisedPages;
+        },
         activePreview(state) {
             return state.activePreview;
         },
@@ -99,6 +107,11 @@ const store = createStore({
 
     },
     mutations: {
+        pushToRevisedPages(state, page) {
+            if (!state.revisedPages.includes(page)) {
+                state.revisedPages.push(page);
+            }
+        },
         deletePage(state, page) {
             delete state.pageDirectory[page]
         },
@@ -210,13 +223,90 @@ const store = createStore({
         }
     },
     actions: {
+        // let payload = {
+        //     action: update, delete, add
+        //     path: //path to key that needs to be change. The first value in array will be the directory key 
+        //     newValue: //updatedValue
+        // }
+        updateDirectory(context, payload) {
+            let { action, path, value } = payload;
+            let directoryKey = path[0];
+
+            context.state.pageDirectory[directoryKey]['modified'] = true;
+            context.dispatch('registerDirectorySnapshot')
+
+            if (!context.getters.revisedPages.includes(directoryKey)) {
+                context.commit('pushToRevisedPages', directoryKey)
+            }
+            let target = context.getters.pageDirectory;
+            switch (action) {
+                case 'set':
+                    for (let i = 0; i < path.length; i++) {
+                        if (i === path.length - 1) {
+                            target[path[i]] = value;
+                        }
+                        else {
+                            target = target[path[i]]
+                        }
+                    }
+                    break;
+                case 'delete':
+                    for (let i = 0; i < payload.targetPath.length; i++) {
+                        if (i === payload.targetPath.length - 2) {
+                            if (Array.isArray(target[payload.targetPath[i]])) {
+                                target[payload.targetPath[i]].splice(payload.targetPath[i + 1], 1)
+                                return;
+                            }
+                        }
+                        target = target[payload.targetPath[i]]
+                    }
+                    break;
+                case 'setList':
+                    for (let i = 0; i < path.length; i++) {
+                        if (i === path.length - 1) {
+                            if (Array.isArray(target[path[i]])) {
+                                target[path[i]] = value;
+                                return
+                            }
+                            else {
+                                if (value.length === 0) {
+                                    return;
+                                }
+                                let currValue = target[path[i]];
+                                target[path[i]] = value[0] === currValue ? value[1] : value[0];
+                                return;
+                            }
+                        }
+                        target = target[path[i]];
+                    }
+                    break;
+            }
+        },
         activatePage(context, page) {
             processPage(context.getters.pageDirectory[page]);
 
-            getRawFile(page)
-                .then((rawFile) => context.state.pageDirectory[page] = rawFile)
-                
+            if (context.getters.pageDirectory[page]['modified']) {
+                showConfirmation("Do you want to override changes?").then((confirmed) => {
+                    if (confirmed) {
+                        getRawFile(page, context.state.currentBranch)
+                            .then((rawFile) => {
+                                context.state.pageDirectory[page] = rawFile
+                            });
+                    }
+                })
+            }
             context.commit('pushToActivePages', page);
+
+            function showConfirmation(message) {
+                return new Promise((resolve) => {
+                    var result = confirm(message);
+                    if (result) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            }
         },
         deletePage(context, page) {
             context.dispatch('registerDirectorySnapshot')
@@ -331,6 +421,7 @@ const store = createStore({
         deleteTemplateObject(context, payload) {
             context.commit('deleteTemplateObject', payload)
         }
+
 
     }
 

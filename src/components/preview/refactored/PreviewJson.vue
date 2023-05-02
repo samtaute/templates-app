@@ -4,8 +4,9 @@
             <div class="blue-button-container">
                 <button type="button" class="btn btn-primary btn-sm blue-button" @click="blocksOnly = false">Full
                     Page</button>
-                <button type="button" class="btn btn-primary btn-sm .blue-button" @click="blocksOnly = true">Blocks
+                <button type="button" class="btn btn-primary btn-sm blue-button" @click="blocksOnly = true">Blocks
                     Only</button>
+                <button @click="setFile(pageJson, store.getters.activePreview, store.state.currentBranch)" type="button" class="btn btn-primary btn-sm blue-button">Update</button>
             </div>
             <button class="btn btn-outline-dark btn-sm clipboard-img" @click="copyToClipboard(pageJson)" type="button"><img
                     src='../../../assets/clipboard.png'></button>
@@ -19,17 +20,14 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
+import { updateFile } from '@/import';
 
 const blocksOnly = ref(true)
 
 const store = useStore();
-
 const pageJson = computed(() => {
     var json;
     if (store.getters.pageDirectory[store.getters.activePreview]) {
-
-        console.log(store.getters.activePreview)
-
         json = JSON.parse(JSON.stringify(store.getters.pageDirectory[store.getters.activePreview]));
 
 
@@ -76,6 +74,12 @@ function downloadFile(jsonString) {
     // window.URL.revokeObjectURL(textFile);
     textFile = URL.createObjectURL(data);
     return textFile;
+}
+function setFile(json, filename, branch){
+
+    console.log(json); 
+    console.log(filename); 
+    updateFile(json, filename, branch); 
 }
 
 

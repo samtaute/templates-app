@@ -38,16 +38,44 @@ const store = useStore();
 const activeDirectoryKeys = computed(() => {
     return store.getters.activeDirectoryKeys;
 })
-let count = 0;
 
 function createPage() {
-    let filename = 'sandbox ' + count;
 
-    store.state.pageDirectory[filename] = {
-        blocks: [],
+    promptUser('Name your page')
+        .then((filename) => {
+            filename = filename.toLowerCase(); 
+            if (checkFilename(filename)) {
+                if (!store.state.pageDirectory[filename]) {
+                    store.state.pageDirectory[filename] = {
+                        blocks: [],
+                    }
+                    store.state.activePages.unshift(filename)
+                } else {
+                    alert('That file name is already in use')
+                }
+            }
+        })
+
+    function checkFilename(filename) {
+        if (!filename.includes('.json')) {
+            alert('Filename needs to include .json')
+            return false
+        }
+        if (!filename.includes('en__') && !filename.includes('es__')) {
+            alert('Filename needs to include en__ or es__')
+            return false
+        }
+        return true;
     }
-    store.state.activePages.unshift(filename)
-    count++
+
+    function promptUser(message) {
+        return new Promise((resolve) => {
+            let pageName = prompt(message)
+            if (pageName) {
+                resolve(pageName)
+            }
+        })
+    }
 }
 
 const alerts = computed(() => {

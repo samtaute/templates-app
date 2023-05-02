@@ -7,8 +7,9 @@
             <section class="directory">
                 <div class="branch-input">
                     <input class='form-control branch-input' v-model="branchInput" placeholder="Input branch name (optional)"><button
-                    class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Submit</button>
+                    class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Switch Branch</button>
                 </div>
+                <label>{{ currentBranch }}</label>
                 <input type="text" v-model="searchString" placeholder="search for file..."
                     class="form-control directory-search">
                 <div class="button-container">
@@ -37,7 +38,7 @@ import { useStore } from 'vuex'
 import { loadNeptuneRepo } from '@/import';
 const store = useStore();
 
-const branchInput = ref(''); 
+const branchInput = ref(""); 
 
 const pageDirectory = computed(() => {
     return store.getters.pageDirectory;
@@ -46,7 +47,7 @@ const pageDirectory = computed(() => {
 const searchString = ref("");
 
 let pageNames = computed(() => {
-    return Object.keys(pageDirectory.value)
+    return Object.keys(pageDirectory.value).filter((page)=>page!='workset')
 });
 
 let displayedPages = computed(() => {
@@ -66,8 +67,12 @@ function truncate(pageTitle) {
 
 
 function updateBranch(branchName) {
+    store.state.currentBranch = branchName; 
     loadNeptuneRepo(branchName);
 }
+const currentBranch = computed(()=>{
+    return store.getters.currentBranch; 
+})
 
 </script>
 <style scoped> 
