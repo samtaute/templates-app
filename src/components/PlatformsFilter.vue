@@ -1,14 +1,4 @@
 <template>
-    <!-- <base-sidebar-widget> -->
-    <!-- <template #header> -->
-    <!-- Platforms -->
-    <!-- </template> -->
-    <!-- <template #content> -->
-    <!-- <div class="form-check form-switch"> -->
-    <!-- <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label> -->
-    <!-- <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
-                    id="flexSwitchCheckDefault">
-            </div> -->
     <div class="platforms-filter">
         <label class="form-label">Platforms: </label>
         <div class="filter-buttons">
@@ -17,12 +7,7 @@
                     platform
                 }}</button>
         </div>
-
-
     </div>
-
-    <!-- </template>
-    </base-sidebar-widget> -->
 </template>
 
 <script>
