@@ -1,6 +1,5 @@
 <template>
     <section>
-        <platforms-filter></platforms-filter>
         <block-workset></block-workset>
         <filter-widget></filter-widget>
         <page-directory></page-directory>
@@ -9,7 +8,6 @@
 <script>
 // import SidebarJsonManager from './SidebarJsonManager.vue'
 import BlockWorkset from '../BlockWorkset.vue'
-import PlatformsFilter from '../PlatformsFilter.vue'
 import FilterWidget from '../FilterWidget.vue'
 import PageDirectory from '../PageDirectory.vue'
 
@@ -19,7 +17,6 @@ export default {
     components: {
         // SidebarJsonManager,
         BlockWorkset,
-        PlatformsFilter,
         FilterWidget,
         PageDirectory,
     },

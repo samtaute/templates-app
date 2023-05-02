@@ -6,10 +6,11 @@
         <template #content>
             <section>
                 <div class="form-check form-switch">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label>
+                    <label class="form-check-label toggle-text" for="flexSwitchCheckDefault">Highlight/Filter</label>
                     <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
                         id="flexSwitchCheckDefault">
                 </div>
+                <platforms-filter></platforms-filter>
 
                 <div v-for="filter of Object.keys(store.getters.filters)" class='filter' :key=filter>
                     <label class="form-label">{{ filter }}:</label>
@@ -32,12 +33,17 @@
 <script setup>
 import { useStore } from 'vuex'
 import { blockLayouts, fotoscapeCategories } from '../models/configs/config-options'
+import blockModels from '@/models/block-models';
+import PlatformsFilter from './PlatformsFilter.vue'
 
 const layout = blockLayouts;
 const category = fotoscapeCategories;
+const blockType = Object.keys(blockModels); 
+
 const options = {
     layout,
     category,
+    blockType,
 }
 
 const store = useStore();
@@ -57,6 +63,10 @@ function toggleFilterStatus(evt) {
 </script>
 
 <style scoped>
+.toggle-text{
+    font-size: .8rem;
+}
+
 section{
     display: flex;
     flex-direction: column;

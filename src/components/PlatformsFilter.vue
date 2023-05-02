@@ -1,20 +1,28 @@
 <template>
-    <base-sidebar-widget>
-        <template #header>
-            Platforms
-        </template>
-        <template #content>
-            <div class="form-check form-switch">
-                <!-- <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label> -->
-                <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
+    <!-- <base-sidebar-widget> -->
+    <!-- <template #header> -->
+    <!-- Platforms -->
+    <!-- </template> -->
+    <!-- <template #content> -->
+    <!-- <div class="form-check form-switch"> -->
+    <!-- <label class="form-check-label" for="flexSwitchCheckDefault">Toggle</label> -->
+    <!-- <input class="form-check-input" type="checkbox" role="switch" @click="toggleFilterStatus"
                     id="flexSwitchCheckDefault">
-            </div>
+            </div> -->
+    <div class="platforms-filter">
+        <label class="form-label">Platforms: </label>
+        <div class="filter-buttons">
             <button v-for="platform in platforms" type="button" class="btn btn-info btn-sm"
                 :class="{ active: platform === activePlatform }" :key="platform" @click="selectPlatform(platform)">{{
                     platform
                 }}</button>
-        </template>
-    </base-sidebar-widget>
+        </div>
+
+
+    </div>
+
+    <!-- </template>
+    </base-sidebar-widget> -->
 </template>
 
 <script>
@@ -62,9 +70,29 @@ span {
     display: block;
     margin: 1.5px;
 }
-
+.form-label{
+    width: 7rem; 
+}
+label{
+    margin: 0; 
+    margin-bottom: 0;
+    text-align: right;
+    font-size: .95rem;
+}
 .active {
     opacity: 50%;
+}
+
+.filter-buttons {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.platforms-filter{
+    display: flex; 
+    align-items: center;
+    margin-bottom: .6rem; 
 }
 
 /* .buttonContainer {
