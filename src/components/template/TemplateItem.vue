@@ -68,7 +68,7 @@ const elementHasActivePlatform = computed(() => {
         }
         else return false;
     }
-    if (!activePlatform || activePlatform === 'ALL') {
+    if (!activePlatform) {
         return true;
     } else if (!props.element.platforms && !props.element.excludePlatforms) {
         return true;

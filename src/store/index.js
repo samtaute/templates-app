@@ -166,7 +166,6 @@ const store = createStore({
         },
 
         activatePlatform(state, platform) {
-            console.log(platform);
             state.filters.platform = platform;
         },
 
@@ -390,7 +389,7 @@ const store = createStore({
                 context.commit('activatePlatform', platform)
             }
             else {
-                context.commit('activatePlatform', null);
+                context.commit('activatePlatform', "");
             }
         },
         pushToActivePages(context, pageName) {

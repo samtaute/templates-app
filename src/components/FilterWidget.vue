@@ -12,7 +12,7 @@
                 </div>
                 <platforms-filter></platforms-filter>
 
-                <div v-for="filter of Object.keys(store.getters.filters)" class='filter' :key=filter>
+                <div v-for="filter of filterLabels" class='filter' :key=filter>
                     <label class="form-label">{{ filter }}:</label>
                     <input
                         class="form-control"
@@ -23,7 +23,7 @@
                         <option :key=option v-for="option of options[filter]">{{ option }}</option>
                     </datalist>
                 </div>
-
+                {{ activeFilters }}
             </section>
 
 
@@ -31,6 +31,7 @@
     </base-sidebar-widget>
 </template>
 <script setup>
+import {computed} from 'vue'
 import { useStore } from 'vuex'
 import { blockLayouts, fotoscapeCategories } from '../models/configs/config-options'
 import blockModels from '@/models/block-models';
@@ -40,6 +41,10 @@ const layout = blockLayouts;
 const category = fotoscapeCategories;
 const blockType = Object.keys(blockModels); 
 
+const filterLabels = computed(()=>{
+    return Object.keys(store.getters.filters).filter((key)=>key != 'platform')
+})
+
 const options = {
     layout,
     category,
@@ -47,6 +52,21 @@ const options = {
 }
 
 const store = useStore();
+
+const filters = computed(() => {
+    return store.getters.filters;
+});
+
+const activeFilters = computed(() => {
+    let activeFilters = [];
+    for (const [key, value] of Object.entries(filters.value)) {
+        if (value.length > 0) {
+            activeFilters.push(key);
+        }
+    }
+
+    return activeFilters;
+});
 
 function enterFilter(filter, evt) {
     store.state.filters[filter] = evt.target.value;

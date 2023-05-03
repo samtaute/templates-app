@@ -4,7 +4,6 @@
             Directory
         </template>
         <template #content>
-            Active Filters: {{ activeFilters }}
             <section class="directory">
                 <div class="branch-input">
                     <input class='form-control branch-input' v-model="branchInput"
