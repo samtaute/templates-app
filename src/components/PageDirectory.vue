@@ -4,16 +4,20 @@
             Directory
         </template>
         <template #content>
+            Active Filters: {{ activeFilters }}
             <section class="directory">
                 <div class="branch-input">
-                    <input class='form-control branch-input' v-model="branchInput" placeholder="Input branch name (optional)"><button
-                    class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Switch Branch</button>
+                    <input class='form-control branch-input' v-model="branchInput"
+                        placeholder="Input branch name (optional)"><button
+                        class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Switch
+                        Branch</button>
                 </div>
                 <label>{{ currentBranch }}</label>
                 <input type="text" v-model="searchString" placeholder="search for file..."
                     class="form-control directory-search">
                 <div class="button-container">
-                    <button type="button" class="badge bg-primary" v-for="page of displayedPages" :key="page"
+                    <button type="button" class="badge bg-primary" v-for="page of displayedPages"
+                        :class="{ active: runFilters(page) }" :key="page"
                         @click="activatePage(page)"><span>{{ truncate(page) }}</span></button>
                 </div>
                 <!-- <div class="button-container">
@@ -33,21 +37,78 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, } from 'vue'
 import { useStore } from 'vuex'
 import { loadNeptuneRepo } from '@/import';
-const store = useStore();
 
-const branchInput = ref(""); 
+const store = useStore();
+const filters = computed(() => {
+    return store.getters.filters;
+});
 
 const pageDirectory = computed(() => {
     return store.getters.pageDirectory;
+})
+const activeFilters = computed(() => {
+    let activeFilters = [];
+    for (const [key, value] of Object.entries(filters.value)) {
+        if (value.length > 0) {
+            activeFilters.push(key);
+        }
+    }
+
+    return activeFilters;
 });
+
+const filteredPages = computed(() => {
+    if (activeFilters.value.length === 0) return []; 
+    return Object.keys(pageDirectory.value).filter((page) => checkFilters(pageDirectory.value[page]['blocks']))
+})
+function runFilters(page){
+    return filteredPages.value.includes(page)
+}
+//returns true if page contains one element that meets filter criteria. 
+function checkFilters(blockList) {
+
+    for (let block of blockList) {
+        if (checkAllFilters(block)) return true; 
+    }
+    return false; 
+}
+
+function checkAllFilters(block){
+    for (const filterKey of activeFilters.value){
+        if (!checkFilter(block, filterKey, filters.value[filterKey]))
+        return false; 
+    }
+    return true; 
+}
+
+
+function checkFilter(element, configKey, configValue) {
+    let elementKeys = Object.keys(element);
+    let returnCheck = false;
+
+    for (let eKey of elementKeys) {
+        if (typeof element[eKey] === 'object') {
+            returnCheck = checkFilter(element[eKey], configKey, configValue)
+        }
+        if (eKey === configKey && element[eKey] === configValue) {
+            return true;
+        }
+    }
+    return returnCheck;
+
+}
+
+const branchInput = ref("");
+
+
 
 const searchString = ref("");
 
 let pageNames = computed(() => {
-    return Object.keys(pageDirectory.value).filter((page)=>page!='workset')
+    return Object.keys(pageDirectory.value).filter((page) => page != 'workset')
 });
 
 let displayedPages = computed(() => {
@@ -67,16 +128,15 @@ function truncate(pageTitle) {
 
 
 function updateBranch(branchName) {
-    store.state.currentBranch = branchName; 
+    store.state.currentBranch = branchName;
     loadNeptuneRepo(branchName);
 }
-const currentBranch = computed(()=>{
-    return store.getters.currentBranch; 
+const currentBranch = computed(() => {
+    return store.getters.currentBranch;
 })
 
 </script>
-<style scoped> 
-.directory {
+<style scoped> .directory {
      display: flex;
      flex-direction: column;
      row-gap: .3rem;
@@ -90,8 +150,9 @@ const currentBranch = computed(()=>{
      flex-wrap: wrap;
 
  }
- .branch-input{
-    display: flex;
+
+ .branch-input {
+     display: flex;
  }
 
  /* span {
@@ -104,4 +165,9 @@ const currentBranch = computed(()=>{
      background: lightblue;
      width: 6.5rem;
      /* height: 30rem; */
- }</style>
+ }
+
+ .active {
+     background-color: red !important;
+ }
+</style>

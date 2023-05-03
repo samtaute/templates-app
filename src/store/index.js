@@ -23,9 +23,9 @@ const store = createStore({
             platformsFilterArray: [],
 
             filters: {
-                blockType: null,
-                category: null,
-                layout: null,
+                blockType: "",
+                category: "",
+                layout: "",
             },
             filterActive: false,
 
