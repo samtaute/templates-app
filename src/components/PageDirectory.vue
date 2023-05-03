@@ -12,8 +12,16 @@
                         Branch</button>
                 </div>
                 <label>{{ currentBranch }}</label>
-                <input type="text" v-model="searchString" placeholder="search for file..."
-                    class="form-control directory-search">
+                <div class="search-inputs">
+                    <input type="text" v-model="searchString" placeholder="search for file..."
+                        class="form-control directory-search">
+                    <label>Lang</label>
+                    <select v-model="lang" class="form-control form-control-sm">
+                        <option>en</option>
+                        <option>es</option>
+                        <option>es-mx</option>
+                    </select>
+                </div>
                 <div class="button-container">
                     <button type="button" class="badge bg-primary" v-for="page of displayedPages"
                         :class="{ active: runFilters(page) }" :key="page"
@@ -40,7 +48,10 @@ import { computed, ref, } from 'vue'
 import { useStore } from 'vuex'
 import { loadNeptuneRepo } from '@/import';
 
+
 const store = useStore();
+
+const lang = ref('en')
 const filters = computed(() => {
     return store.getters.filters;
 });
@@ -60,27 +71,27 @@ const activeFilters = computed(() => {
 });
 
 const filteredPages = computed(() => {
-    if (activeFilters.value.length === 0) return []; 
+    if (activeFilters.value.length === 0) return [];
     return Object.keys(pageDirectory.value).filter((page) => checkFilters(pageDirectory.value[page]['blocks']))
 })
-function runFilters(page){
+function runFilters(page) {
     return filteredPages.value.includes(page)
 }
 //returns true if page contains one element that meets filter criteria. 
 function checkFilters(blockList) {
 
     for (let block of blockList) {
-        if (checkAllFilters(block)) return true; 
+        if (checkAllFilters(block)) return true;
     }
-    return false; 
+    return false;
 }
 
-function checkAllFilters(block){
-    for (const filterKey of activeFilters.value){
+function checkAllFilters(block) {
+    for (const filterKey of activeFilters.value) {
         if (!checkFilter(block, filterKey, filters.value[filterKey]))
-        return false; 
+            return false;
     }
-    return true; 
+    return true;
 }
 
 
@@ -112,7 +123,8 @@ let pageNames = computed(() => {
 
 let displayedPages = computed(() => {
     return pageNames.value.filter((page) => {
-        return page.includes(searchString.value);
+        let check = page.includes(`${lang.value}__`) && page.includes(searchString.value);
+        return check; 
     })
 })
 
@@ -168,5 +180,12 @@ const currentBranch = computed(() => {
 
  .active {
      background-color: red !important;
+ }
+
+ .search-inputs{
+    display: flex; 
+    align-items: center;
+    column-gap: .2rem;
+
  }
 </style>

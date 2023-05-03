@@ -16,7 +16,11 @@ export async function loadNeptuneRepo(branchName) {
     })
     return;
   }
-  filenames = filenames.filter((name) => name.includes("en__") && !name.includes("archive"))
+
+  filenames = filenames.filter((name)=>!name.includes("archive")); 
+  filenames=filenames.filter((name)=>{
+    return name.includes("en__") || name.includes("es__")||name.includes("es_mx__")
+  })
 
 
   for (let filename of filenames) {
