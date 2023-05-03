@@ -23,10 +23,17 @@
             item-key="name"
             group="blocks"
             class="list-group layout-container"
+            tag="transition-group"
+            :component-data="{
+                    tag: 'ul',
+                    type: 'transition-group',
+                    name: !drag ? 'flip-list' : null
+                }"
             ghost-class="ghost"
+            v-bind="dragOptions"
             :move="checkMove"
             @start="dragging = true"
-            end="dragging = false">
+            @end="dragging = false">
             <template #item="{ element, index }">
                 <template-item class="list-group-item" :class="{ 'not-draggable': !enabled }"
                     :element="element"
@@ -98,7 +105,7 @@ const itemList = computed({
         var list;
 
         let target = store.getters.pageDirectory;
-       
+
         for (let i = 0; i < props.fullPath.length; i++) {
             target = target[props.fullPath[i]];
         }
@@ -162,7 +169,14 @@ function toggleCollapse() {
 }
 
 
-
+const dragOptions = computed(() => {
+    return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+    }
+});
 
 
 
@@ -205,5 +219,27 @@ button {
     background: lightgrey;
     padding: .1rem;
     border-radius: 5px;
+}
+.button {
+  margin-top: 35px;
+}
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.list-group {
+  min-height: 20px;
+}
+.list-group-item {
+  cursor: move;
+}
+.list-group-item i {
+  cursor: pointer;
 }
 </style>
