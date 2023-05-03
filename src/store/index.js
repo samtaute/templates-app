@@ -219,8 +219,13 @@ const store = createStore({
                 }
                 target = target[payload.targetPath[i]]
             }
-        }
+        },
+        pushToAlerts(state, payload){
+            state.alerts.push(payload); 
+        },
     },
+
+
     actions: {
         // let payload = {
         //     action: update, delete, add
@@ -419,6 +424,9 @@ const store = createStore({
         // }
         deleteTemplateObject(context, payload) {
             context.commit('deleteTemplateObject', payload)
+        },
+        alert(context, payload){
+            context.commit('pushToAlerts', payload); 
         }
 
 

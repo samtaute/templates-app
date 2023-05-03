@@ -25,11 +25,16 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex';
 import { updateFile } from '../import'
+import useValidate from '../hooks/validate'
+import useAlert from '../hooks/alert'
+
+const [validateContent, processContent] = useValidate();
+const [showAlert] = useAlert(); 
 
 const store = useStore();
 
 const revisedPages = computed(() => {
-    let revisedPages = store.getters.revisedPages.filter((page)=>page != 'workset')
+    let revisedPages = store.getters.revisedPages.filter((page) => page != 'workset')
     return revisedPages
 });
 
@@ -39,19 +44,24 @@ const currentBranch = computed(() => {
 
 function publishChanges() {
     if (currentBranch.value === 'master') {
-        //todo: add notification here
-        console.log("error: commit to master")
+        showAlert('alert-danger', 'Tried to commit to master')
     }
 
     else {
         for (let page of revisedPages.value) {
             let content = store.getters.pageDirectory[page];
-            updateFile(content, page, currentBranch.value);
+            content = processContent(content);
+            let validated = validateContent(content);
+            if (validated) {
+                updateFile(content, page, currentBranch.value);
+            } else {
+                showAlert('alert-danger', 'Page failed validation')
+            }
         }
     }
-
-
 }
+
+
 
 
 </script>

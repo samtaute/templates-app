@@ -83,9 +83,8 @@ export async function getRawFile(filename, branchName) {
     console.log('no data found');
   }
 }
-export async function updateFile(contentInput, filename, branchInput) {
+export async function updateFile(contentstring, filename, branchInput) {
   // console.log(contentInput, filename, branchInput); 
-  let contentstring = JSON.stringify(contentInput, null, 2)
   let requesturl = `https://gitlab.com/api/v4/projects/31495766/repository/commits/`
   let update = await fetch(requesturl, {
     method: 'POST',

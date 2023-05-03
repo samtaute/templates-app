@@ -9,6 +9,7 @@
                         src='../../assets/minimize-icon.png'></button>
                 <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
                         src='../../assets/expand-collapse.png'></button>
+                <button type="button" @click="sort" class="btn btn-sm btn-outline-dark">Original order</button>
             </div>
             <label class="header-label">{{ directoryKey }}</label>
         </div>
@@ -20,40 +21,38 @@
             v-if="showList"
             v-model='itemList'
             :disabled="!enabled"
-            item-key="name"
             group="blocks"
             class="list-group layout-container"
-            tag="transition-group"
-            :component-data="{
-                    tag: 'ul',
-                    type: 'transition-group',
-                    name: !drag ? 'flip-list' : null
-                }"
-            ghost-class="ghost"
             v-bind="dragOptions"
-            :move="checkMove"
             @start="dragging = true"
-            @end="dragging = false">
-            <template #item="{ element, index }">
-                <template-item class="list-group-item" :class="{ 'not-draggable': !enabled }"
+            @end="dragging = false"
+            item-key="uid"
+            >
+            <template #item="{ element, index}">
+                <template-item class="list-group-item"
                     :element="element"
                     :index="index"
                     :fullPath="updatePath(index)"
-                    :collapseStatus="collapseStatus">
+                    :collapseStatus="collapseStatus"
+                    >
                 </template-item>
             </template>
         </draggable>
     </section>
 </template>
 
-
 <script setup>
-import { defineProps, computed, ref, provide } from 'vue'
+import { defineProps, computed, ref, provide, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 
-const store = useStore();
+let originalList; 
 
+onMounted(()=>{
+    originalList = JSON.parse(JSON.stringify(itemList.value))
+})
+
+const store = useStore();
 
 const props = defineProps({
     fullPath: {
@@ -90,15 +89,25 @@ function loadPreview(page) {
     store.dispatch('setActivePage', page)
 
 }
-//draggable dependencies
+// draggable dependencies
+function sort() {
+    itemList.value = originalList;
+}
 const dragging = ref(false);
 const enabled = ref(true);
-function checkMove(e) {
-    window.console.log("Future index: " + e.draggedContext.futureIndex);
-}
+
 // const draggingInfo = computed(() => {
 //     return this.dragging ? "under drag" : "";
 // });
+
+const dragOptions = computed(() => {
+    return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+    }
+});
 
 const itemList = computed({
     get() {
@@ -112,15 +121,16 @@ const itemList = computed({
 
         if (Array.isArray(target)) {
             list = target;
-            if (list.length === 0) {
-                //to do - execute store action instead of editing directly
-                list.push({
-                    blockType: "header_block",
-                    settings: {
-                        subheader: "Placeholder"
-                    }
-                });
-            }
+            // if (list.length === 0) {
+            //     //to do - execute store action instead of editing directly
+            //     list.push({
+            //         blockType: "header_block",
+            //         uid: "aldskfjdsk;fj",
+            //         settings: {
+            //             subheader: "Placeholder"
+            //         }
+            //     });
+            // }
         } else {
             list = [target]
         }
@@ -169,14 +179,7 @@ function toggleCollapse() {
 }
 
 
-const dragOptions = computed(() => {
-    return {
-        animation: 200,
-        group: "description",
-        disabled: false,
-        ghostClass: "ghost"
-    }
-});
+
 
 
 
@@ -220,26 +223,32 @@ button {
     padding: .1rem;
     border-radius: 5px;
 }
+
 .button {
-  margin-top: 35px;
+    margin-top: 35px;
 }
+
 .flip-list-move {
-  transition: transform 0.5s;
+    transition: transform 0.5s;
 }
+
 .no-move {
-  transition: transform 0s;
+    transition: transform 0s;
 }
+
 .ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
+    opacity: 0.5;
+    background: #c8ebfb;
 }
+
 .list-group {
-  min-height: 20px;
+    min-height: 20px;
 }
+
 .list-group-item {
-  cursor: move;
+    cursor: move;
 }
+
 .list-group-item i {
-  cursor: pointer;
-}
-</style>
+    cursor: pointer;
+}</style>

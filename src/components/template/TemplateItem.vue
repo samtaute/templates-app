@@ -1,7 +1,7 @@
 <template>
-    <section class="block-container" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]"
+    <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]"
         v-if="!isFiltered">
-        <div class="header__buttons">
+        <div :key="index" class="header__buttons">
             <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
                     src='../../assets/delete.png'></button>
             <button type="button" @click="duplicateBlock" class="btn btn-sm btn-outline-success"><img
@@ -16,7 +16,7 @@
             :fullPath = "updatePath(key)"
             :indent="1">
         </template-item-config>
-    </section>
+    </li>
 </template>
 <script setup>
 import { defineProps, computed } from 'vue'

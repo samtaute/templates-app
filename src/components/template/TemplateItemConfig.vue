@@ -1,5 +1,5 @@
 <template>
-    <section v-if="label != 'uid'" class="property">
+    <section v-if="label!='uid'" class="property">
         <component v-if="configComponent != 'default'" :is="configComponent" :element="element" :fullPath="fullPath" :label="label"
             :value="value" :directoryKey="directoryKey"></component>
 
