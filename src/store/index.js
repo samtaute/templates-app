@@ -12,9 +12,10 @@ const store = createStore({
                     blocks: []
                 }
             },
-            activePreview: '1600',
+            activePreview: '',
 
             activePages: [],
+            displayedPages: [],
 
             revisedPages: [],
 

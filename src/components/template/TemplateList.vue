@@ -26,19 +26,17 @@
             v-bind="dragOptions"
             @start="dragging = true"
             @end="dragging = false"
-            item-key="uid"
-            >
-            <template #item="{ element, index}">
+            item-key="uid">
+            <template #item="{ element, index }">
                 <template-item class="list-group-item"
                     :element="element"
                     :index="index"
                     :fullPath="updatePath(index)"
-                    :collapseStatus="collapseStatus"
-                    >
+                    :collapseStatus="collapseStatus">
                 </template-item>
             </template>
         </draggable>
-    </section>
+</section>
 </template>
 
 <script setup>
@@ -46,9 +44,9 @@ import { defineProps, computed, ref, provide, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 
-let originalList; 
+let originalList;
 
-onMounted(()=>{
+onMounted(() => {
     originalList = JSON.parse(JSON.stringify(itemList.value))
 })
 
@@ -171,6 +169,7 @@ const isVisible = ref(true);
 
 function minimizeList() {
     // store.state.activePages = store.state.activePages.filter((page) => page != directoryKey);
+    store.state.pageDirectory[props.directoryKey]['status']='active'; 
     isVisible.value = !isVisible.value
 }
 
@@ -251,4 +250,5 @@ button {
 
 .list-group-item i {
     cursor: pointer;
-}</style>
+}
+</style>

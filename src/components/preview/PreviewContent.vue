@@ -1,68 +1,11 @@
 <template>
-        <viewable-list v-if="contentLoaded">
+        <viewable-list>
         </viewable-list>
 </template>
 
-<script>
+<script setup>
 import ViewableList from './ViewableList.vue'
 
-export default {
-    components: {
-        ViewableList
-    },
-    computed: {
-        contentLoaded() {
-            return this.$store.getters.contentLoadingStatus;
-        },
-    },
-
-    // data() {
-    //     return {
-    //         fotoscapeContent: {},
-    //     }
-    // },
-
-    // methods: {
-    //     loadPreview() {
-    //         let categoryArray = [];
-    //         for (let block of this.blocks) {
-    //             if (block.blockType === 'fotoscape_block') {
-    //                 if (block.settings.category === undefined) {
-    //                     block.settings.category = 'standard'
-    //                 }
-    //                 if (!categoryArray.includes(block.settings.category)) {
-    //                     categoryArray.push(block.settings.category);
-    //                 }
-    //             }
-    //         }
-    //         let baseUrl = `https://fotoscapes.com/wp/v1/daily?ckey=fb529d256155b9c6&mp_lang=en&sched=`
-    //         for (let category of categoryArray) {
-    //             let requestUrl = baseUrl + category;
-    //             fetch(requestUrl).then((response) => {
-    //                 if (response.ok) {
-    //                     return response.json();
-    //                 }
-    //             }).then((data) => {
-    //                 this.fotoscapeContent[category] = {
-    //                     offset: 0,
-    //                     content: data.items,
-    //                 }
-    //             }).then(() => {
-    //                 this.$store.state.fotoscapeObject = this.fotoscapeContent;
-    //                 this.$store.state.loading = false;
-    //             }).then(() => {
-    //                 setTimeout(() => this.previewActive = true, 1000)
-    //             }
-    //             );
-
-    //         }
-
-
-    //     },
-    // },
-
-
-}
 
 
 </script>

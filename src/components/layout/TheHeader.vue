@@ -4,7 +4,7 @@
            Templates
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
-            <button v-for="page in hiddenPages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
+            <button v-for="page in activePages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
                 data-toggle="button">{{ truncateFilename(page) }}</button>
         </div>
         <div class="header-buttons">
@@ -32,9 +32,14 @@ export default {
         pageTitle() {
             return this.$store.getters.pageTitle;
         },
-        hiddenPages(){
-            return this.$store.getters.activeDirectoryKeys; 
-            // return Object.keys(this.$store.getters.pageDirectory).filter((key) => !this.$store.getters.activePages.includes(key) && key !='workset'); 
+        activePages(){
+            let activePages = []; 
+            for (let [key, value] of Object.entries(this.$store.state.pageDirectory)){
+                if (value.status === 'active' || value.status === 'displayed'){
+                    activePages.push(key); 
+                }
+            }
+            return activePages; 
         }
     },
     methods: {
@@ -45,12 +50,14 @@ export default {
             this.$store.dispatch('forward');
         },
         activatePage(pageName){
-            this.$store.dispatch('pushToActivePages', pageName)
+            let status =  this.$store.state.pageDirectory[pageName]['status'];
+            if(status === 'active'){
+                this.$store.state.pageDirectory[pageName]['status'] = 'displayed'
+            }else { this.$store.state.pageDirectory[pageName]['status']='active'}
+          
         },
         deletePage(page){
-            let idx = this.$store.getters.activeDirectoryKeys.indexOf(page); 
-            //todo- avoid accessing store directly
-            this.$store.state.activePages.splice(idx, 1)
+           this.$store.state.pageDirectory[page]['status']='stored'; 
         }
 
     }

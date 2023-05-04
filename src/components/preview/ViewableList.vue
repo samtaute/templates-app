@@ -12,7 +12,8 @@ export default{
     },
     computed: {
         blocks(){
-            return this.$store.getters.currentBlocksJson; 
+            let currHandle = this.$store.getters.activePreview;
+            return this.$store.getters.pageDirectory[currHandle]['blocks'];  
         }
     },
 }

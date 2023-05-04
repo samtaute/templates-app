@@ -3,42 +3,33 @@
         <div class="tab-content" id="myTabContent">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="selectComponent('preview-json')" type="button"
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="selectComponent('PreviewJson')" type="button"
                         role="tab" aria-controls="home" aria-selected="true">JSON</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="contact-tab" data-bs-toggle="tab" type="button" role="tab"
                         aria-controls="contact" aria-selected="false"
-                        @click="selectComponent('preview-content')">Preview</button>
+                        @click="selectComponent('PreviewContent')">Preview</button>
                 </li>
             </ul>
         </div>
-        <component :is="selectedComponent">
+        <component :is="tabs[selectedComponent]">
         </component>
     </section>
 </template>
-<script>
+<script setup>
 import PreviewJson from './PreviewJson.vue'
 import PreviewContent from '../PreviewContent.vue'
+import {ref} from 'vue'
 
-export default {
-    data() {
-        return{
-            selectedComponent: 'preview-json'
-        }
+const tabs ={
+    PreviewJson,
+    PreviewContent,
+}
+const selectedComponent = ref('PreviewJson')
 
-    },
-    components: {
-        PreviewJson,
-        PreviewContent, 
-    },
-    methods:{
-        selectComponent(component){
-            this.selectedComponent = component; 
-        }
-    }
-
-
+function selectComponent(component){
+selectedComponent.value = component
 }
 </script>
 

@@ -7,7 +7,7 @@
             </div>
 
         </div>
-        <template-list v-for="dirKey in activeDirectoryKeys" :showHeader="true" :directoryKey="dirKey"
+        <template-list v-for="dirKey in displayedPages" :showHeader="true" :directoryKey="dirKey"
             :key="dirKey + Date.now()"></template-list>
 
         <div class="dropdown">
@@ -35,8 +35,14 @@ import { useStore } from 'vuex'
 
 const store = useStore();
 
-const activeDirectoryKeys = computed(() => {
-    return store.getters.activeDirectoryKeys;
+const displayedPages = computed(() => {
+    let displayedPages = []; 
+    for (let [key, value] of Object.entries(store.state.pageDirectory)){
+        if (value.status === 'displayed'){
+            displayedPages.push(key)
+        }
+    }
+    return displayedPages; 
 })
 
 function createPage() {

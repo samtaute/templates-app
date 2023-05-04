@@ -129,7 +129,8 @@ let displayedPages = computed(() => {
 })
 
 function activatePage(page) {
-    store.dispatch('activatePage', page)
+    store.state.pageDirectory[page]['status']='displayed'
+    // store.dispatch('activatePage', page)
 }
 
 function truncate(pageTitle) {
