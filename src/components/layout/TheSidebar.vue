@@ -3,7 +3,6 @@
         <block-workset></block-workset>
         <filter-widget></filter-widget>
         <page-directory></page-directory>
-        <commit-station></commit-station>
     </section>
 </template>
 <script setup>
@@ -11,7 +10,6 @@
 import BlockWorkset from '../BlockWorkset.vue'
 import FilterWidget from '../FilterWidget.vue'
 import PageDirectory from '../PageDirectory.vue'
-import CommitStation from '../CommitStation.vue'
 
 
 

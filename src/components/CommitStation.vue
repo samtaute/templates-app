@@ -1,25 +1,17 @@
 <template>
-    <base-sidebar-widget>
-        <template #header>Publish</template>
-        <template #content>
-            <section class="commit-container">
-                <div class="commit-header">
-                    <input class="form-control" placeholder="Enter commit message"><button type="button"
-                        class="btn btn-primary" @click="publishChanges">Publish</button>
-                </div>
-                <label>{{ currentBranch }}</label>
-                <div class="commit-entries">
-                    <div v-for="page of revisedPages" :key="page" class="commit-entry">
-                        <button type="button" class="btn .btn-sm btn-primary">{{ page }}</button>
-                        <a href="#">Preview</a>
-                        <a href="#">Demote</a>
-                    </div>
-                </div>
-            </section>
-        </template>
-
-
-    </base-sidebar-widget>
+    <section class="commit-container">
+        <div class="commit-header">
+            <input class="form-control" placeholder="Enter commit message"><button type="button"
+                class="btn btn-primary" @click="publishChanges">Publish</button>
+        </div>
+        <label>{{ currentBranch }}</label>
+        <div class="commit-entries">
+            <div v-for="page of revisedPages" :key="page" class="commit-entry">
+                <button type="button" class="btn .btn-sm btn-primary">{{ page }}</button>
+                <a href="#">Demote</a>
+            </div>
+        </div>
+    </section>
 </template>
 <script setup>
 import { computed } from 'vue'
@@ -29,7 +21,7 @@ import useValidate from '../hooks/validate'
 import useAlert from '../hooks/alert'
 
 const [validateContent, processContent] = useValidate();
-const [showAlert] = useAlert(); 
+const [showAlert] = useAlert();
 
 const store = useStore();
 
@@ -74,7 +66,11 @@ function publishChanges() {
 .commit-header>input {
     width: 15rem;
 }
-
+.commit-entries{
+    display: flex; 
+    flex-direction: column;
+    row-gap: .2rem;
+}
 .commit-entry {
     display: flex;
     column-gap: 1rem;

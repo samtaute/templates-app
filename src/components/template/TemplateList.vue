@@ -9,7 +9,7 @@
                         src='../../assets/minimize-icon.png'></button>
                 <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
                         src='../../assets/expand-collapse.png'></button>
-                <button type="button" @click="sort" class="btn btn-sm btn-outline-dark">Original order</button>
+                <button type="button" @click="sort" class="btn btn-sm btn-outline-dark">Reset</button>
             </div>
             <label class="header-label">{{ directoryKey }}</label>
         </div>

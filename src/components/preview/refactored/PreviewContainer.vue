@@ -11,6 +11,11 @@
                         aria-controls="contact" aria-selected="false"
                         @click="selectComponent('PreviewContent')">Preview</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" type="button" role="tab"
+                        aria-controls="contact" aria-selected="false"
+                        @click="selectComponent('CommitStation')">Publish</button>
+                </li>
             </ul>
         </div>
         <component :is="tabs[selectedComponent]">
@@ -20,11 +25,13 @@
 <script setup>
 import PreviewJson from './PreviewJson.vue'
 import PreviewContent from '../PreviewContent.vue'
+import CommitStation from '../../CommitStation.vue'
 import {ref} from 'vue'
 
 const tabs ={
     PreviewJson,
     PreviewContent,
+    CommitStation,
 }
 const selectedComponent = ref('PreviewJson')
 
