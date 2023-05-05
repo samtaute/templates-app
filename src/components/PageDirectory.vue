@@ -47,6 +47,7 @@
 import { computed, ref, } from 'vue'
 import { useStore } from 'vuex'
 import { loadNeptuneRepo } from '@/import';
+import { processPage } from '@/utilities/processing';
 
 
 const store = useStore();
@@ -129,7 +130,9 @@ let displayedPages = computed(() => {
 })
 
 function activatePage(page) {
+    processPage(store.state.pageDirectory[page]);
     store.state.pageDirectory[page]['status']='displayed'
+
     // store.dispatch('activatePage', page)
 }
 
