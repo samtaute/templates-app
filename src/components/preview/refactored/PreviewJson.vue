@@ -8,10 +8,10 @@
                     Only</button>
                 <button @click="setFile(pageJson, store.getters.activePreview, store.state.currentBranch)" type="button" class="btn btn-primary btn-sm blue-button">Update</button>
             </div>
-            <button class="btn btn-outline-dark btn-sm clipboard-img" @click="copyToClipboard(pageJson)" type="button"><img
+            <!-- <button class="btn btn-outline-dark btn-sm clipboard-img" @click="copyToClipboard(pageJson)" type="button"><img
                     src='../../../assets/clipboard.png'></button>
             <button class="btn btn-outline-dark btn-sm clipboard-img" type="button"><a :href="downloadFile(pageJson)" :download="store.getters.activePreview"><img
-                    src='../../../assets/download.png'></a></button>
+                    src='../../../assets/download.png'></a></button> -->
         </div>
         <pre>{{ pageJson }}</pre>
     </div>
@@ -61,20 +61,20 @@ const pageJson = computed(() => {
 
 })
 
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text);
-}
+// function copyToClipboard(text) {
+//     navigator.clipboard.writeText(text);
+// }
 
-function downloadFile(jsonString) {
-    var textFile;
-    // console.log(this.$store.getters.pageDirectory[pageName])
+// function downloadFile(jsonString) {
+//     var textFile;
+//     // console.log(this.$store.getters.pageDirectory[pageName])
 
 
-    var data = new Blob([jsonString], { type: 'application/json' });
-    // window.URL.revokeObjectURL(textFile);
-    textFile = URL.createObjectURL(data);
-    return textFile;
-}
+//     var data = new Blob([jsonString], { type: 'application/json' });
+//     // window.URL.revokeObjectURL(textFile);
+//     textFile = URL.createObjectURL(data);
+//     return textFile;
+// }
 function setFile(json, filename, branch){
 
     console.log(json); 

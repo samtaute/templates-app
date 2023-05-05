@@ -1,15 +1,15 @@
 <template>
- 
-        <preview-block v-for="(element, idx) in blocks" :element="element" :key="idx"></preview-block>
+    coming soon...
+        <!-- <preview-block v-for="(element, idx) in blocks" :element="element" :key="idx"></preview-block> -->
 
 </template>
 <script>
-import PreviewBlock from './PreviewBlock.vue'
+// import PreviewBlock from './PreviewBlock.vue'
 
 export default{
-    components:{
-        PreviewBlock
-    },
+    // components:{
+    //     PreviewBlock
+    // },
     computed: {
         blocks(){
             let currHandle = this.$store.getters.activePreview;
