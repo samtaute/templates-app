@@ -8,21 +8,17 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps, computed } from 'vue';
 
+const props = defineProps({
+    element: Object,
+})
 
-export default{
-    props:['element'],
-    computed:{
-        blockInfo(){
-            // console.log(JSON.stringify(this.element, null, 2))
-            return JSON.stringify(this.element, null, 2); 
-        }
+const blockInfo = computed(()=>{
+    return JSON.stringify(props.element, null, 2); 
+})
 
-    }
-
-
-}
 </script>
 
 <style scoped>

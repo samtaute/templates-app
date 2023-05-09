@@ -124,7 +124,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 /* carousel layout */
 .carousel.preview-block-container {
     display: flex;

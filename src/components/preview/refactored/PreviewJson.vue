@@ -42,7 +42,7 @@ const pageJson = computed(() => {
 
         if (blocksOnly.value) {
             return JSON.stringify(json.blocks, (key, value) => {
-                if (key === 'id') {
+                if (key === 'uid') {
                     return undefined;
                 }
                 else return value
@@ -50,7 +50,7 @@ const pageJson = computed(() => {
         }
         else {
             return JSON.stringify(json, (key, value) => {
-                if (key === 'id') {
+                if (key === 'uid') {
                     return undefined;
                 }
                 else return value
