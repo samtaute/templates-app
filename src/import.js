@@ -98,7 +98,7 @@ export async function updateFile(contentstring, filename, branchInput) {
     },
     body: JSON.stringify({
       branch: branchInput,
-      commit_message: "updates",
+      commit_message: `updates ${filename}`,
       actions: [{
         action: "update",
         file_path: `/content/src/raw/pages/content_pages/${filename}`,

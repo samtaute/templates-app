@@ -22,11 +22,15 @@ export default {
     TheMainArea,
   },
   mounted() {
+    if(localStorage.getItem('activeBranch')){
+      this.$store.state.currentBranch = localStorage.getItem('activeBranch'); 
+    }
     // this.$store.dispatch('addPageToDirectory', base);
     if(localStorage.getItem('pageDirectory')){
       this.$store.state.pageDirectory = JSON.parse(localStorage.getItem('pageDirectory'))
     }else{
-      loadNeptuneRepo('master'); 
+      console.log(this.$store.getters.currentBranch)
+      loadNeptuneRepo(this.$store.getters.currentBranch); 
     }
 
 

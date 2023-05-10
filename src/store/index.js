@@ -2,6 +2,8 @@
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import { processPage, processItem } from '../utilities/processing'
+import { loadNeptuneRepo } from '@/import';
+
 import { getRawFile } from '@/import';
 
 const store = createStore({
@@ -108,6 +110,9 @@ const store = createStore({
 
     },
     mutations: {
+        setBranch(state, branchName) {
+            state.currentBranch = branchName;
+        },
         pushToRevisedPages(state, page) {
             if (!state.revisedPages.includes(page)) {
                 state.revisedPages.push(page);
@@ -221,13 +226,18 @@ const store = createStore({
                 target = target[payload.targetPath[i]]
             }
         },
-        pushToAlerts(state, payload){
-            state.alerts.push(payload); 
+        pushToAlerts(state, payload) {
+            state.alerts.push(payload);
         },
     },
 
 
     actions: {
+        switchBranch(context, branchName) {
+            loadNeptuneRepo(branchName);
+            context.commit('setBranch', branchName);
+            localStorage.setItem('activeBranch', branchName)
+        },
         // let payload = {
         //     action: update, delete, add
         //     path: //path to key that needs to be change. The first value in array will be the directory key 
@@ -239,6 +249,7 @@ const store = createStore({
 
             context.state.pageDirectory[directoryKey]['modified'] = true;
             context.dispatch('registerDirectorySnapshot')
+
 
             if (!context.getters.revisedPages.includes(directoryKey)) {
                 context.commit('pushToRevisedPages', directoryKey)
@@ -327,9 +338,10 @@ const store = createStore({
             context.commit('forward')
         },
         registerDirectorySnapshot(context) {
-            if (context.state.editHistory.length < 10) {
-                context.commit('pushToEditHistory')
-            }
+            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
+
+            context.commit('pushToEditHistory')
+
 
         },
         //used to update an existing config or add a new one.
@@ -426,8 +438,8 @@ const store = createStore({
         deleteTemplateObject(context, payload) {
             context.commit('deleteTemplateObject', payload)
         },
-        alert(context, payload){
-            context.commit('pushToAlerts', payload); 
+        alert(context, payload) {
+            context.commit('pushToAlerts', payload);
         }
 
 

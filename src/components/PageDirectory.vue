@@ -7,8 +7,12 @@
             <section class="directory">
                 <div class="branch-input">
                     <input class='form-control branch-input' v-model="branchInput"
-                        placeholder="Input branch name (optional)"><button
-                        class="btn btn-primary btn-sm" @click="updateBranch(branchInput)" type="button">Switch
+                        placeholder="Input branch name (optional)" list="branch-options">
+                    <datalist id="branch-options">
+                        <option :key=option v-for="option of activeBranches">{{ option }}</option>
+                    </datalist><button
+                        class="btn btn-primary btn-sm" @click="updateBranch(branchInput)"
+                        type="button">Switch
                         Branch</button>
                 </div>
                 <label>{{ currentBranch }}</label>
@@ -44,13 +48,20 @@
 </template>
 
 <script setup>
-import { computed, ref, } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { loadNeptuneRepo } from '@/import';
 import { processPage } from '@/utilities/processing';
 
 
 const store = useStore();
+
+let activeBranches = ref([])
+
+onMounted(() => {
+    loadBranches();
+
+})
+
 
 const lang = ref('en')
 const filters = computed(() => {
@@ -125,13 +136,13 @@ let pageNames = computed(() => {
 let displayedPages = computed(() => {
     return pageNames.value.filter((page) => {
         let check = page.includes(`${lang.value}__`) && page.includes(searchString.value);
-        return check; 
+        return check;
     })
 })
 
 function activatePage(page) {
     processPage(store.state.pageDirectory[page]);
-    store.state.pageDirectory[page]['status']='displayed'
+    store.state.pageDirectory[page]['status'] = 'displayed'
 
     // store.dispatch('activatePage', page)
 }
@@ -143,12 +154,40 @@ function truncate(pageTitle) {
 
 
 function updateBranch(branchName) {
-    store.state.currentBranch = branchName;
-    loadNeptuneRepo(branchName);
+    store.dispatch('switchBranch', branchName)
+
 }
 const currentBranch = computed(() => {
     return store.getters.currentBranch;
 })
+
+async function loadBranches() {
+    let branches = [];
+
+    for (let i = 0; i < 7; i++) {
+        let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/branches?per_page=100&page=${i}`
+
+        const response = await fetch(requestUrl, {
+            method: 'GET',
+            headers: {
+                "PRIVATE-TOKEN": "glpat-jyMdXVXNnTcsr8_omboM"
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            for (let branch of data) {
+                branches.push(branch.name);
+            }
+        }
+
+
+
+    }
+
+
+    activeBranches.value = branches
+}
+
 
 </script>
 <style scoped> .directory {
@@ -186,10 +225,10 @@ const currentBranch = computed(() => {
      background-color: red !important;
  }
 
- .search-inputs{
-    display: flex; 
-    align-items: center;
-    column-gap: .2rem;
+ .search-inputs {
+     display: flex;
+     align-items: center;
+     column-gap: .2rem;
 
  }
 </style>
