@@ -20,7 +20,7 @@ import { updateFile } from '../import'
 import useValidate from '../hooks/validate'
 import useAlert from '../hooks/alert'
 
-const [validateContent, processContent] = useValidate();
+const [processContent] = useValidate();
 const [showAlert] = useAlert();
 
 const store = useStore();
@@ -43,8 +43,7 @@ function publishChanges() {
         for (let page of revisedPages.value) {
             let content = store.getters.pageDirectory[page];
             content = processContent(content);
-            let validated = validateContent(content);
-            if (validated) {
+            if (content) {
                 updateFile(content, page, currentBranch.value);
             } else {
                 showAlert('alert-danger', 'Page failed validation')
