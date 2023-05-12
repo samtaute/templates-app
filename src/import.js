@@ -22,16 +22,18 @@ export async function loadNeptuneRepo(branchName) {
     return name.includes("en__") || name.includes("es__")||name.includes("es_mx__")
   })
 
-
-  for (let filename of filenames) {
-    if (!store.state.pageDirectory[filename]) {
-      updatedRepo[filename] = await getRawFile(filename, branchName)
-    }
-    else {
-      updatedRepo[filename] = store.getters.pageDirectory[filename];
-    }
+  for (let filename of filenames){
+      updatedRepo[filename]={}
   }
-  store.state.activePages = [];
+
+  // for (let filename of filenames) {
+  //   if (!store.state.pageDirectory[filename]) {
+  //     updatedRepo[filename] = await getRawFile(filename, branchName)
+  //   }
+  //   else {
+  //     updatedRepo[filename] = store.getters.pageDirectory[filename];
+  //   }
+  // }
   store.state.pageDirectory = updatedRepo;
 
   // for(let key of Object.keys(store.getters.pageDirectory)){
@@ -44,6 +46,8 @@ export async function loadNeptuneRepo(branchName) {
     message: 'neptune directory is loaded'
   })
   localStorage.setItem('pageDirectory', JSON.stringify(store.state.pageDirectory))
+  localStorage.setItem('currentBranch', store.state.currentBranch)
+
 }
 async function getFilenames(branchName) {
   let filenames = [];

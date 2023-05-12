@@ -1,5 +1,6 @@
 <template>
     <div class="main-area">
+        <main-startup-prompt v-if="promptVisible"></main-startup-prompt>
         <div class=alert-container>
             <div v-for='alert of alerts' :key="alert" class="alert fade show" :class="alert.type" role="alert">
                 {{ alert.message }}
@@ -27,10 +28,11 @@
 </template>
 
 <script setup>
+import MainStartupPrompt from '../MainStartupPrompt.vue'
 import PreviewContainer from '../preview/refactored/PreviewContainer.vue'
 import TemplateList from '../template/TemplateList.vue';
 import ModalCreatePage from '../ModalPageCreate.vue';
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore();
@@ -44,6 +46,8 @@ const displayedPages = computed(() => {
     }
     return displayedPages; 
 })
+
+const promptVisible = ref(true); 
 
 function createPage() {
 

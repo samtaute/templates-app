@@ -50,7 +50,8 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { processPage } from '@/utilities/processing';
+// import { processPage } from '@/utilities/processing';
+import { getRawFile } from '@/import';
 
 
 const store = useStore();
@@ -59,7 +60,6 @@ let activeBranches = ref([])
 
 onMounted(() => {
     loadBranches();
-
 })
 
 
@@ -140,9 +140,15 @@ let displayedPages = computed(() => {
     })
 })
 
-function activatePage(page) {
-    processPage(store.state.pageDirectory[page]);
-    store.state.pageDirectory[page]['status'] = 'displayed'
+function activatePage(pagename) {
+    getRawFile(pagename, store.getters.currentBranch)
+        .then((page)=>{
+            page.status='displayed'; 
+            store.state.pageDirectory[pagename]=page; 
+        }); 
+
+    // processPage(store.state.pageDirectory[page]);
+    // store.state.pageDirectory[page]['status'] = 'displayed'
 
     // store.dispatch('activatePage', page)
 }

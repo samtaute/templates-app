@@ -42,7 +42,7 @@ const store = createStore({
             redoStack: [],
 
             alerts: [],
-            currentBranch: 'master',
+            currentBranch: '',
         }
 
     },

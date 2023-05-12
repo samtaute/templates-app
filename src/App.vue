@@ -10,7 +10,7 @@ import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMainArea from './components/layout/TheMainArea.vue'
 import TheHeader from './components/layout/TheHeader.vue'
 // import base from './models/base'
-import {loadNeptuneRepo} from './import'
+// import {loadNeptuneRepo} from './import'
 // import TheToolbar from './components/TheToolbar.vue'
 
 
@@ -22,16 +22,16 @@ export default {
     TheMainArea,
   },
   mounted() {
-    if(localStorage.getItem('activeBranch')){
-      this.$store.state.currentBranch = localStorage.getItem('activeBranch'); 
+    if(localStorage.getItem('currentBranch')){
+      this.$store.state.currentBranch = localStorage.getItem('currentBranch'); 
     }
     // this.$store.dispatch('addPageToDirectory', base);
     if(localStorage.getItem('pageDirectory')){
       this.$store.state.pageDirectory = JSON.parse(localStorage.getItem('pageDirectory'))
-    }else{
-      console.log(this.$store.getters.currentBranch)
-      loadNeptuneRepo(this.$store.getters.currentBranch); 
     }
+    // else{
+    //   loadNeptuneRepo(this.$store.getters.currentBranch); 
+    // }
 
 
   }

@@ -53,6 +53,7 @@ section {
     align-items: center;
     justify-content: flex-start;
     padding: 5px 0px 10rem 0px; 
+    z-index: 10;
     
 }
 
