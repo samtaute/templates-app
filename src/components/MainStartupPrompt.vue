@@ -30,33 +30,53 @@
 </template>
 <script setup>
 import useGitlab from '@/hooks/gitlab';
-import {loadNeptuneRepo} from '../import'
+// import { loadNeptuneRepo } from '../import'
 
 import { onMounted, ref, computed } from 'vue';
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
 
-const store = useStore(); 
+const store = useStore();
 
 const activeBranches = ref([])
-const [loadBranches] = useGitlab(); 
+const {getBranches} = useGitlab();
 
 const inputBranch = ref("")
 
-const isVisible = computed(()=>{
-    if (store.getters.currentBranch){
-        return false; 
+const isVisible = computed(() => {
+    if (store.getters.activeBranch) {
+        return false;
     }
-    else return true; 
+    else return true;
 })
 
-function startFromBranch(){ 
-    store.state.currentBranch = inputBranch; 
-    loadNeptuneRepo(store.getters.currentBranch); 
-}   
+//move this to store
+async function startFromBranch() {
+    store.dispatch('loadBranch', inputBranch.value)
+    // let filenames = await getFilenames(inputBranch.value); 
+    // if (filenames.length === 0){
+    //     store.dispatch('alert','Invalid branch name')
+    //     return; 
+    // }
+    // store.dispatch('setBranch', inputBranch.value)
+
+    // let directory = {
+    //     workset: {
+    //         blocks: [],
+    //     }
+    // }
+
+    // for(let file of filenames){
+    //     directory[file]={}
+    // }
+
+    // store.dispatch('setDirectory', directory)
+
+    // loadNeptuneRepo(store.getters.activeBranch);
+}
 
 
 onMounted(async () => {
-    activeBranches.value = await loadBranches(); 
+    activeBranches.value = await getBranches();
 })
 
 

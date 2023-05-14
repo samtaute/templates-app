@@ -2,8 +2,7 @@
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import { processPage, processItem } from '../utilities/processing'
-import { loadNeptuneRepo } from '@/import';
-
+import useGitlab from '@/hooks/gitlab';
 import { getRawFile } from '@/import';
 
 const store = createStore({
@@ -14,13 +13,8 @@ const store = createStore({
                     blocks: []
                 }
             },
+            activeBranch: '',
             activePreview: '',
-
-            activePages: [],
-            displayedPages: [],
-
-            revisedPages: [],
-
 
             platforms: startingPlatforms,
             platformsFilterArray: [],
@@ -32,23 +26,16 @@ const store = createStore({
             },
             filterActive: false,
 
-
-            //state for fotoscapes obj
-            fotoscapeObject: {},
-            contentLoaded: false,
-
-
             editHistory: [],
             redoStack: [],
 
             alerts: [],
-            currentBranch: '',
         }
 
     },
     getters: {
-        currentBranch(state) {
-            return state.currentBranch;
+        activeBranch(state) {
+            return state.activeBranch;
         },
         revisedPages(state) {
             return state.revisedPages;
@@ -110,9 +97,6 @@ const store = createStore({
 
     },
     mutations: {
-        setBranch(state, branchName) {
-            state.currentBranch = branchName;
-        },
         pushToRevisedPages(state, page) {
             if (!state.revisedPages.includes(page)) {
                 state.revisedPages.push(page);
@@ -229,74 +213,120 @@ const store = createStore({
         pushToAlerts(state, payload) {
             state.alerts.push(payload);
         },
+        setDirectory(state, payload) {
+            state.pageDirectory = payload;
+        },
+        setBranch(state, payload) {
+            state.activeBranch = payload;
+        },
     },
 
 
     actions: {
-        switchBranch(context, branchName) {
-            loadNeptuneRepo(branchName);
-            context.commit('setBranch', branchName);
-            localStorage.setItem('activeBranch', branchName)
+        async loadBranch(context, branchName) {
+            const { getFilenames } = useGitlab();
+            let files = await getFilenames(branchName);
+            if (files.length === 0) {
+                let payload = {
+                    type: 'alert-danger',
+                    message: 'Unable to load branch'
+                }
+                context.dispatch('alert', payload)
+                return;
+            }
+            let directory = {
+                workset: {
+                    blocks: [],
+                }
+            }
+            for (let file of files) {
+                directory[file] = {};
+            }
+            context.commit('setDirectory', directory);
+            context.state.activeBranch = branchName;
+            context.state.activePreview = '';
+            context.state.platformsFilterArray = [];
+            context.state.editHistory = [];
+            context.state.filterActive = false;
+            context.state.redoStack = [];
+            localStorage.setItem('pageDirectory', context.getters.pageDirectory);
+            localStorage.setItem('activeBranch', context.getters.activeBranch);
+            //
         },
+
+        setDirectory(context, payload) {
+            context.commit('setDirectory', payload)
+        },
+        setBranch(context, payload) {
+            context.commit('setBranch', payload)
+        },
+
         // let payload = {
         //     action: update, delete, add
         //     path: //path to key that needs to be change. The first value in array will be the directory key 
         //     newValue: //updatedValue
         // }
-        updateDirectory(context, payload) {
-            let { action, path, value } = payload;
-            let directoryKey = path[0];
 
-            context.state.pageDirectory[directoryKey]['modified'] = true;
+        editDirectory(context, payload) {
+            let { path, value } = payload;
             context.dispatch('registerDirectorySnapshot')
-
-
-            if (!context.getters.revisedPages.includes(directoryKey)) {
-                context.commit('pushToRevisedPages', directoryKey)
-            }
             let target = context.getters.pageDirectory;
-            switch (action) {
-                case 'set':
-                    for (let i = 0; i < path.length; i++) {
-                        if (i === path.length - 1) {
-                            target[path[i]] = value;
-                        }
-                        else {
-                            target = target[path[i]]
-                        }
-                    }
-                    break;
-                case 'delete':
-                    for (let i = 0; i < payload.targetPath.length; i++) {
-                        if (i === payload.targetPath.length - 2) {
-                            if (Array.isArray(target[payload.targetPath[i]])) {
-                                target[payload.targetPath[i]].splice(payload.targetPath[i + 1], 1)
-                                return;
-                            }
-                        }
-                        target = target[payload.targetPath[i]]
-                    }
-                    break;
-                case 'setList':
-                    for (let i = 0; i < path.length; i++) {
-                        if (i === path.length - 1) {
-                            if (Array.isArray(target[path[i]])) {
-                                target[path[i]] = value;
-                                return
-                            }
-                            else {
-                                if (value.length === 0) {
-                                    return;
-                                }
-                                let currValue = target[path[i]];
-                                target[path[i]] = value[0] === currValue ? value[1] : value[0];
-                                return;
-                            }
-                        }
-                        target = target[path[i]];
-                    }
-                    break;
+            for (let i = 0; i < path.length; i++) {
+                if (i === path.length - 1) {
+                    target[path[i]] = value;
+                }
+                else {
+                    target = target[path[i]]
+                }
             }
+            localStorage.setItem('pageDirectory', context.getters.pageDirectory);
+
+
+            //     switch (action) {
+            //         case 'set':
+            //             for (let i = 0; i < path.length; i++) {
+            //                 if (i === path.length - 1) {
+            //                     target[path[i]] = value;
+            //                 }
+            //                 else {
+            //                     target = target[path[i]]
+            //                 }
+            //             }
+            //             break;
+            //         case 'delete':
+            //             for (let i = 0; i < payload.targetPath.length; i++) {
+            //                 if (i === payload.targetPath.length - 2) {
+            //                     if (Array.isArray(target[payload.targetPath[i]])) {
+            //                         target[payload.targetPath[i]].splice(payload.targetPath[i + 1], 1)
+            //                         return;
+            //                     }
+            //                 }
+            //                 target = target[payload.targetPath[i]]
+            //             }
+            //             break;
+            //         case 'setList':
+            //             for (let i = 0; i < path.length; i++) {
+            //                 if (i === path.length - 1) {
+            //                     if (Array.isArray(target[path[i]])) {
+            //                         target[path[i]] = value;
+            //                         return
+            //                     }
+            //                     else {
+            //                         if (value.length === 0) {
+            //                             return;
+            //                         }
+            //                         let currValue = target[path[i]];
+            //                         target[path[i]] = value[0] === currValue ? value[1] : value[0];
+            //                         return;
+            //                     }
+            //                 }
+            //                 target = target[path[i]];
+            //             }
+            //             break;
+            //     }
+
+            //     localStorage.setItem('pageDirectory', context.getters.pageDirectory);
+            // }
         },
         activatePage(context, page) {
             processPage(context.getters.pageDirectory[page]);
@@ -304,7 +334,7 @@ const store = createStore({
             if (context.getters.pageDirectory[page]['modified']) {
                 showConfirmation("Do you want to override changes?").then((confirmed) => {
                     if (confirmed) {
-                        getRawFile(page, context.state.currentBranch)
+                        getRawFile(page, context.state.activeBranch)
                             .then((rawFile) => {
                                 context.state.pageDirectory[page] = rawFile
                             });
@@ -385,22 +415,6 @@ const store = createStore({
         },
 
 
-
-        //replaceList is used by the "setter" function in draggable. Takes a payload containing a page handle and an array representing a item list. 
-        // //  payload = {
-        //     pageHandle: props.pageName,
-        //     blocks: newValue,
-        // }
-
-
-        // payload={
-        //     targetList: props.pageName,
-        //     targetId: id
-        // }
-
-
-        //Template actions
-
         //Takes a string such as "cricket" as its payload and forwards it to the activatePlatform mutation.
         activatePlatform(context, platform) {
             if (platform != context.getters.activePlatform) {
@@ -441,14 +455,8 @@ const store = createStore({
         alert(context, payload) {
             context.commit('pushToAlerts', payload);
         }
-
-
     }
-
-}
-
-
-);
+});
 
 export default store;
 

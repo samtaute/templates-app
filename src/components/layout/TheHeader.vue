@@ -1,8 +1,8 @@
 <template>
     <header class="header-container">
         <div class="header-icon">
-           Templates
-           {{ this.$store.getters.currentBranch }}
+           <button class="btn btn-primary" @click="reset">Reset</button>
+           {{ this.$store.getters.activeBranch }}
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
             <button v-for="page in activePages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
@@ -44,6 +44,11 @@ export default {
         }
     },
     methods: {
+        reset(){
+            localStorage.removeItem("pageDirectory");
+            localStorage.removeItem("activeBranch");
+            location.reload(); 
+        },
         back() {
             this.$store.dispatch('back');
         },

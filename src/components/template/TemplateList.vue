@@ -139,29 +139,11 @@ const itemList = computed({
         //to do - execute store action instead of editing directly
 
         let payload = {
-            action: 'setList',
+            // action: 'setList',
             path: props.fullPath,
             value: newValue,
         }
-        store.dispatch('updateDirectory', payload);
-        // let target = store.state.pageDirectory;
-        // for (let i = 0; i < props.fullPath.length; i++) {
-        //     if (i === props.fullPath.length - 1) {
-        //         if (Array.isArray(target[props.fullPath[i]])) {
-        //             target[props.fullPath[i]] = newValue;
-        //             return
-        //         }
-        //         else {
-        //             if (newValue.length === 0) {
-        //                 return;
-        //             }
-        //             let currValue = target[props.fullPath[i]];
-        //             target[props.fullPath[i]] = newValue[0] === currValue ? newValue[1] : newValue[0];
-        //             return;
-        //         }
-        //     }
-        //     target = target[props.fullPath[i]];
-        // }
+        store.dispatch('editDirectory', payload);
     }
 });
 

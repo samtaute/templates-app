@@ -1,10 +1,11 @@
-export default function useGitlab(){
-    async function loadBranches() {
+
+export default function useGitlab() {
+    async function getBranches() {
         let branches = [];
-    
+
         for (let i = 0; i < 7; i++) {
             let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/branches?per_page=100&page=${i}`
-    
+
             const response = await fetch(requestUrl, {
                 method: 'GET',
                 headers: {
@@ -17,11 +18,33 @@ export default function useGitlab(){
                     branches.push(branch.name);
                 }
             }
-    
-    
-    
+
+
+
         }
-        return branches; 
+        return branches;
     }
-    return [loadBranches]; 
+
+    async function getFilenames(branchName) {
+        let filenames = [];
+
+        let baseUrl = `https://gitlab.com/api/v4/projects/31495766/repository/tree?path=content%2Fsrc%2Fraw%2Fpages%2Fcontent_pages%2F&per_page=100&ref=${branchName}`
+        for (let i = 0; i < 7; i++) {
+            let requestUrl = baseUrl + `&page=${i}`
+            const response = await fetch(requestUrl, {
+                method: 'GET',
+                headers: {
+                    "PRIVATE-TOKEN": "glpat-jyMdXVXNnTcsr8_omboM"
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                for (let page of data) {
+                    filenames.push(page.name);
+                }
+            }
+        }
+        return filenames;
+    }
+    return {getBranches, getFilenames};
 }

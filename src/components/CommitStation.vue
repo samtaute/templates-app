@@ -4,7 +4,7 @@
             <input class="form-control" placeholder="Enter commit message"><button type="button"
                 class="btn btn-primary" @click="publishChanges">Publish</button>
         </div>
-        <label>{{ currentBranch }}</label>
+        <label>{{ activeBranch }}</label>
         <div class="commit-entries">
             <div v-for="page of revisedPages" :key="page" class="commit-entry">
                 <button type="button" class="btn .btn-sm btn-primary">{{ page }}</button>
@@ -30,12 +30,12 @@ const revisedPages = computed(() => {
     return revisedPages
 });
 
-const currentBranch = computed(() => {
-    return store.getters.currentBranch;
+const activeBranch = computed(() => {
+    return store.getters.activeBranch;
 })
 
 function publishChanges() {
-    if (currentBranch.value === 'master') {
+    if (activeBranch.value === 'master') {
         showAlert('alert-danger', 'Tried to commit to master')
     }
 
@@ -44,7 +44,7 @@ function publishChanges() {
             let content = store.getters.pageDirectory[page];
             content = processContent(content);
             if (content) {
-                updateFile(content, page, currentBranch.value);
+                updateFile(content, page, activeBranch.value);
             } else {
                 showAlert('alert-danger', 'Page failed validation')
             }

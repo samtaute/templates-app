@@ -46,7 +46,7 @@ export async function loadNeptuneRepo(branchName) {
     message: 'neptune directory is loaded'
   })
   localStorage.setItem('pageDirectory', JSON.stringify(store.state.pageDirectory))
-  localStorage.setItem('currentBranch', store.state.currentBranch)
+  localStorage.setItem('activeBranch', store.state.activeBranch)
 
 }
 async function getFilenames(branchName) {

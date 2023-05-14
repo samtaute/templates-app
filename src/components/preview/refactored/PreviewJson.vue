@@ -6,7 +6,7 @@
                     Page</button>
                 <button type="button" class="btn btn-primary btn-sm blue-button" @click="blocksOnly = true">Blocks
                     Only</button>
-                <button @click="setFile(pageJson, store.getters.activePreview, store.state.currentBranch)" type="button" class="btn btn-primary btn-sm blue-button">Update</button>
+                <button @click="setFile(pageJson, store.getters.activePreview, store.state.activeBranch)" type="button" class="btn btn-primary btn-sm blue-button">Update</button>
             </div>
             <!-- <button class="btn btn-outline-dark btn-sm clipboard-img" @click="copyToClipboard(pageJson)" type="button"><img
                     src='../../../assets/clipboard.png'></button>

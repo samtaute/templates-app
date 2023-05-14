@@ -15,7 +15,7 @@
                         type="button">Switch
                         Branch</button>
                 </div>
-                <label>{{ currentBranch }}</label>
+                <label>{{ activeBranch }}</label>
                 <div class="search-inputs">
                     <input type="text" v-model="searchString" placeholder="search for file..."
                         class="form-control directory-search">
@@ -59,7 +59,7 @@ const store = useStore();
 let activeBranches = ref([])
 
 onMounted(() => {
-    loadBranches();
+    getBranches();
 })
 
 
@@ -141,7 +141,7 @@ let displayedPages = computed(() => {
 })
 
 function activatePage(pagename) {
-    getRawFile(pagename, store.getters.currentBranch)
+    getRawFile(pagename, store.getters.activeBranch)
         .then((page)=>{
             page.status='displayed'; 
             store.state.pageDirectory[pagename]=page; 
@@ -160,14 +160,14 @@ function truncate(pageTitle) {
 
 
 function updateBranch(branchName) {
-    store.dispatch('switchBranch', branchName)
+    store.dispatch('loadBranch', branchName)
 
 }
-const currentBranch = computed(() => {
-    return store.getters.currentBranch;
+const activeBranch = computed(() => {
+    return store.getters.activeBranch;
 })
 
-async function loadBranches() {
+async function getBranches() {
     let branches = [];
 
     for (let i = 0; i < 7; i++) {
