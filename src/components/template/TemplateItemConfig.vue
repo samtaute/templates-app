@@ -185,15 +185,22 @@ const indentString = computed(() => {
 });
 
 function updateConfigValue(evt) {
-    let payload = {
-        directoryKey: directoryKey,
-        elementId: props.element.id,
-        path: props.fullPath,
+    let path = [...props.fullPath]; 
+
+    if(props.fullPath.includes('variant') ||props.fullPath.includes('control')){
+        let idx = path.findIndex((element)=>element === 'control' || element === 'variant')
+        path.splice(idx+1, 1); 
+    }
+
+    let payload={
+        path: path,
         value: evt.target.value,
     }
-    store.dispatch('setItemConfigValue', payload);
-    // let temp = props.parent;
-    // temp[props.label] = evt.target.value;
+
+
+    store.dispatch('editDirectory', payload)
+
+
     evt.target.blur();
 }
 
@@ -218,7 +225,11 @@ function addConfig(label) {
     store.dispatch('setItemConfigValue', payload)
 }
 function deleteConfig() {
-    store.dispatch('deleteItemConfig', props.fullPath)
+    let payload = {
+        path: props.fullPath, 
+        value: undefined
+    }
+    store.dispatch('editDirectory', payload)
 }
 
 </script>

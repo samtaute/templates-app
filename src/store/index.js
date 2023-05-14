@@ -97,14 +97,29 @@ const store = createStore({
 
     },
     mutations: {
+        editDirectory(state, payload){
+            let { path, value } = payload;
+            let target = state.pageDirectory;
+            for (let i = 0; i < path.length; i++) {
+                if (i === path.length - 1) {
+                    if (value === undefined){
+                        delete target[path[i]]; 
+                        break; 
+                    }
+                    target[path[i]] = value;
+                }
+                else {
+                    target = target[path[i]]
+                }
+            }
+
+        },
         pushToRevisedPages(state, page) {
             if (!state.revisedPages.includes(page)) {
                 state.revisedPages.push(page);
             }
         },
-        deletePage(state, page) {
-            delete state.pageDirectory[page]
-        },
+
         pushToActivePages(state, pageName) {
             let index = state.activePages.indexOf(pageName);
             if (index > -1) {
@@ -183,18 +198,6 @@ const store = createStore({
             }
         },
 
-        deleteItemConfig(state, fullPath) {
-            let target = state.pageDirectory;
-            for (let i = 0; i < fullPath.length; i++) {
-                if (i === fullPath.length - 1) {
-                    delete target[fullPath[i]];
-                    return;
-                }
-                else {
-                    target = target[fullPath[i]]
-                }
-            }
-        },
         setActivePage(state, pageName) {
             state.activePreview = pageName;
         },
@@ -261,20 +264,11 @@ const store = createStore({
             context.commit('setBranch', payload)
         },
 
-        editDirectory(context, payload) {
-            let { path, value } = payload;
-            context.dispatch('registerDirectorySnapshot')
-
-            let target = context.getters.pageDirectory;
-            for (let i = 0; i < path.length; i++) {
-                if (i === path.length - 1) {
-                    target[path[i]] = value;
-                }
-                else {
-                    target = target[path[i]]
-                }
-            }
-            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
+        editDirectory({commit, dispatch, getters}, payload) {
+            dispatch('registerDirectorySnapshot')
+            commit('editDirectory', payload); 
+           
+            localStorage.setItem('pageDirectory', JSON.stringify(getters.pageDirectory));
         },
         activatePage(context, page) {
             processPage(context.getters.pageDirectory[page]);
@@ -302,10 +296,7 @@ const store = createStore({
                 });
             }
         },
-        deletePage(context, page) {
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('deletePage', page)
-        },
+
         setActivePage(context, pageName) {
             context.commit('setActivePage', pageName);
         },
@@ -319,17 +310,6 @@ const store = createStore({
             localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
 
             context.commit('pushToEditHistory')
-
-
-        },
-        //used to update an existing config or add a new one.
-        setItemConfigValue(context, payload) {
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('updateItemConfigValue', payload);
-        },
-        deleteItemConfig(context, payload) {
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('deleteItemConfig', payload);
         },
         //takes block json, processes it, and pushes it to the workset
         createItem(context, item) {
