@@ -36,7 +36,7 @@
                 </template-item>
             </template>
         </draggable>
-</section>
+    </section>
 </template>
 
 <script setup>
@@ -110,25 +110,12 @@ const dragOptions = computed(() => {
 const itemList = computed({
     get() {
         var list;
-
         let target = store.getters.pageDirectory;
-
         for (let i = 0; i < props.fullPath.length; i++) {
             target = target[props.fullPath[i]];
         }
-
         if (Array.isArray(target)) {
             list = target;
-            // if (list.length === 0) {
-            //     //to do - execute store action instead of editing directly
-            //     list.push({
-            //         blockType: "header_block",
-            //         uid: "aldskfjdsk;fj",
-            //         settings: {
-            //             subheader: "Placeholder"
-            //         }
-            //     });
-            // }
         } else {
             list = [target]
         }
@@ -136,13 +123,20 @@ const itemList = computed({
         return list;
     },
     set(newValue) {
+        let payload;
         //to do - execute store action instead of editing directly
-
-        let payload = {
-            // action: 'setList',
-            path: props.fullPath,
-            value: newValue,
+        if (props.fullPath.includes('control') || props.fullPath.includes('variant')) {
+            payload = {
+                path: props.fullPath,
+                value: newValue[0] != itemList.value[0] ? newValue[0] : newValue[1], 
+            }
+        } else {
+            payload = {
+                path: props.fullPath,
+                value: newValue,
+            }
         }
+
         store.dispatch('editDirectory', payload);
     }
 });
@@ -151,7 +145,7 @@ const isVisible = ref(true);
 
 function minimizeList() {
     // store.state.activePages = store.state.activePages.filter((page) => page != directoryKey);
-    store.state.pageDirectory[props.directoryKey]['status']='active'; 
+    store.state.pageDirectory[props.directoryKey]['status'] = 'active';
     isVisible.value = !isVisible.value
 }
 

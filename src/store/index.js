@@ -249,7 +249,7 @@ const store = createStore({
             context.state.editHistory = [];
             context.state.filterActive = false;
             context.state.redoStack = [];
-            localStorage.setItem('pageDirectory', context.getters.pageDirectory);
+            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
             localStorage.setItem('activeBranch', context.getters.activeBranch);
             //
         },
@@ -261,15 +261,10 @@ const store = createStore({
             context.commit('setBranch', payload)
         },
 
-        // let payload = {
-        //     action: update, delete, add
-        //     path: //path to key that needs to be change. The first value in array will be the directory key 
-        //     newValue: //updatedValue
-        // }
-
         editDirectory(context, payload) {
             let { path, value } = payload;
             context.dispatch('registerDirectorySnapshot')
+
             let target = context.getters.pageDirectory;
             for (let i = 0; i < path.length; i++) {
                 if (i === path.length - 1) {
@@ -279,54 +274,7 @@ const store = createStore({
                     target = target[path[i]]
                 }
             }
-            localStorage.setItem('pageDirectory', context.getters.pageDirectory);
-
-
-            //     switch (action) {
-            //         case 'set':
-            //             for (let i = 0; i < path.length; i++) {
-            //                 if (i === path.length - 1) {
-            //                     target[path[i]] = value;
-            //                 }
-            //                 else {
-            //                     target = target[path[i]]
-            //                 }
-            //             }
-            //             break;
-            //         case 'delete':
-            //             for (let i = 0; i < payload.targetPath.length; i++) {
-            //                 if (i === payload.targetPath.length - 2) {
-            //                     if (Array.isArray(target[payload.targetPath[i]])) {
-            //                         target[payload.targetPath[i]].splice(payload.targetPath[i + 1], 1)
-            //                         return;
-            //                     }
-            //                 }
-            //                 target = target[payload.targetPath[i]]
-            //             }
-            //             break;
-            //         case 'setList':
-            //             for (let i = 0; i < path.length; i++) {
-            //                 if (i === path.length - 1) {
-            //                     if (Array.isArray(target[path[i]])) {
-            //                         target[path[i]] = value;
-            //                         return
-            //                     }
-            //                     else {
-            //                         if (value.length === 0) {
-            //                             return;
-            //                         }
-            //                         let currValue = target[path[i]];
-            //                         target[path[i]] = value[0] === currValue ? value[1] : value[0];
-            //                         return;
-            //                     }
-            //                 }
-            //                 target = target[path[i]];
-            //             }
-            //             break;
-            //     }
-
-            //     localStorage.setItem('pageDirectory', context.getters.pageDirectory);
-            // }
+            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
         },
         activatePage(context, page) {
             processPage(context.getters.pageDirectory[page]);

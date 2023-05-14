@@ -17,7 +17,7 @@ onMounted(() => {
   //returns true if localStorage contains pageDirectory and activeBranch
   let check = checkStoredItems();
   if(check){
-    store.dispatch('setDirectory', localStorage.getItem('pageDirectory')); 
+    store.dispatch('setDirectory', JSON.parse(localStorage.getItem('pageDirectory'))); 
     store.dispatch('setBranch', localStorage.getItem('activeBranch')); 
   }
 })
