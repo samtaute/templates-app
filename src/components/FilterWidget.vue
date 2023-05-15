@@ -23,7 +23,6 @@
                         <option :key=option v-for="option of options[filter]">{{ option }}</option>
                     </datalist>
                 </div>
-                {{ activeFilters }}
             </section>
 
 
@@ -41,6 +40,7 @@ const layout = blockLayouts;
 const category = fotoscapeCategories;
 const blockType = Object.keys(blockModels); 
 
+
 const filterLabels = computed(()=>{
     return Object.keys(store.getters.filters).filter((key)=>key != 'platform')
 })
@@ -53,20 +53,20 @@ const options = {
 
 const store = useStore();
 
-const filters = computed(() => {
-    return store.getters.filters;
-});
+// const filters = computed(() => {
+//     return store.getters.filters;
+// });
 
-const activeFilters = computed(() => {
-    let activeFilters = [];
-    for (const [key, value] of Object.entries(filters.value)) {
-        if (value.length > 0) {
-            activeFilters.push(key);
-        }
-    }
+// const activeFilters = computed(() => {
+//     let activeFilters = [];
+//     for (const [key, value] of Object.entries(filters.value)) {
+//         if (value.length > 0) {
+//             activeFilters.push(key);
+//         }
+//     }
 
-    return activeFilters;
-});
+//     return activeFilters;
+// });
 
 function enterFilter(filter, evt) {
     store.state.filters[filter] = evt.target.value;

@@ -23,6 +23,7 @@ const store = createStore({
                 blockType: "",
                 category: "",
                 layout: "",
+                platform: "",
             },
             filterActive: false,
 
@@ -272,8 +273,10 @@ const store = createStore({
             } else {
                 getRawFile(pageName, context.state.activeBranch)
                     .then((rawFile) => {
+                        processPage(rawFile)
                         rawFile.status = 'displayed'
-                        context.state.pageDirectory[pageName] = rawFile
+                        context.state.pageDirectory[pageName] = rawFile;
+
                     });
             }
 

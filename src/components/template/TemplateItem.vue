@@ -1,6 +1,7 @@
 <template>
-    <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted && !filterActive }]"
+    <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted}]"
         v-if="!isFiltered">
+        {{ elementHasActivePlatform }}
         <div :key="index" class="header__buttons">
             <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
                     src='../../assets/delete.png'></button>
@@ -36,9 +37,7 @@ function updatePath(key) {
     let temp = [...props.fullPath]
     return [...temp, key]
 }
-// const directoryKey = inject('directoryKey')
 
-// const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items', 'id']
 
 function deleteItem() {
     store.dispatch('deleteTemplateObject', props.fullPath)
@@ -51,33 +50,21 @@ function duplicateBlock() {
 
 }
 
-const filterActive = computed(() => {
-    return store.getters.filterActive;
-})
-
 
 const elementHasActivePlatform = computed(() => {
     let activePlatform = store.getters.activePlatform;
-    if (activePlatform === 'default') {
-        if (!props.element.platforms) {
-            return true;
-        }
-        else return false;
+    let {platforms, excludePlatforms} = props.element; 
+    if(platforms){
+        if(!platforms.includes(activePlatform)){
+            return false
+        }else return true; 
+    }else if (excludePlatforms){
+        if(excludePlatforms.includes(activePlatform)){
+            return false; 
+        }else return true; 
+    }else{
+        return true; 
     }
-    if (!activePlatform) {
-        return true;
-    } else if (!props.element.platforms && !props.element.excludePlatforms) {
-        return true;
-    } else if (props.element.platforms) {
-        if (props.element.platforms.includes(activePlatform) || props.element.platforms.length === 0) {
-            return true;
-        } else return false;
-    } else if (props.element.excludePlatforms) {
-        if (props.element.excludePlatforms.includes(activePlatform)) {
-            return false;
-        } else return true;
-    } else return false;
-
 })
 
 const isHighlighted = computed(() => {

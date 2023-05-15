@@ -7,37 +7,27 @@
                     platform
                 }}</button>
         </div>
+        {{ activePlatform }}
+
     </div>
 </template>
 
-<script>
-export default {
-    computed: {
-        platforms() {
-            let array = this.$store.getters.platformsFilterArray;
-            array.unshift('default')
-            return array;
-        },
-        pageLoaded() {
-            return this.$store.getters.pageLoaded;
-        },
-        activePlatform() {
-            return this.$store.getters.activePlatform;
-        }
-    },
-    methods: {
-        selectPlatform(selectedPlatform) {
-            //todo:
-            this.$store.dispatch('activatePlatform', selectedPlatform)
-        },
+<script setup>
+import {computed} from 'vue'
+import {useStore} from 'vuex'
 
-        toggleFilterStatus(evt) {
-            //todo: make this an action
-            this.$store.state.filterActive = evt.target.checked;
-        }
+const store = useStore(); 
 
+const platforms = computed(()=>{
+    let array = store.getters.platformsFilterArray;
+    array.unshift('default');
+    return array;
+})
 
-    }
+const activePlatform = store.getters.activePlatform; 
+
+function selectPlatform(selectedPlatform){
+    store.dispatch('activatePlatform', selectedPlatform); 
 }
 
 </script>

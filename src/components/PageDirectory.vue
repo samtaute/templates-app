@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 // import { processPage } from '@/utilities/processing';
 
@@ -73,11 +73,14 @@ function runFilters(page) {
 }
 //returns true if page contains one element that meets filter criteria. 
 function checkFilters(blockList) {
+    if (blockList) {
+        for (let block of blockList) {
+            if (checkAllFilters(block)) return true;
+        }
+        return false;
 
-    for (let block of blockList) {
-        if (checkAllFilters(block)) return true;
     }
-    return false;
+
 }
 
 function checkAllFilters(block) {
