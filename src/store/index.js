@@ -32,7 +32,7 @@ const store = createStore({
 
             alerts: [],
 
-            revisedPages: [], 
+            revisedPages: [],
 
         }
 
@@ -244,21 +244,48 @@ const store = createStore({
             context.state.editHistory = [];
             context.state.filterActive = false;
             context.state.redoStack = [];
-            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
-            localStorage.setItem('activeBranch', context.getters.activeBranch);
             context.dispatch('alert', {
                 type: 'alert-success',
                 message: `${branchName} successfully loaded`
             })
-            //
+            
+
+            loadFiles()
+                .then(()=>{
+                    localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
+                    localStorage.setItem('activeBranch', context.getters.activeBranch);
+                    console.log('done');
+                })
+ 
+
+            function loadFiles(){
+                return new Promise((resolve)=>{
+                    let counter = 0; 
+
+                    for (let file of Object.keys(context.getters.pageDirectory).filter((dirKey) => dirKey != 'workset')) {
+                        if (!context.getters.pageDirectory[file]['blocks']) {
+                            getRawFile(file, context.state.activeBranch)
+                                .then((rawFile) => {
+                                    context.state.pageDirectory[file] = rawFile
+                                    counter++
+                                    if(counter === Object.keys(context.getters.pageDirectory).filter((dirKey) => dirKey != 'workset').length - 1){
+                                        resolve(); 
+                                    }
+                                })
+                        }
+                    }
+             
+                })
+            }
+            
         },
-        async loadCreatedBranch(context, branchName){
-            const {createBranch} = useGitlab();
-            await createBranch(branchName); 
+        async loadCreatedBranch(context, branchName) {
+            const { createBranch } = useGitlab();
+            await createBranch(branchName);
             context.dispatch('loadBranch', branchName)
         },
         async loadPage(context, pageName) {
-            if (context.getters.pageDirectory[pageName]['blocks']) {
+            if (context.getters.pageDirectory[pageName]['modified']) {
                 showConfirmation("Do you want to override changes?").then((confirmed) => {
                     if (confirmed) {
                         getRawFile(pageName, context.state.activeBranch)
@@ -307,11 +334,11 @@ const store = createStore({
         editDirectory(context, payload) {
             context.dispatch('registerDirectorySnapshot')
             context.commit('editDirectory', payload);
-            
-            let {path} = payload; 
-            let pageName = path[0]; 
-            if (!context.state.revisedPages.includes(pageName) && pageName != undefined){
-                context.state.revisedPages.push(pageName); 
+
+            let { path } = payload;
+            let pageName = path[0];
+            if (!context.state.revisedPages.includes(pageName) && pageName != undefined) {
+                context.state.revisedPages.push(pageName);
             }
 
             localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));

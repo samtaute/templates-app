@@ -1,7 +1,6 @@
 <template>
     <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted}]"
         v-if="!isFiltered">
-        {{ elementHasActivePlatform }}
         <div :key="index" class="header__buttons">
             <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
                     src='../../assets/delete.png'></button>
