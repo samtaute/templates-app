@@ -5,16 +5,6 @@
         </template>
         <template #content>
             <section class="directory">
-                <div class="branch-input">
-                    <input class='form-control branch-input' v-model="branchInput"
-                        placeholder="Input branch name (optional)" list="branch-options">
-                    <datalist id="branch-options">
-                        <option :key=option v-for="option of activeBranches">{{ option }}</option>
-                    </datalist><button
-                        class="btn btn-primary btn-sm" @click="updateBranch(branchInput)"
-                        type="button">Switch
-                        Branch</button>
-                </div>
                 <label>{{ activeBranch }}</label>
                 <div class="search-inputs">
                     <input type="text" v-model="searchString" placeholder="search for file..."
@@ -48,19 +38,12 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref} from 'vue'
 import { useStore } from 'vuex'
 // import { processPage } from '@/utilities/processing';
 
 
 const store = useStore();
-
-let activeBranches = ref([])
-
-onMounted(() => {
-    getBranches();
-})
-
 
 const lang = ref('en')
 const filters = computed(() => {
@@ -122,7 +105,6 @@ function checkFilter(element, configKey, configValue) {
 
 }
 
-const branchInput = ref("");
 
 
 
@@ -153,42 +135,9 @@ function truncate(pageTitle) {
     return shortened;
 }
 
-
-function updateBranch(branchName) {
-    store.dispatch('loadBranch', branchName)
-
-}
 const activeBranch = computed(() => {
     return store.getters.activeBranch;
 })
-
-async function getBranches() {
-    let branches = [];
-
-    for (let i = 0; i < 7; i++) {
-        let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/branches?per_page=100&page=${i}`
-
-        const response = await fetch(requestUrl, {
-            method: 'GET',
-            headers: {
-                "PRIVATE-TOKEN": "glpat-jyMdXVXNnTcsr8_omboM"
-            }
-        });
-        if (response.ok) {
-            const data = await response.json();
-            for (let branch of data) {
-                branches.push(branch.name);
-            }
-        }
-
-
-
-    }
-
-
-    activeBranches.value = branches
-}
-
 
 </script>
 <style scoped> .directory {
