@@ -8,7 +8,7 @@
         <div class="commit-entries">
             <div v-for="page of revisedPages" :key="page" class="commit-entry">
                 <button type="button" class="btn .btn-sm btn-primary">{{ page }}</button>
-                <a href="#">Demote</a>
+                <a href="#" @click="demote(page)">Demote</a>
             </div>
         </div>
     </section>
@@ -33,6 +33,12 @@ const revisedPages = computed(() => {
 const activeBranch = computed(() => {
     return store.getters.activeBranch;
 })
+
+function demote(page){
+    console.log(page)
+    store.state.revisedPages = store.state.revisedPages.filter((p)=>p!=page); 
+    console.log(store.state.revisedPages)
+}
 
 function publishChanges() {
     if (activeBranch.value === 'master') {

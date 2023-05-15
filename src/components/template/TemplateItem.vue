@@ -13,7 +13,7 @@
             :element="element"
             :key="key"
             :value="value"
-            :fullPath = "updatePath(key)"
+            :fullPath="updatePath(key)"
             :indent="1">
         </template-item-config>
     </li>
@@ -32,7 +32,7 @@ const props = defineProps({
     fullPath: Object,
 });
 
-function updatePath(key){
+function updatePath(key) {
     let temp = [...props.fullPath]
     return [...temp, key]
 }
@@ -40,12 +40,8 @@ function updatePath(key){
 
 // const skipProperties = ['blockType', 'platforms', 'excludePlatforms', 'items', 'id']
 
-function deleteItem(id) {
-    const payload = {
-        targetPath: props.fullPath,
-        targetId: id
-    }
-    store.dispatch('deleteTemplateObject', payload)
+function deleteItem() {
+    store.dispatch('deleteTemplateObject', props.fullPath)
 }
 
 function duplicateBlock() {

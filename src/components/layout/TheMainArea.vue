@@ -38,28 +38,33 @@ import { useStore } from 'vuex'
 const store = useStore();
 
 const displayedPages = computed(() => {
-    let displayedPages = []; 
-    for (let [key, value] of Object.entries(store.state.pageDirectory)){
-        if (value.status === 'displayed'){
+    let displayedPages = [];
+    for (let [key, value] of Object.entries(store.state.pageDirectory)) {
+        if (value.status === 'displayed') {
             displayedPages.push(key)
         }
     }
-    return displayedPages; 
+    return displayedPages;
 })
 
-const promptVisible = ref(true); 
+const promptVisible = ref(true);
 
 function createPage() {
 
     promptUser('Name your page')
         .then((filename) => {
-            filename = filename.toLowerCase(); 
+            filename = filename.toLowerCase();
             if (checkFilename(filename)) {
                 if (!store.state.pageDirectory[filename]) {
                     store.state.pageDirectory[filename] = {
-                        blocks: [],
+                        blocks: [{
+                            blockType: "header_block",
+                            settings: {
+                                subheader: "Placeholder"
+                            }
+                        },],
+                        status: 'displayed',
                     }
-                    store.state.activePages.unshift(filename)
                 } else {
                     alert('That file name is already in use')
                 }

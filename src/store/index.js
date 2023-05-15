@@ -30,6 +30,9 @@ const store = createStore({
             redoStack: [],
 
             alerts: [],
+
+            revisedPages: [], 
+
         }
 
     },
@@ -93,18 +96,20 @@ const store = createStore({
         activeDirectoryKeys(state) {
             return state.activePages;
         }
-
-
     },
     mutations: {
-        editDirectory(state, payload){
+        editDirectory(state, payload) {
             let { path, value } = payload;
             let target = state.pageDirectory;
+            if (path.length === 0) {
+                state.pageDirectory = value;
+                return;
+            }
             for (let i = 0; i < path.length; i++) {
                 if (i === path.length - 1) {
-                    if (value === undefined){
-                        delete target[path[i]]; 
-                        break; 
+                    if (value === undefined) {
+                        delete target[path[i]];
+                        break;
                     }
                     target[path[i]] = value;
                 }
@@ -112,21 +117,9 @@ const store = createStore({
                     target = target[path[i]]
                 }
             }
-
-        },
-        pushToRevisedPages(state, page) {
-            if (!state.revisedPages.includes(page)) {
-                state.revisedPages.push(page);
-            }
         },
 
-        pushToActivePages(state, pageName) {
-            let index = state.activePages.indexOf(pageName);
-            if (index > -1) {
-                state.activePages.splice(index, 1)
-            }
-            state.activePages.unshift(pageName)
-        },
+
         back(state) {
             console.log('back')
             if (state.editHistory.length > 0) {
@@ -159,9 +152,7 @@ const store = createStore({
         //     pageHandle: props.pageName,
         //     blocks: newValue,
         // }
-        replaceList(state, payload) {
-            state.pageDirectory[payload.pageHandle].blocks = payload.blocks;
-        },
+
 
         pushToPlatformsFilterArray(state, platform) {
             state.platformsFilterArray.push(platform);
@@ -216,9 +207,6 @@ const store = createStore({
         pushToAlerts(state, payload) {
             state.alerts.push(payload);
         },
-        setDirectory(state, payload) {
-            state.pageDirectory = payload;
-        },
         setBranch(state, payload) {
             state.activeBranch = payload;
         },
@@ -245,7 +233,10 @@ const store = createStore({
             for (let file of files) {
                 directory[file] = {};
             }
-            context.commit('setDirectory', directory);
+            context.commit('editDirectory', {
+                path: [],
+                value: directory
+            });
             context.state.activeBranch = branchName;
             context.state.activePreview = '';
             context.state.platformsFilterArray = [];
@@ -256,34 +247,26 @@ const store = createStore({
             localStorage.setItem('activeBranch', context.getters.activeBranch);
             //
         },
-
-        setDirectory(context, payload) {
-            context.commit('setDirectory', payload)
-        },
-        setBranch(context, payload) {
-            context.commit('setBranch', payload)
-        },
-
-        editDirectory({commit, dispatch, getters}, payload) {
-            dispatch('registerDirectorySnapshot')
-            commit('editDirectory', payload); 
-           
-            localStorage.setItem('pageDirectory', JSON.stringify(getters.pageDirectory));
-        },
-        activatePage(context, page) {
-            processPage(context.getters.pageDirectory[page]);
-
-            if (context.getters.pageDirectory[page]['modified']) {
+        async loadPage(context, pageName) {
+            if (context.getters.pageDirectory[pageName]['blocks']) {
                 showConfirmation("Do you want to override changes?").then((confirmed) => {
                     if (confirmed) {
-                        getRawFile(page, context.state.activeBranch)
+                        getRawFile(pageName, context.state.activeBranch)
                             .then((rawFile) => {
-                                context.state.pageDirectory[page] = rawFile
+                                rawFile.status = 'displayed'
+                                context.state.pageDirectory[pageName] = rawFile
                             });
+                    } else {
+                        context.state.pageDirectory[pageName]['status'] = 'displayed';
                     }
                 })
+            } else {
+                getRawFile(pageName, context.state.activeBranch)
+                    .then((rawFile) => {
+                        rawFile.status = 'displayed'
+                        context.state.pageDirectory[pageName] = rawFile
+                    });
             }
-            context.commit('pushToActivePages', page);
 
             function showConfirmation(message) {
                 return new Promise((resolve) => {
@@ -296,6 +279,57 @@ const store = createStore({
                 });
             }
         },
+        loadStoredItems({ dispatch }) {
+            let payload = {
+                path: [],
+                value: JSON.parse(localStorage.getItem('pageDirectory')),
+            }
+            dispatch('editDirectory', payload)
+            dispatch('setBranch', localStorage.getItem('activeBranch'))
+        },
+
+        setBranch(context, payload) {
+            context.commit('setBranch', payload)
+        },
+
+        editDirectory(context, payload) {
+            context.dispatch('registerDirectorySnapshot')
+            context.commit('editDirectory', payload);
+            
+            let {path} = payload; 
+            let pageName = path[0]; 
+            if (!context.state.revisedPages.includes(pageName) && pageName != undefined){
+                context.state.revisedPages.push(pageName); 
+            }
+
+            localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
+        },
+
+        // activatePage(context, page) {
+        //     processPage(context.getters.pageDirectory[page]);
+
+        //     if (context.getters.pageDirectory[page]['modified']) {
+        //         showConfirmation("Do you want to override changes?").then((confirmed) => {
+        //             if (confirmed) {
+        //                 getRawFile(page, context.state.activeBranch)
+        //                     .then((rawFile) => {
+        //                         context.state.pageDirectory[page] = rawFile
+        //                     });
+        //             }
+        //         })
+        //     }
+
+        //     function showConfirmation(message) {
+        //         return new Promise((resolve) => {
+        //             var result = confirm(message);
+        //             if (result) {
+        //                 resolve(true);
+        //             } else {
+        //                 resolve(false);
+        //             }
+        //         });
+        //     }
+        // },
 
         setActivePage(context, pageName) {
             context.commit('setActivePage', pageName);
@@ -314,32 +348,24 @@ const store = createStore({
         //takes block json, processes it, and pushes it to the workset
         createItem(context, item) {
             processItem(item);
+            let workset = JSON.parse(JSON.stringify(context.getters.pageDirectory['workset']['blocks']))
+            workset.push(item);
             let payload = {
-                item,
-                listHandle: 'workset'
+                path: ['workset', 'blocks'],
+                value: workset,
             }
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('pushToList', payload);
+            context.dispatch('editDirectory', payload)
         },
 
         //createList takes a json object representing a neptune page, processes it and creates an entry for it in the listDirectory. 
         addPageToDirectory(context, json) {
             processPage(json);
-            let payload = {
-                pageHandle: json.filename,
-                page: json,
-            }
-            context.commit('addToDirectory', payload)
-            context.commit('pushToActivePages', json.filename)
-        },
-        replaceList(context, payload) {
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('replaceList', payload);
-        },
 
-        deleteListItem(context, payload) {
-            context.dispatch('registerDirectorySnapshot')
-            context.commit('deleteItembyId', payload)
+            let payload = {
+                path: json.filename,
+                value: json,
+            }
+            context.commit('editDirectory', payload)
         },
 
 
@@ -351,9 +377,6 @@ const store = createStore({
             else {
                 context.commit('activatePlatform', "");
             }
-        },
-        pushToActivePages(context, pageName) {
-            context.commit('pushToActivePages', pageName)
         },
 
 
@@ -373,12 +396,26 @@ const store = createStore({
             }
 
         },
-        // const payload = {
-        //     targetList: props.pageName,
-        //     targetId: id
-        // }
-        deleteTemplateObject(context, payload) {
-            context.commit('deleteTemplateObject', payload)
+
+        deleteTemplateObject(context, path) {
+            let target = JSON.parse(JSON.stringify(context.state.pageDirectory[path[0]]));
+            let temp;
+            for (let i = 1; i < path.length; i++) {
+                if (i === path.length - 2) {
+                    target[path[i]].splice(path[i + 1], 1)
+                    temp = target[path[i]]
+                    break;
+                }
+                else {
+                    target = target[path[i]]
+                }
+            }
+            path.pop();
+            let payload = {
+                path: path,
+                value: temp,
+            }
+            context.commit('editDirectory', payload)
         },
         alert(context, payload) {
             context.commit('pushToAlerts', payload);

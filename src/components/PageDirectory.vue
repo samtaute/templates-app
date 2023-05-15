@@ -51,7 +51,6 @@
 import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 // import { processPage } from '@/utilities/processing';
-import { getRawFile } from '@/import';
 
 
 const store = useStore();
@@ -141,11 +140,7 @@ let displayedPages = computed(() => {
 })
 
 function activatePage(pagename) {
-    getRawFile(pagename, store.getters.activeBranch)
-        .then((page)=>{
-            page.status='displayed'; 
-            store.state.pageDirectory[pagename]=page; 
-        }); 
+    store.dispatch('loadPage', pagename);
 
     // processPage(store.state.pageDirectory[page]);
     // store.state.pageDirectory[page]['status'] = 'displayed'
