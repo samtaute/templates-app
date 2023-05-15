@@ -2,28 +2,24 @@
     <div v-if="isVisible" class="startup-container">
         <div class="prompt-window">
             <div class="prompt-row">
-                <h4>What would you like to do? </h4>
+                <h4>Get started</h4>
             </div>
             <div class="prompt-row">
-                <input class="form-control" v-model="inputBranch" placeholder="Load existing branch*" list="branch-options">
+                <input class="form-control" v-model="inputBranch" placeholder="Load existing branch" list="branch-options">
                 <datalist id="branch-options">
                     <option :key=option v-for="option of activeBranches">{{ option }}</option>
                 </datalist><button
-                    class="btn btn-primary" @click="startFromBranch">Start</button>
+                    class="btn btn-primary" @click="startFromBranch">Go</button>
             </div>
             <small class="form-text text-muted">
-                *note you can choose Master from the input above, but you won't be able to push commits.
             </small>
             <div class="prompt-row">
-                <input class="form-control" placeholder="Create new branch"><button
-                    class="btn btn-primary">Start</button>
+                <input v-model="createBranchInput" class="form-control" placeholder="Create new branch"><button
+                    class="btn btn-primary" @click="loadCreatedBranch()">Go</button>
             </div>
             <div class="prompt-row">
                 Continue without loading a directory<button
-                    class="btn btn-primary">Start</button>
-            </div>
-            <div class="prompt-row">
-                The directory is loading. The editor will display when finished. This will take a minute...
+                    class="btn btn-primary" @click="overRide=true;">Go</button>
             </div>
         </div>
     </div>
@@ -41,38 +37,25 @@ const activeBranches = ref([])
 const {getBranches} = useGitlab();
 
 const inputBranch = ref("")
+const createBranchInput=ref(""); 
+const overRide = ref(false); 
 
 const isVisible = computed(() => {
-    if (store.getters.activeBranch) {
+    if (store.getters.activeBranch || overRide.value) {
         return false;
     }
     else return true;
 })
 
+function loadCreatedBranch(){
+    console.log(createBranchInput.value); 
+    store.dispatch('loadCreatedBranch', createBranchInput.value);
+}
 //move this to store
 async function startFromBranch() {
     store.dispatch('loadBranch', inputBranch.value)
-    // let filenames = await getFilenames(inputBranch.value); 
-    // if (filenames.length === 0){
-    //     store.dispatch('alert','Invalid branch name')
-    //     return; 
-    // }
-    // store.dispatch('setBranch', inputBranch.value)
-
-    // let directory = {
-    //     workset: {
-    //         blocks: [],
-    //     }
-    // }
-
-    // for(let file of filenames){
-    //     directory[file]={}
-    // }
-
-    // store.dispatch('setDirectory', directory)
-
-    // loadNeptuneRepo(store.getters.activeBranch);
 }
+
 
 
 onMounted(async () => {

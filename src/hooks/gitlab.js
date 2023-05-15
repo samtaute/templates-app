@@ -25,6 +25,24 @@ export default function useGitlab() {
         return branches;
     }
 
+    async function createBranch(branchname){
+        console.log(branchname); 
+        let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/branches?branch=${branchname}&ref=master`
+        let update = await fetch(requestUrl, {
+            method: 'POST',
+            headers: {
+              'PRIVATE-TOKEN': 'glpat-jyMdXVXNnTcsr8_omboM',
+              'Content-Type': 'application/json'
+            }
+          })
+          if (update.ok) {
+            console.log('branch created')
+          }else{
+            console.log('not ok')
+          }
+
+    }
+
     async function getFilenames(branchName) {
         let filenames = [];
 
@@ -46,5 +64,5 @@ export default function useGitlab() {
         }
         return filenames;
     }
-    return {getBranches, getFilenames};
+    return {getBranches, getFilenames, createBranch};
 }

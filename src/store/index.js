@@ -245,7 +245,16 @@ const store = createStore({
             context.state.redoStack = [];
             localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
             localStorage.setItem('activeBranch', context.getters.activeBranch);
+            context.dispatch('alert', {
+                type: 'alert-success',
+                message: `${branchName} successfully loaded`
+            })
             //
+        },
+        async loadCreatedBranch(context, branchName){
+            const {createBranch} = useGitlab();
+            await createBranch(branchName); 
+            context.dispatch('loadBranch', branchName)
         },
         async loadPage(context, pageName) {
             if (context.getters.pageDirectory[pageName]['blocks']) {
@@ -304,32 +313,6 @@ const store = createStore({
 
             localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
         },
-
-        // activatePage(context, page) {
-        //     processPage(context.getters.pageDirectory[page]);
-
-        //     if (context.getters.pageDirectory[page]['modified']) {
-        //         showConfirmation("Do you want to override changes?").then((confirmed) => {
-        //             if (confirmed) {
-        //                 getRawFile(page, context.state.activeBranch)
-        //                     .then((rawFile) => {
-        //                         context.state.pageDirectory[page] = rawFile
-        //                     });
-        //             }
-        //         })
-        //     }
-
-        //     function showConfirmation(message) {
-        //         return new Promise((resolve) => {
-        //             var result = confirm(message);
-        //             if (result) {
-        //                 resolve(true);
-        //             } else {
-        //                 resolve(false);
-        //             }
-        //         });
-        //     }
-        // },
 
         setActivePage(context, pageName) {
             context.commit('setActivePage', pageName);
