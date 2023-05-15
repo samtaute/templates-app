@@ -2,7 +2,7 @@
     <header class="header-container">
         <div class="header-icon">
            <button class="btn btn-primary" @click="reset">Reset</button>
-           {{ this.$store.getters.activeBranch }}
+           <div>{{ this.$store.getters.activeBranch }}</div>
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
             <button v-for="page in activePages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
@@ -91,16 +91,15 @@ export default {
 }
 
 .header-icon {
-    justify-self: start;
     align-self: center;
     margin-left: 1rem;
-    /* border: 1px solid black; */
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 2px;
-    height: 2rem;
     column-gap: .25rem; 
     height: 100%;
+    width: 15rem; 
+    flex-direction: column;
 }
 
 .header-buttons {
