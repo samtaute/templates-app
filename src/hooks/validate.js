@@ -20,20 +20,26 @@ export default function useValidate() {
 
         function replacer(key, value) {
             if (key === 'uid') {
-                return undefined
+                return undefined;
             }
-            if (key === 'modified') {
-                return undefined
+            else if (key === 'modified') {
+                return undefined;
+            }else if (key === 'status'){
+                return undefined;
+            }
+            else{
+                return value; 
             }
         }
     }
-    /* eslint-enable no-unused-vars */
 
 
-    return [
+    return {
         validateContent,
         processContent,
-    ]
+    }
+
+
 
 }
 

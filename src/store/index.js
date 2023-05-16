@@ -426,9 +426,8 @@ const store = createStore({
         alert(context, payload) {
             context.commit('pushToAlerts', payload);
         },
-        async updateFile(context, payload) {
-            let{contentstring, filename, branchInput} = payload; 
-            // console.log(contentInput, filename, branchInput); 
+        async updateFiles(context, payload) {            
+            const {message, actions} = payload; 
             let requesturl = `https://gitlab.com/api/v4/projects/31495766/repository/commits/`
             let update = await fetch(requesturl, {
               method: 'POST',
@@ -437,20 +436,16 @@ const store = createStore({
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                branch: branchInput,
-                commit_message: `updates ${filename}`,
-                actions: [{
-                  action: "update",
-                  file_path: `/content/src/raw/pages/content_pages/${filename}`,
-                  content: contentstring,
-                }
-                ]
+                branch: context.state.activeBranch,
+                commit_message: message,
+                actions: actions,
               })
             })
             if (update.ok) {
+              context.state.revisedPages = []; 
               context.state.alerts.push({
                 type: 'alert-success',
-                message: `Changes successfully commited to ${branchInput}`
+                message: `Changes successfully commited to ${context.state.activeBranch}`
               })
             }
           

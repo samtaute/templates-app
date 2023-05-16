@@ -32,7 +32,7 @@
                     :element="element"
                     :index="index"
                     :fullPath="updatePath(index)"
-                    :collapseStatus="collapseStatus">
+                 >
                 </template-item>
             </template>
         </draggable>

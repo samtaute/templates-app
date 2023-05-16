@@ -1,7 +1,7 @@
 <template>
     <section class="commit-container">
         <div class="commit-header">
-            <input class="form-control" placeholder="Enter commit message"><button type="button"
+            <input class="form-control" placeholder="Enter commit message" v-model="commitMessage"><button type="button"
                 class="btn btn-primary" @click="publishChanges">Publish</button>
         </div>
         <label>{{ activeBranch }}</label>
@@ -14,15 +14,17 @@
     </section>
 </template>
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex';
 import useValidate from '../hooks/validate'
 import useAlert from '../hooks/alert'
 
-const [processContent] = useValidate();
+const { processContent } = useValidate();
 const [showAlert] = useAlert();
 
 const store = useStore();
+
+const commitMessage = ref('')
 
 const revisedPages = computed(() => {
     let revisedPages = store.getters.revisedPages.filter((page) => page != 'workset')
@@ -33,34 +35,63 @@ const activeBranch = computed(() => {
     return store.getters.activeBranch;
 })
 
-function demote(page){
+function demote(page) {
     console.log(page)
-    store.state.revisedPages = store.state.revisedPages.filter((p)=>p!=page); 
+    store.state.revisedPages = store.state.revisedPages.filter((p) => p != page);
     console.log(store.state.revisedPages)
 }
 
 function publishChanges() {
     if (activeBranch.value === 'master') {
         showAlert('alert-danger', 'Tried to commit to master')
+    } else if (commitMessage.value.length === 0){
+        showAlert('alert-danger', 'Please input a commit message')
     }
-
     else {
-        for (let page of revisedPages.value) {
-            let content = store.getters.pageDirectory[page];
-            content = processContent(content);
-            if (content) {
-                let payload = {
-                    contentstring: content,
-                    filename: page,
-                    branchInput: activeBranch.value,
-                }
-                store.dispatch('updateFile', payload);
-            } else {
-                showAlert('alert-danger', 'Page failed validation')
-            }
+        let actions = generateActions();
+
+        let payload = {
+            message:commitMessage.value,
+            actions
         }
+
+        store.dispatch('updateFiles', payload);
+
+        // for (let page of revisedPages.value) {
+        //     let content = store.getters.pageDirectory[page];
+        //     content = processContent(content);
+        //     if (content) {
+        //         let payload = {
+        //             contentstring: content,
+        //             filename: page,
+        //             branchInput: activeBranch.value,
+        //         }
+        //         store.dispatch('updateFile', payload);
+        //     }
+        // }
     }
 }
+
+function generateActions() {
+    let actions = [];
+    for (let page of revisedPages.value) {
+        let content = store.getters.pageDirectory[page];
+        content = processContent(content);
+        if (content) {
+            let action = {
+                action: "update",
+                file_path: `/content/src/raw/pages/content_pages/${page}`,
+                content: content
+            }
+            actions.push(action);
+        } else {
+            showAlert('alert-danger', 'Page failed validation')
+        }
+
+    }
+    return actions;
+}
+
 
 
 
@@ -75,11 +106,13 @@ function publishChanges() {
 .commit-header>input {
     width: 15rem;
 }
-.commit-entries{
-    display: flex; 
+
+.commit-entries {
+    display: flex;
     flex-direction: column;
     row-gap: .2rem;
 }
+
 .commit-entry {
     display: flex;
     column-gap: 1rem;
