@@ -92,6 +92,9 @@ const store = createStore({
         filters(state) {
             return state.filters
         },
+        privateToken(state){
+            return state.privateToken; 
+        }
     },
     mutations: {
         setToken(state, payload){

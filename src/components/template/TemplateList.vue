@@ -7,8 +7,8 @@
                         src='../../assets/preview.png'></button>
                 <button class="btn btn-outline-dark btn-sm" @click="minimizeList(directoryKey)"><img
                         src='../../assets/minimize-icon.png'></button>
-                <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
-                        src='../../assets/expand-collapse.png'></button>
+                <!-- <button type="button" @click="toggleCollapse" class="btn btn-sm btn-outline-dark"><img
+                        src='../../assets/expand-collapse.png'></button> -->
                 <button type="button" @click="sort" class="btn btn-sm btn-outline-dark">Reset</button>
             </div>
             <label class="header-label">{{ directoryKey }}</label>
@@ -79,7 +79,6 @@ function updatePath(idx) {
     return arr;
 }
 
-const collapseStatus = ref(false)
 const showList = ref(true);
 
 function loadPreview(page) {
@@ -149,9 +148,10 @@ function minimizeList() {
     isVisible.value = !isVisible.value
 }
 
-function toggleCollapse() {
-    collapseStatus.value = !collapseStatus.value;
-}
+// function toggleCollapse() {
+//     collapseStatus.value = !collapseStatus.value;
+// }
+// const collapseStatus = ref(false)
 
 
 

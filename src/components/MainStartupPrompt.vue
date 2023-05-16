@@ -4,7 +4,7 @@
             <div class="prompt-row">
                 <h4>Get started</h4>
             </div>
-            <div class="prompt-row">
+            <div v-if="!tokenAccepted" class="prompt-row">
                 <input class="form-control" v-model="inputToken" @keyup.enter="setToken" placeholder="Input private token">
             </div>
             <div class="prompt-row">
@@ -17,7 +17,7 @@
             <small class="form-text text-muted">
             </small>
             <div class="prompt-row">
-                <input v-model="createBranchInput" class="form-control" placeholder="Create new branch"><button
+                <input v-model="createBranchInput" class="form-control" placeholder="Create new branch from master"><button
                     class="btn btn-primary" @click="loadCreatedBranch()">Go</button>
             </div>
             <div class="prompt-row">
@@ -36,6 +36,14 @@ import { useStore } from 'vuex'
 
 const store = useStore();
 
+const tokenAccepted = computed(()=>{
+    if(store.getters.privateToken){
+        return true; 
+    }
+    else{
+        return false; 
+    }
+})
 async function setToken(evt) {
     if (inputToken.value.length >= 20) {
         await store.dispatch('setToken', inputToken.value )
