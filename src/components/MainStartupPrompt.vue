@@ -5,7 +5,10 @@
                 <h4>Get started</h4>
             </div>
             <div class="prompt-row">
-                <input class="form-control" v-model="inputBranch" placeholder="Load existing branch" list="branch-options">
+                <input class="form-control" v-model="inputToken" @keyup.enter="setToken" placeholder="Input private token">
+            </div>
+            <div class="prompt-row">
+                <input class="form-control" v-model="inputBranch" placeholder="Input existing branch name" list="branch-options">
                 <datalist id="branch-options">
                     <option :key=option v-for="option of activeBranches">{{ option }}</option>
                 </datalist><button
@@ -19,7 +22,7 @@
             </div>
             <div class="prompt-row">
                 Continue without loading a directory<button
-                    class="btn btn-primary" @click="overRide=true;">Go</button>
+                    class="btn btn-primary" @click="overRide = true;">Go</button>
             </div>
         </div>
     </div>
@@ -28,17 +31,30 @@
 import useGitlab from '@/hooks/gitlab';
 // import { loadNeptuneRepo } from '../import'
 
-import { onMounted, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex'
 
 const store = useStore();
 
+async function setToken(evt) {
+    if (inputToken.value.length >= 20) {
+        await store.dispatch('setToken', inputToken.value )
+        evt.target.blur();
+
+        activeBranches.value = await getBranches(inputToken.value);
+        localStorage.setItem('privateToken',inputToken.value)
+    }
+
+}
+
 const activeBranches = ref([])
-const {getBranches} = useGitlab();
+const { getBranches } = useGitlab();
 
 const inputBranch = ref("")
-const createBranchInput=ref(""); 
-const overRide = ref(false); 
+const createBranchInput = ref("");
+const inputToken = ref("");
+
+const overRide = ref(false);
 
 const isVisible = computed(() => {
     if (store.getters.activeBranch || overRide.value) {
@@ -47,20 +63,17 @@ const isVisible = computed(() => {
     else return true;
 })
 
-function loadCreatedBranch(){
-    console.log(createBranchInput.value); 
-    store.dispatch('loadCreatedBranch', createBranchInput.value);
+function loadCreatedBranch() {
+    if (store.state.privateToken) {
+        store.dispatch('loadCreatedBranch', createBranchInput.value);
+    }
 }
 //move this to store
 async function startFromBranch() {
-    store.dispatch('loadBranch', inputBranch.value)
+    if (store.state.privateToken) {
+        store.dispatch('loadBranch', inputBranch.value)
+    }
 }
-
-
-
-onMounted(async () => {
-    activeBranches.value = await getBranches();
-})
 
 
 

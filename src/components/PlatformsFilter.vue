@@ -7,8 +7,6 @@
                     platform
                 }}</button>
         </div>
-        {{ activePlatform }}
-
     </div>
 </template>
 
@@ -24,7 +22,9 @@ const platforms = computed(()=>{
     return array;
 })
 
-const activePlatform = store.getters.activePlatform; 
+const activePlatform = computed(()=>{
+    return store.getters.activePlatform; 
+})
 
 function selectPlatform(selectedPlatform){
     store.dispatch('activatePlatform', selectedPlatform); 

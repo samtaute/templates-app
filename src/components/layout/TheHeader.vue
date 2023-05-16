@@ -45,8 +45,8 @@ export default {
     },
     methods: {
         reset(){
-            localStorage.removeItem("pageDirectory");
-            localStorage.removeItem("activeBranch");
+            console.log('reset')
+            localStorage.clear(); 
             location.reload(); 
         },
         back() {

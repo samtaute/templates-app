@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
 import { processPage, processItem } from '../utilities/processing'
 import useGitlab from '@/hooks/gitlab';
-import { getRawFile } from '@/import';
+
 
 const store = createStore({
     state() {
@@ -33,6 +33,7 @@ const store = createStore({
             alerts: [],
 
             revisedPages: [],
+            privateToken: "", 
 
         }
 
@@ -64,14 +65,13 @@ const store = createStore({
         //     }
         //     else return []
         // },
-        currentWorkset(state) {
-            return state.worksetArray;
-        },
+
         platformsFilterArray(state) {
             let array = state.platformsFilterArray;
             return [...array]
         },
         activePlatform(state) {
+            console.log('test')
             return state.filters.platform;
         },
 
@@ -85,20 +85,18 @@ const store = createStore({
             }
             return returnArray;
         },
-        contentLoadingStatus(state) {
-            return state.contentLoaded;
-        },
+
         pageDirectory(state) {
             return state.pageDirectory;
         },
         filters(state) {
             return state.filters
         },
-        activeDirectoryKeys(state) {
-            return state.activePages;
-        }
     },
     mutations: {
+        setToken(state, payload){
+            state.privateToken = payload; 
+        },
         editDirectory(state, payload) {
             let { path, value } = payload;
             let target = state.pageDirectory;
@@ -140,14 +138,6 @@ const store = createStore({
             state.editHistory.push(snapshot);
 
         },
-        // pushToList takes a payload object with keys of 'item' and 'listId'
-        // and pushes the item to list in the listDirectory with corresponding id. 
-        pushToList(state, payload) {
-            let listHandle = payload.listHandle;
-            let item = payload.item;
-
-            state.pageDirectory[listHandle]['blocks'].push(item);
-        },
 
         // //  payload = {
         //     pageHandle: props.pageName,
@@ -164,30 +154,6 @@ const store = createStore({
 
         activatePlatform(state, platform) {
             state.filters.platform = platform;
-        },
-
-        //pushToDirectory takes a payload with keys of "pageHandle" and "page" and pushes the page to the directory
-        addToDirectory(state, payload) {
-            const pageHandle = payload.pageHandle;
-            const page = payload.page;
-
-            state.pageDirectory[pageHandle] = page;
-        },
-
-        deleteItembyId(state, payload) {
-            state.pageDirectory[payload.targetList].blocks = state.pageDirectory[payload.targetList]['blocks'].filter((item) => item.id != payload.targetId);
-        },
-        updateItemConfigValue(state, payload) {
-            let { path, value } = payload;
-            let target = state.pageDirectory;
-            for (let i = 0; i < path.length; i++) {
-                if (i === path.length - 1) {
-                    target[path[i]] = value;
-                }
-                else {
-                    target = target[path[i]]
-                }
-            }
         },
 
         setActivePage(state, pageName) {
@@ -215,9 +181,30 @@ const store = createStore({
 
 
     actions: {
+        async setToken(context, token) {
+            let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/branches?per_page=100`
+            const response = await fetch(requestUrl, {
+                method: 'GET',
+                headers: {
+                    "PRIVATE-TOKEN": token,
+                }
+            });
+            if (response.ok) {
+                context.commit('setToken', token)
+                context.dispatch('alert',{
+                    type: 'alert-success',
+                    message: 'Token accepted'
+                })
+            }else{
+                context.dispatch('alert',{
+                    type: 'alert-danger',
+                    message: 'Token rejected',
+                })
+            }
+        },
         async loadBranch(context, branchName) {
             const { getFilenames } = useGitlab();
-            let files = await getFilenames(branchName);
+            let files = await getFilenames(branchName, context.state.privateToken);
             if (files.length === 0) {
                 let payload = {
                     type: 'alert-danger',
@@ -248,47 +235,49 @@ const store = createStore({
                 type: 'alert-success',
                 message: `${branchName} successfully loaded`
             })
-            
+
 
             loadFiles()
-                .then(()=>{
+                .then(() => {
                     localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
                     localStorage.setItem('activeBranch', context.getters.activeBranch);
                     console.log('done');
                 })
- 
 
-            function loadFiles(){
-                return new Promise((resolve)=>{
-                    let counter = 0; 
+
+            function loadFiles() {
+                const {getRawFile} = useGitlab();  
+                return new Promise((resolve) => {
+                    let counter = 0;
 
                     for (let file of Object.keys(context.getters.pageDirectory).filter((dirKey) => dirKey != 'workset')) {
                         if (!context.getters.pageDirectory[file]['blocks']) {
-                            getRawFile(file, context.state.activeBranch)
+                            getRawFile(file, context.state.activeBranch, context.state.privateToken)
                                 .then((rawFile) => {
                                     context.state.pageDirectory[file] = rawFile
                                     counter++
-                                    if(counter === Object.keys(context.getters.pageDirectory).filter((dirKey) => dirKey != 'workset').length - 1){
-                                        resolve(); 
+                                    if (counter === Object.keys(context.getters.pageDirectory).filter((dirKey) => dirKey != 'workset').length - 1) {
+                                        resolve();
                                     }
                                 })
                         }
                     }
-             
+
                 })
             }
-            
+
         },
         async loadCreatedBranch(context, branchName) {
             const { createBranch } = useGitlab();
-            await createBranch(branchName);
+            await createBranch(branchName, context.state.privateToken);
             context.dispatch('loadBranch', branchName)
         },
         async loadPage(context, pageName) {
+            const {getRawFile} = useGitlab()
             if (context.getters.pageDirectory[pageName]['modified']) {
                 showConfirmation("Do you want to override changes?").then((confirmed) => {
                     if (confirmed) {
-                        getRawFile(pageName, context.state.activeBranch)
+                        getRawFile(pageName, context.state.activeBranch, context.state.privateToken)
                             .then((rawFile) => {
                                 rawFile.status = 'displayed'
                                 context.state.pageDirectory[pageName] = rawFile
@@ -298,7 +287,7 @@ const store = createStore({
                     }
                 })
             } else {
-                getRawFile(pageName, context.state.activeBranch)
+                getRawFile(pageName, context.state.activeBranch, context.state.privateToken)
                     .then((rawFile) => {
                         processPage(rawFile)
                         rawFile.status = 'displayed'
@@ -325,6 +314,7 @@ const store = createStore({
             }
             dispatch('editDirectory', payload)
             dispatch('setBranch', localStorage.getItem('activeBranch'))
+            dispatch('setToken', localStorage.getItem('privateToken'))
         },
 
         setBranch(context, payload) {
@@ -432,7 +422,36 @@ const store = createStore({
         },
         alert(context, payload) {
             context.commit('pushToAlerts', payload);
-        }
+        },
+        async updateFile(context, payload) {
+            let{contentstring, filename, branchInput} = payload; 
+            // console.log(contentInput, filename, branchInput); 
+            let requesturl = `https://gitlab.com/api/v4/projects/31495766/repository/commits/`
+            let update = await fetch(requesturl, {
+              method: 'POST',
+              headers: {
+                'PRIVATE-TOKEN': context.state.privateToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                branch: branchInput,
+                commit_message: `updates ${filename}`,
+                actions: [{
+                  action: "update",
+                  file_path: `/content/src/raw/pages/content_pages/${filename}`,
+                  content: contentstring,
+                }
+                ]
+              })
+            })
+            if (update.ok) {
+              context.state.alerts.push({
+                type: 'alert-success',
+                message: `Changes successfully commited to ${branchInput}`
+              })
+            }
+          
+          }
     }
 });
 

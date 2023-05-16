@@ -16,7 +16,6 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex';
-import { updateFile } from '../import'
 import useValidate from '../hooks/validate'
 import useAlert from '../hooks/alert'
 
@@ -50,7 +49,12 @@ function publishChanges() {
             let content = store.getters.pageDirectory[page];
             content = processContent(content);
             if (content) {
-                updateFile(content, page, activeBranch.value);
+                let payload = {
+                    contentstring: content,
+                    filename: page,
+                    branchInput: activeBranch.value,
+                }
+                store.dispatch('updateFile', payload);
             } else {
                 showAlert('alert-danger', 'Page failed validation')
             }

@@ -21,7 +21,7 @@ onMounted(() => {
   }
 })
 function checkStoredItems(){
-  if (localStorage.getItem('activeBranch') && localStorage.getItem('pageDirectory')){
+  if (localStorage.getItem('activeBranch') && localStorage.getItem('pageDirectory') && localStorage.getItem('privateToken')){
     return true; 
   }
   else return false;
