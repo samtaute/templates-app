@@ -13,7 +13,9 @@
                     <select v-model="lang" class="form-control form-control-sm">
                         <option>en</option>
                         <option>es</option>
-                        <option>es-mx</option>
+                        <option>es_mx</option>
+                        <option>hi</option>
+                        <option>pt</option>
                     </select>
                 </div>
                 <div class="button-container">
@@ -40,7 +42,6 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-// import { processPage } from '@/utilities/processing';
 
 
 const store = useStore();
@@ -126,11 +127,6 @@ let displayedPages = computed(() => {
 
 function activatePage(pagename) {
     store.dispatch('loadPage', pagename);
-
-    // processPage(store.state.pageDirectory[page]);
-    // store.state.pageDirectory[page]['status'] = 'displayed'
-
-    // store.dispatch('activatePage', page)
 }
 
 function truncate(pageTitle) {

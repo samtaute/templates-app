@@ -1,7 +1,7 @@
 <template>
     <base-sidebar-widget>
         <template #header>
-           Workset
+            Workset
         </template>
         <template #content>
             Block <a href="#" role="button" id="newBlockDropdown" data-bs-toggle="dropdown"><img src="../assets/Plus.svg"
@@ -24,56 +24,42 @@
     </base-sidebar-widget>
 </template>
 
-<script>
+<script setup>
 
 import blockDefaults from '@/models/block-defaults';
 import sectionDefaults from '../models/section-defaults'
 import TemplateList from './template/TemplateList.vue';
-import { processItem } from '@/utilities/processing';
+import useProcessor from '@/hooks/processor';
+import { useStore } from 'vuex'
 
 
-export default {
-    components: {
-        // draggable,
-        // TemplateBlock,
-        TemplateList,
-    },
-    data() {
-        return {
-            dragging: false,
-            enabled: true,
-            blockDefaults: blockDefaults,
-            sectionDefaults: sectionDefaults, 
-        }
-    },
+const {processItem} = useProcessor; 
+const store = useStore();
+// const dragging = ref(false);
 
-    computed: {
-        draggingInfo() {
-            return this.dragging ? "under drag" : "";
-        },
-        allPlatforms() {
-            return this.$store.getters.allPlatforms;
-        }
-    },
-    methods: {
-        createBlock(block, evt) {
-            let clone = JSON.parse(JSON.stringify(block));
-            this.$store.dispatch('createItem', clone)
-            evt.target.blur();
-        },
-        createSection(sectionType){
-            let items = this.sectionDefaults[sectionType]; 
-            for (let item of items){
-                processItem(item); 
-            }
-            let block = {
-                blockType: sectionType,
-                items: items,
-            }
-            this.$store.dispatch('createItem',block)
-        }
-    }
 
+// const allPlatforms = computed(() => {
+//     return store.getters.allPlatforms
+// })
+
+function createBlock(block, evt) {
+    let clone = JSON.parse(JSON.stringify(block));
+    store.dispatch('createItem', clone)
+    evt.target.blur();
 }
+
+
+function createSection(sectionType) {
+    let items = sectionDefaults[sectionType];
+    for (let item of items) {
+        processItem(item);
+    }
+    let block = {
+        blockType: sectionType,
+        items: items,
+    }
+    store.dispatch('createItem', block)
+}
+
 
 </script>

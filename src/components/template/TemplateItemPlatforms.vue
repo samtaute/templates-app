@@ -35,81 +35,84 @@
 
     </section>
 </template>
-<script>
-import { processItem } from '@/utilities/processing';
-export default {
-    props: ['element', 'index'],
-    computed: {
-        //returns an array of all platforms not included on block
-        unusedPlatforms() {
-            let allPlatforms = this.$store.getters.allPlatforms;
-            var blockPlatforms
+<script setup>
+import useProcessor from '@/hooks/processor';
+import { defineProps, computed } from 'vue';
+import { useStore } from 'vuex'
 
-            if (this.element.platforms) {
-                blockPlatforms = this.element.platforms;
-            }
-            if (this.element.excludePlatforms) {
-                blockPlatforms = this.element.excludePlatforms;
-            }
+const props = defineProps({
+    element: String,
+    index: Number,
+})
+
+const {processItem} = useProcessor(); 
+
+const store = useStore();
+
+const unusedPlatforms = computed(() => {
+    let allPlatforms = store.getters.allPlatforms;
+    var blockPlatforms
+
+    if (props.element.platforms) {
+        blockPlatforms = props.element.platforms;
+    }
+    if (props.element.excludePlatforms) {
+        blockPlatforms = props.element.excludePlatforms;
+    }
 
 
-            let clone = JSON.parse(JSON.stringify(allPlatforms));
+    let clone = JSON.parse(JSON.stringify(allPlatforms));
 
 
-            let returnArray = clone.filter(item => !blockPlatforms.includes(item));
-            return returnArray;
-        },
-    },
-    methods: {
-        enterPlat(evt) {
-            if (this.unusedPlatforms.includes(evt.target.value)) {
-                const returnBlock = this.element;
+    let returnArray = clone.filter(item => !blockPlatforms.includes(item));
+    return returnArray;
+})
 
-                if (this.element.platforms) {
-                    returnBlock.platforms.push(evt.target.value);
-                }
+function enterPlat(evt) {
+    if (unusedPlatforms.value.includes(evt.target.value)) {
+        const returnBlock = props.element;
 
-                if (this.element.excludePlatforms) {
-                    returnBlock.excludePlatforms.push(evt.target.value);
-
-                }
-
-                processItem(returnBlock);
-
-                evt.target.value = ''
-            }
-        },
-
-        removePlat(platform) {
-            const returnBlock = this.element;
-
-            if (returnBlock.platforms) {
-                returnBlock.platforms = returnBlock.platforms.filter((plat) => plat != platform)
-            }
-            if (returnBlock.excludePlatforms) {
-                returnBlock.excludePlatforms = returnBlock.excludePlatforms.filter((plat) => plat != platform)
-
-            }
-            //todo: 
-            this.$store.dispatch('checkFilterArray', platform);
-            processItem(returnBlock);
-            this.$store.dispatch('replaceBlock', {
-                id: returnBlock.id,
-                block: returnBlock,
-            });
-        },
-        addPlatformsOption(type) {
-            if (type === 'include') {
-                let newBlock = this.element;
-                newBlock.platforms = [];
-                this.$store.dispatch('replaceBlock', newBlock.id)
-            }
-            if (type === 'exclude') {
-                let newBlock = this.element;
-                newBlock.excludePlatforms = [];
-                this.$store.dispatch('replaceBlock', newBlock.id)
-            }
+        if (props.element.platforms) {
+            returnBlock.platforms.push(evt.target.value);
         }
+        if (props.element.excludePlatforms) {
+            returnBlock.excludePlatforms.push(evt.target.value);
+        }
+        processItem(returnBlock);
+        evt.target.value = ''
+    }
+}
+
+
+function removePlat(platform) {
+    const returnBlock = props.element;
+
+    if (returnBlock.platforms) {
+        returnBlock.platforms = returnBlock.platforms.filter((plat) => plat != platform)
+    }
+    if (returnBlock.excludePlatforms) {
+        returnBlock.excludePlatforms = returnBlock.excludePlatforms.filter((plat) => plat != platform)
+
+    }
+    //todo: 
+    store.dispatch('checkFilterArray', platform);
+    processItem(returnBlock);
+    store.dispatch('replaceBlock', {
+        id: returnBlock.id,
+        block: returnBlock,
+    });
+}
+
+function addPlatformsOption(type) {
+    if (type === 'include') {
+        let newBlock = props.element;
+        newBlock.platforms = [];
+        store.dispatch('replaceBlock', newBlock.id)
+    }
+    if (type === 'exclude') {
+        let newBlock = props.element;
+        newBlock.excludePlatforms = [];
+        store.dispatch('replaceBlock', newBlock.id)
     }
 }
 </script>
@@ -165,4 +168,5 @@ export default {
     width: 4rem;
     font-size: small;
     font-style: italic;
-}</style>
+}
+</style>

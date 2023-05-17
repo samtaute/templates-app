@@ -1,9 +1,10 @@
 
 import { createStore } from 'vuex'
 import startingPlatforms from '../models/platforms-all'
-import { processPage, processItem } from '../utilities/processing'
+import useProcessor from '@/hooks/processor';
 import useGitlab from '@/hooks/gitlab';
 
+const {processPage, processItem} = useProcessor(); 
 
 const store = createStore({
     state() {

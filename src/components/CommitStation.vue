@@ -16,10 +16,10 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex';
-import useValidate from '../hooks/validate'
+import useProcessor from '@/hooks/processor';
 import useAlert from '../hooks/alert'
 
-const { processContent } = useValidate();
+const { processContent } = useProcessor();
 const [showAlert] = useAlert();
 
 const store = useStore();

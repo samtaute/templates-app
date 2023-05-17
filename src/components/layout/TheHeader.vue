@@ -1,11 +1,13 @@
 <template>
     <header class="header-container">
         <div class="header-icon">
-           <button class="btn btn-primary" @click="reset">Reset</button>
-           <div>{{ this.$store.getters.activeBranch }}</div>
+            <button class="btn btn-primary" @click="reset">Reset</button>
+            <div>{{ this.$store.getters.activeBranch }}</div>
         </div>
         <div class="btn-group page-buttons" role="group" aria-label="Basic example">
-            <button v-for="page in activePages" type="button" @click.exact="activatePage(page)" @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page class="btn btn-secondary page-button"
+            <button v-for="page in activePages" type="button" @click.exact="activatePage(page)"
+                @click.shift="deletePage(page)" @click.alt="deletePage(page)" :key=page
+                class="btn btn-secondary page-button"
                 data-toggle="button">{{ truncateFilename(page) }}</button>
         </div>
         <div class="header-buttons">
@@ -15,13 +17,11 @@
     </header>
 </template>
 <script>
-import { truncateFilename } from '@/utilities/processing';
 
 export default {
     data() {
         return {
             selectedFile: null,
-            truncateFilename: truncateFilename, 
             branchInput: ''
         }
     },
@@ -33,21 +33,21 @@ export default {
         pageTitle() {
             return this.$store.getters.pageTitle;
         },
-        activePages(){
-            let activePages = []; 
-            for (let [key, value] of Object.entries(this.$store.state.pageDirectory)){
-                if (value.status === 'active' || value.status === 'displayed'){
-                    activePages.push(key); 
+        activePages() {
+            let activePages = [];
+            for (let [key, value] of Object.entries(this.$store.state.pageDirectory)) {
+                if (value.status === 'active' || value.status === 'displayed') {
+                    activePages.push(key);
                 }
             }
-            return activePages; 
+            return activePages;
         }
     },
     methods: {
-        reset(){
+        reset() {
             console.log('reset')
-            localStorage.clear(); 
-            location.reload(); 
+            localStorage.clear();
+            location.reload();
         },
         back() {
             this.$store.dispatch('back');
@@ -55,16 +55,21 @@ export default {
         forward() {
             this.$store.dispatch('forward');
         },
-        activatePage(pageName){
-            let status =  this.$store.state.pageDirectory[pageName]['status'];
-            if(status === 'active'){
+        activatePage(pageName) {
+            let status = this.$store.state.pageDirectory[pageName]['status'];
+            if (status === 'active') {
                 this.$store.state.pageDirectory[pageName]['status'] = 'displayed'
-            }else { this.$store.state.pageDirectory[pageName]['status']='active'}
-          
+            } else { this.$store.state.pageDirectory[pageName]['status'] = 'active' }
+
         },
-        deletePage(page){
-           this.$store.state.pageDirectory[page]['status']='stored'; 
+        deletePage(page) {
+            this.$store.state.pageDirectory[page]['status'] = 'stored';
+        },
+        truncateFilename(pageTitle) {
+            let shortened = pageTitle.replace("en__", "").replace(".json", "");
+            return shortened;
         }
+
 
     }
 
@@ -96,9 +101,9 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: 2px;
-    column-gap: .25rem; 
+    column-gap: .25rem;
     height: 100%;
-    width: 15rem; 
+    width: 15rem;
     flex-direction: column;
 }
 
@@ -109,12 +114,13 @@ export default {
     justify-content: end;
     margin-right: 2rem;
 }
-.page-buttons{
-    margin-left: 2rem;
-    display: flex; 
-    max-width:100rem;
 
-    flex-grow: 3; 
+.page-buttons {
+    margin-left: 2rem;
+    display: flex;
+    max-width: 100rem;
+
+    flex-grow: 3;
 }
 
 .header-title {
@@ -122,14 +128,14 @@ export default {
     height: 2.4rem;
     display: flex;
 }
-.page-button{
-    width: 8rem; 
-    margin: .2rem; 
+
+.page-button {
+    width: 8rem;
+    margin: .2rem;
     font-size: .8rem;
 
 }
 
 /* button {
     margin: 0 .2remx;
-} */
-</style>
+} */</style>
