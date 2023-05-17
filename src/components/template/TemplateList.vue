@@ -194,7 +194,7 @@ button {
 
 .list-container {
     margin: .5rem .5rem;
-    background: lightgrey;
+    background: #f1f3f4;
     padding: .1rem;
     border-radius: 5px;
 }

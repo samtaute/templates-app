@@ -5,49 +5,19 @@ export default {
       subheader: "Placeholder"
     }
   },
-
-  ad_unit: {
-    blockType: "ad_unit"
-  },
-
-  memes_widget_block: {
-    blockType: "memes_widget_block",
-  },
-
-  jokes_widget_block: {
-    blockType: "jokes_widget_block"
-  },
-  weather_widget_block: {
-    blockType: "weather_widget_block"
-  },
-  fortune_cookie_block: {
-    blockType: "fortune_cookie_block"
-  },
-
-  outbrain_block: {
-    blockType: "outbrain_block",
-    settings: {
-      layout: "list-medium",
-      widgetId: "JS_6"
-    }
-  },
-
-  fotoscape_gallery_block: {
-    "blockType": "fotoscape_gallery_block",
-    "settings": {
-      "category": "outdoor_photography",
-      "title": {
-        "text": "Featured Galleries"
-      }
-    }
-  },
-
   fotoscape_block: {
     blockType: "fotoscape_block",
     settings: {
       layout: "edge-description",
       count: 1,
       category: "news",
+    }
+  },
+  outbrain_block: {
+    blockType: "outbrain_block",
+    settings: {
+      layout: "list-medium",
+      widgetId: "JS_6"
     }
   },
   section_block: {
@@ -72,6 +42,36 @@ export default {
 
     ],
   },
+  ad_unit: {
+    blockType: "ad_unit"
+  },
+
+  memes_widget_block: {
+    blockType: "memes_widget_block",
+  },
+
+  jokes_widget_block: {
+    blockType: "jokes_widget_block"
+  },
+  weather_widget_block: {
+    blockType: "weather_widget_block"
+  },
+  fortune_cookie_block: {
+    blockType: "fortune_cookie_block"
+  },
+
+  fotoscape_gallery_block: {
+    "blockType": "fotoscape_gallery_block",
+    "settings": {
+      "category": "outdoor_photography",
+      "title": {
+        "text": "Featured Galleries"
+      }
+    }
+  },
+
+
+
   experiment_block: {
     "blockType": "experiment_block",
 

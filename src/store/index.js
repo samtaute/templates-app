@@ -4,7 +4,7 @@ import startingPlatforms from '../models/platforms-all'
 import useProcessor from '@/hooks/processor';
 import useGitlab from '@/hooks/gitlab';
 
-const {processPage, processItem} = useProcessor(); 
+const { processPage, processItem } = useProcessor();
 
 const store = createStore({
     state() {
@@ -34,12 +34,21 @@ const store = createStore({
             alerts: [],
 
             revisedPages: [],
-            privateToken: "", 
+            privateToken: "",
 
         }
 
     },
     getters: {
+        activePages(state) {
+            let activePages = [];
+            for (let [key, value] of Object.entries(state.pageDirectory)) {
+                if (value.status === 'active' || value.status === 'displayed') {
+                    activePages.push(key);
+                }
+            }
+            return activePages;
+        },
         activeBranch(state) {
             return state.activeBranch;
         },
@@ -93,13 +102,13 @@ const store = createStore({
         filters(state) {
             return state.filters
         },
-        privateToken(state){
-            return state.privateToken; 
+        privateToken(state) {
+            return state.privateToken;
         }
     },
     mutations: {
-        setToken(state, payload){
-            state.privateToken = payload; 
+        setToken(state, payload) {
+            state.privateToken = payload;
         },
         editDirectory(state, payload) {
             let { path, value } = payload;
@@ -195,12 +204,12 @@ const store = createStore({
             });
             if (response.ok) {
                 context.commit('setToken', token)
-                context.dispatch('alert',{
+                context.dispatch('alert', {
                     type: 'alert-success',
                     message: 'Token accepted'
                 })
-            }else{
-                context.dispatch('alert',{
+            } else {
+                context.dispatch('alert', {
                     type: 'alert-danger',
                     message: 'Token rejected',
                 })
@@ -250,7 +259,7 @@ const store = createStore({
 
 
             function loadFiles() {
-                const {getRawFile} = useGitlab();  
+                const { getRawFile } = useGitlab();
                 return new Promise((resolve) => {
                     let counter = 0;
 
@@ -277,7 +286,7 @@ const store = createStore({
             context.dispatch('loadBranch', branchName)
         },
         async loadPage(context, pageName) {
-            const {getRawFile} = useGitlab()
+            const { getRawFile } = useGitlab()
             if (context.getters.pageDirectory[pageName]['modified']) {
                 showConfirmation("Do you want to override changes?").then((confirmed) => {
                     if (confirmed) {
@@ -427,30 +436,30 @@ const store = createStore({
         alert(context, payload) {
             context.commit('pushToAlerts', payload);
         },
-        async updateFiles(context, payload) {            
-            const {message, actions} = payload; 
+        async updateFiles(context, payload) {
+            const { message, actions } = payload;
             let requesturl = `https://gitlab.com/api/v4/projects/31495766/repository/commits/`
             let update = await fetch(requesturl, {
-              method: 'POST',
-              headers: {
-                'PRIVATE-TOKEN': context.state.privateToken,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                branch: context.state.activeBranch,
-                commit_message: message,
-                actions: actions,
-              })
+                method: 'POST',
+                headers: {
+                    'PRIVATE-TOKEN': context.state.privateToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    branch: context.state.activeBranch,
+                    commit_message: message,
+                    actions: actions,
+                })
             })
             if (update.ok) {
-              context.state.revisedPages = []; 
-              context.state.alerts.push({
-                type: 'alert-success',
-                message: `Changes successfully commited to ${context.state.activeBranch}`
-              })
+                context.state.revisedPages = [];
+                context.state.alerts.push({
+                    type: 'alert-success',
+                    message: `Changes successfully commited to ${context.state.activeBranch}`
+                })
             }
-          
-          }
+
+        }
     }
 });
 

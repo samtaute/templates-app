@@ -33,7 +33,7 @@ import useProcessor from '@/hooks/processor';
 import { useStore } from 'vuex'
 
 
-const {processItem} = useProcessor; 
+const {processItem} = useProcessor(); 
 const store = useStore();
 // const dragging = ref(false);
 

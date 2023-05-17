@@ -144,5 +144,20 @@ export const fotoscapeCategories = [
     "bestof-lifestyle-2022",
     "bestof-Originals-2022",
     "new-years-resolutions",
-    "oscars"
+    "oscars",
+    "branded-hilton",
+    "branded-capitalone",
+    "branded-amazon",
+    "quiz",
+    "arkadium",
+    "standard",
+    "arkadium-es",
+    "premium-mix",
+    "in-news",
+    "in-entertainment",
+    "vodafone-demo",
+    "in-lifestyle",
+    "in-sports",
+    "sponsored-vodafone",
+    "in-recipes"
 ]

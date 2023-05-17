@@ -10,14 +10,21 @@ import TheMainArea from './components/layout/TheMainArea.vue'
 import TheHeader from './components/layout/TheHeader.vue'
 import { onMounted } from 'vue';
 import { useStore } from 'vuex'; 
+import useProcessor from './hooks/processor';
 
 const store = useStore(); 
+const {processPage} = useProcessor(); 
 
 onMounted(() => {
   //returns true if localStorage contains pageDirectory and activeBranch
   let check = checkStoredItems();
   if(check){
     store.dispatch('loadStoredItems'); 
+    for(let page of store.getters.activePages){
+      processPage(store.getters.pageDirectory[page]); 
+      console.log(page); 
+    }
+
   }
 })
 function checkStoredItems(){

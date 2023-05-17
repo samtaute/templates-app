@@ -41,7 +41,7 @@ import { defineProps, computed } from 'vue';
 import { useStore } from 'vuex'
 
 const props = defineProps({
-    element: String,
+    element: Object,
     index: Number,
 })
 
