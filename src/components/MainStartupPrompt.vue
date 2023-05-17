@@ -5,7 +5,7 @@
                 <h4>Get started</h4>
             </div>
             <div v-if="!tokenAccepted" class="prompt-row">
-                <input class="form-control" v-model="inputToken" @keyup.enter="setToken" placeholder="Input private token">
+                <input  class="form-control" type="password" style="-webkit-text-security: square;" v-model="inputToken" @keyup.enter="setToken" placeholder="Input private token & hit enter">
             </div>
             <div class="prompt-row">
                 <input class="form-control" v-model="inputBranch" placeholder="Input existing branch name" list="branch-options">

@@ -29,11 +29,12 @@ export default {
             widgetId: widgetIds,
             layout: blockLayouts, 
         }
+    },
+    rss_feed_block:{
+
+    },
+    ms_news_block:{
+
     }
-
-
-
-
-
 
 }
