@@ -340,6 +340,7 @@ const store = createStore({
 
             let { path } = payload;
             let pageName = path[0];
+            console.log('edit')
             if (!context.state.revisedPages.includes(pageName) && pageName != undefined) {
                 context.state.revisedPages.push(pageName);
             }
@@ -431,7 +432,8 @@ const store = createStore({
                 path: path,
                 value: temp,
             }
-            context.commit('editDirectory', payload)
+            console.log('delete')
+            context.dispatch('editDirectory', payload)
         },
         alert(context, payload) {
             context.commit('pushToAlerts', payload);
