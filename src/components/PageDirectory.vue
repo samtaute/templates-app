@@ -16,6 +16,14 @@
                         <option>es_mx</option>
                         <option>hi</option>
                         <option>pt</option>
+                        <option>de_at</option>
+                        <option>de_at</option>
+                        <option>en_in</option>
+                        <option>en_ph</option>
+                        <option>en_ph</option>
+                        <option>fr_ca</option>
+                        <option>it</option>
+                        <option>de-at</option>
                     </select>
                 </div>
                 <div class="button-container">
