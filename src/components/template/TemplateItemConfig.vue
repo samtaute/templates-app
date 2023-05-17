@@ -210,19 +210,26 @@ function addConfig(label) {
     let copyPath = [...props.fullPath]
     copyPath.push(label);
 
-
     const targetConfig = findNestedConfigObj(configObject, label);
-    let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : "";
+    let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : "placeholder";
 
-
-    let payload = {
-        directoryKey: directoryKey,
-        elementId: props.element.id,
+    store.dispatch('editDirectory', {
         path: copyPath,
         value: value,
-    }
+    })
 
-    store.dispatch('setItemConfigValue', payload)
+    // const targetConfig = findNestedConfigObj(configObject, label);
+    // let value = typeof targetConfig === 'object' && !Array.isArray(targetConfig) ? {} : "";
+
+
+    // let payload = {
+    //     directoryKey: directoryKey,
+    //     elementId: props.element.id,
+    //     path: copyPath,
+    //     value: value,
+    // }
+
+    // store.dispatch('setItemConfigValue', payload)
 }
 function deleteConfig() {
     let payload = {

@@ -8,6 +8,9 @@ export default {
             count: [1, 2, 3, 4,5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20],
             cta: [true,false], 
             link_destination: ['fotoscape','full_page_article','referral','stub'],
+            title:{
+                text: "placeholder", 
+            },
             layout_config:{
                 stub:{
                     hide_description:['true','false']
