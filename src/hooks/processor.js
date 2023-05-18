@@ -8,6 +8,20 @@ export default function useProcessor() {
         if (!page.blocks.length > 0) {
             validateStatus = false;
         }
+        for (let block of page.blocks){
+            let layout=findProperty(block, 'layout');
+            let count = findProperty(block, 'count'); 
+            if (layout.includes('carousel')){
+                if (Number(count)<4){
+                    store.dispatch('alert',{
+                        type: 'alert-danger',
+                        message: 'Carousel block contains fewer than 4 items'
+                    })
+                    return false; 
+                }
+            }
+
+        }
         return validateStatus;
     }
 
@@ -92,6 +106,7 @@ export default function useProcessor() {
 
             return contentstring;
         }
+        else return false; 
 
 
         function replacer(key, value) {
@@ -111,7 +126,18 @@ export default function useProcessor() {
             }
         }
     }
-
+    function findProperty(element, propKey) {
+        let returnVal = '';
+        for (let [key, value] of Object.entries(element)) {
+            if (typeof value === 'object') {
+                returnVal = findProperty(value, propKey)
+            }
+            if (key === propKey) {
+                return value;
+            }
+        }
+        return returnVal;
+    }
 
     return {
         validateContent,

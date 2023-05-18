@@ -57,7 +57,9 @@ export default function useGitlab() {
             if (response.ok) {
                 const data = await response.json();
                 for (let page of data) {
-                    filenames.push(page.name);
+                    if (!page.name.includes('index')){
+                        filenames.push(page.name);
+                    }
                 }
             }
         }
@@ -73,7 +75,9 @@ export default function useGitlab() {
             if (response.ok) {
                 const data = await response.json();
                 for (let page of data) {
-                    filenames.push(page.name);
+                    if (!page.name.includes('index')){
+                        filenames.push(page.name);
+                    }
                 }
             }
         }

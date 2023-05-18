@@ -44,18 +44,21 @@ function demote(page) {
 function publishChanges() {
     if (activeBranch.value === 'master') {
         showAlert('alert-danger', 'Tried to commit to master')
-    } else if (commitMessage.value.length === 0){
+    } else if (commitMessage.value.length === 0) {
         showAlert('alert-danger', 'Please input a commit message')
     }
     else {
         let actions = generateActions();
 
-        let payload = {
-            message:commitMessage.value,
-            actions
+        if (actions.length > 1) {
+            let payload = {
+                message: commitMessage.value,
+                actions
+            }
+
+            store.dispatch('updateFiles', payload);
         }
 
-        store.dispatch('updateFiles', payload);
 
         // for (let page of revisedPages.value) {
         //     let content = store.getters.pageDirectory[page];
@@ -75,11 +78,11 @@ function publishChanges() {
 function generateActions() {
     let actions = [];
     for (let page of revisedPages.value) {
-        let filePath; 
+        let filePath;
         let content = store.getters.pageDirectory[page];
-        if(page.includes('portal')){
+        if (page.includes('portal')) {
             filePath = `/content/src/raw/pages/portals/${page}`
-        }else{
+        } else {
             filePath = `/content/src/raw/pages/content_pages/${page}`
         }
         content = processContent(content);
