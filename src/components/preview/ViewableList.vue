@@ -13,7 +13,10 @@ const blocks = computed(() => {
         let currHandle = store.getters.activePreview;
         return store.getters.pageDirectory[currHandle]['blocks']
     } catch {
-        store.dispatch('alert', `Error displaying blocks from ${store.getters.activePreview}`)
+        store.dispatch('alert', {
+            type: "alert-danger",
+            message: `Error displaying blocks from ${store.getters.activePreview}`
+        } )
         return []; 
     }
 })

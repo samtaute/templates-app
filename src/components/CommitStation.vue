@@ -75,12 +75,18 @@ function publishChanges() {
 function generateActions() {
     let actions = [];
     for (let page of revisedPages.value) {
+        let filePath; 
         let content = store.getters.pageDirectory[page];
+        if(page.includes('portal')){
+            filePath = `/content/src/raw/pages/portals/${page}`
+        }else{
+            filePath = `/content/src/raw/pages/content_pages/${page}`
+        }
         content = processContent(content);
         if (content) {
             let action = {
                 action: "update",
-                file_path: `/content/src/raw/pages/content_pages/${page}`,
+                file_path: filePath,
                 content: content
             }
             actions.push(action);

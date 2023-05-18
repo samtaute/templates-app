@@ -18,6 +18,7 @@
                         class="form-control"
                         :list="filter + 'filter-options'"
                         :name="filter + 'filter-options'"
+                        @blur="enterFilter(filter, $event)"
                         @keydown.enter="enterFilter(filter, $event)">
                     <datalist :id="filter + 'filter-options'">
                         <option :key=option v-for="option of options[filter]">{{ option }}</option>

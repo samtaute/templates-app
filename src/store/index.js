@@ -254,7 +254,6 @@ const store = createStore({
                 .then(() => {
                     localStorage.setItem('pageDirectory', JSON.stringify(context.getters.pageDirectory));
                     localStorage.setItem('activeBranch', context.getters.activeBranch);
-                    console.log('done');
                 })
 
 
@@ -431,7 +430,6 @@ const store = createStore({
                 path: path,
                 value: temp,
             }
-            console.log('delete')
             context.dispatch('editDirectory', payload)
         },
         alert(context, payload) {

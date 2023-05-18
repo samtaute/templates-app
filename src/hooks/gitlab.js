@@ -45,9 +45,6 @@ export default function useGitlab() {
 
     async function getFilenames(branchName, token) {
         let filenames = [];
-
-        console.log(branchName)
-
         let baseUrl = `https://gitlab.com/api/v4/projects/31495766/repository/tree?path=content%2Fsrc%2Fraw%2Fpages%2Fcontent_pages%2F&per_page=100&ref=${branchName}`
         for (let i = 0; i < 7; i++) {
             let requestUrl = baseUrl + `&page=${i}`
@@ -64,6 +61,23 @@ export default function useGitlab() {
                 }
             }
         }
+        baseUrl = `https://gitlab.com/api/v4/projects/31495766/repository/tree?path=content%2Fsrc%2Fraw%2Fpages%2Fportals%2F&per_page=100&ref=${branchName}`
+        for (let i = 0; i < 7; i++) {
+            let requestUrl = baseUrl + `&page=${i}`
+            const response = await fetch(requestUrl, {
+                method: 'GET',
+                headers: {
+                    "PRIVATE-TOKEN": token
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                for (let page of data) {
+                    filenames.push(page.name);
+                }
+            }
+        }
+
         return filenames;
     }
 
@@ -71,7 +85,15 @@ export default function useGitlab() {
         if (!branchName) {
             branchName = 'master'
         }
-        let requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/files/content%2Fsrc%2Fraw%2Fpages%2Fcontent_pages%2F${filename}/raw?ref=${branchName}`;
+
+        let requestUrl; 
+        
+        if(filename.includes('portal') && !filename.includes('index')){
+            requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/files/content%2Fsrc%2Fraw%2Fpages%2Fportals%2F${filename}/raw?ref=${branchName}`
+        }else{
+            requestUrl = `https://gitlab.com/api/v4/projects/31495766/repository/files/content%2Fsrc%2Fraw%2Fpages%2Fcontent_pages%2F${filename}/raw?ref=${branchName}`;
+        }
+
 
         const rawFile = await fetch(requestUrl, {
             method: 'GET',
