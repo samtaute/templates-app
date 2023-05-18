@@ -12,7 +12,7 @@ export default function useProcessor() {
             let layout=findProperty(block, 'layout');
             let count = findProperty(block, 'count'); 
             let title = findProperty(block, 'title');
-            if (layout.includes('carousel')){
+            if (typeof layout === 'string' && layout.includes('carousel')){
                 if (Number(count)<4){
                     store.dispatch('alert',{
                         type: 'alert-danger',
@@ -21,7 +21,7 @@ export default function useProcessor() {
                     return false; 
                 }
             }
-            if (title) {
+            if (title && typeof title === 'object') {
                 if (!title.text || title.text.length < 1) {
                     store.dispatch('alert', {
                         type: 'alert-danger',
