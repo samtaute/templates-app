@@ -340,7 +340,6 @@ const store = createStore({
 
             let { path } = payload;
             let pageName = path[0];
-            console.log('edit')
             if (!context.state.revisedPages.includes(pageName) && pageName != undefined) {
                 context.state.revisedPages.push(pageName);
             }

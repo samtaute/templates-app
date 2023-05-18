@@ -16,6 +16,7 @@
                 :id="label + id + '-choice'"
                 :name="label + id + '-choice'"
                 :value="value"
+                @blur="updateConfigValue($event)"
                 @keydown.enter="updateConfigValue($event)">
             <datalist
                 v-if="configValueOptions"

@@ -22,7 +22,6 @@ onMounted(() => {
     store.dispatch('loadStoredItems'); 
     for(let page of store.getters.activePages){
       processPage(store.getters.pageDirectory[page]); 
-      console.log(page); 
     }
 
   }

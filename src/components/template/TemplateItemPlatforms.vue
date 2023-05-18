@@ -1,6 +1,7 @@
 <template>
     <section>
-        <div v-if="!element.platforms && !element.excludePlatforms" class="platformOptionsContainer">
+        {{  }}
+        <div v-if="!hasPlatforms" class="platformOptionsContainer">
             <a class="platformsOption platformsOption--include" @click="addPlatformsOption('include')">include</a> <a
                 class="platformsOption platformsOption--exclude"
                 @click="addExcludes(addPlatformsOption('exclude'))">exclude</a>
@@ -17,6 +18,7 @@
                     <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
                 </datalist>
             </div>
+            <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
         </div>
         <div v-if="element.excludePlatforms" class="platforms">
             <label class="platforms__label">Exclude:</label>
@@ -30,7 +32,7 @@
                     <option v-for="plat in unusedPlatforms" :value="plat" :key="plat">{{ plat }}</option>
                 </datalist>
             </div>
-
+            <span class="delete-button" @click="deleteConfig()" id="deleteSettingDropdown"> - </span>
         </div>
 
     </section>
@@ -43,6 +45,17 @@ import { useStore } from 'vuex'
 const props = defineProps({
     element: Object,
     index: Number,
+    fullPath: Object,
+    value: [String, Object, Number, Boolean],
+    indent: Number,
+})
+
+const hasPlatforms = computed(()=>{
+    if (!props.element.platforms && !props.element.excludePlatforms){
+        return false
+    }else{
+        return true; 
+    }
 })
 
 const {processItem} = useProcessor(); 
@@ -83,6 +96,13 @@ function enterPlat(evt) {
     }
 }
 
+function deleteConfig() {
+    let payload = {
+        path: props.fullPath, 
+        value: undefined
+    }
+    store.dispatch('editDirectory', payload)
+}
 
 function removePlat(platform) {
     const returnBlock = props.element;
@@ -95,24 +115,24 @@ function removePlat(platform) {
 
     }
     //todo: 
-    store.dispatch('checkFilterArray', platform);
-    processItem(returnBlock);
-    store.dispatch('replaceBlock', {
-        id: returnBlock.id,
-        block: returnBlock,
-    });
+    // store.dispatch('checkFilterArray', platform);
+    // processItem(returnBlock);
+    // store.dispatch('editDirectory', {
+    //     id: returnBlock.id,
+    //     block: returnBlock,
+    // });
 }
 
 function addPlatformsOption(type) {
     if (type === 'include') {
         let newBlock = props.element;
         newBlock.platforms = [];
-        store.dispatch('replaceBlock', newBlock.id)
+        // store.dispatch('replaceBlock', newBlock.id)
     }
     if (type === 'exclude') {
         let newBlock = props.element;
         newBlock.excludePlatforms = [];
-        store.dispatch('replaceBlock', newBlock.id)
+        // store.dispatch('replaceBlock', newBlock.id)
     }
 }
 </script>
@@ -168,5 +188,14 @@ function addPlatformsOption(type) {
     width: 4rem;
     font-size: small;
     font-style: italic;
+}
+
+.delete-button {
+    opacity: .5;
+}
+
+.delete-button:hover {
+    opacity: 1;
+    cursor: pointer;
 }
 </style>

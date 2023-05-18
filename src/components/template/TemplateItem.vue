@@ -1,5 +1,5 @@
 <template>
-    <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted}]"
+    <li class="block-container" :key="index" :class="[element.blockType, { highlighted: isHighlighted }]"
         v-if="!isFiltered">
         <div :key="index" class="header__buttons">
             <button @click="deleteItem(element.id)" type="button" class="btn btn-sm btn-outline-danger"><img
@@ -16,6 +16,10 @@
             :fullPath="updatePath(key)"
             :indent="1">
         </template-item-config>
+        <template-item-config v-if="!element.platforms && !element.excludePlatforms" label='platforms' :element="element"
+            key='platforms' 
+            :fullPath="updatePath('platforms')"
+            :indent="1"></template-item-config>
     </li>
 </template>
 <script setup>
@@ -52,17 +56,17 @@ function duplicateBlock() {
 
 const elementHasActivePlatform = computed(() => {
     let activePlatform = store.getters.activePlatform;
-    let {platforms, excludePlatforms} = props.element; 
-    if(platforms){
-        if(!platforms.includes(activePlatform)){
+    let { platforms, excludePlatforms } = props.element;
+    if (platforms) {
+        if (!platforms.includes(activePlatform)) {
             return false
-        }else return true; 
-    }else if (excludePlatforms){
-        if(excludePlatforms.includes(activePlatform)){
-            return false; 
-        }else return true; 
-    }else{
-        return true; 
+        } else return true;
+    } else if (excludePlatforms) {
+        if (excludePlatforms.includes(activePlatform)) {
+            return false;
+        } else return true;
+    } else {
+        return true;
     }
 })
 

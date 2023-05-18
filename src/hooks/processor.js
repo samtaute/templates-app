@@ -69,8 +69,10 @@ export default function useProcessor() {
     function sortKeys(item) {
         var key = Object.keys(item)
             .sort((key1, key2) => {
-                if (key1 === 'uid') return -1;
-                else if (key2 === 'uid') return +1;
+                if (key1 === 'blockType') return -1;
+                else if (key2 === 'blockType') return +1;
+                else if (key1 === 'platforms' || key1 === 'excludePlatforms') return -1; 
+                else if (key2 === 'platforms' || key1 === 'excludePlatforms') return +1; 
                 else return 0;
             });
         var temp = {};
