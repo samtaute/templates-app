@@ -11,6 +11,7 @@ export default function useProcessor() {
         for (let block of page.blocks){
             let layout=findProperty(block, 'layout');
             let count = findProperty(block, 'count'); 
+            let title = findProperty(block, 'title');
             if (layout.includes('carousel')){
                 if (Number(count)<4){
                     store.dispatch('alert',{
@@ -18,6 +19,15 @@ export default function useProcessor() {
                         message: 'Carousel block contains fewer than 4 items'
                     })
                     return false; 
+                }
+            }
+            if (title) {
+                if (!title.text || title.text.length < 1) {
+                    store.dispatch('alert', {
+                        type: 'alert-danger',
+                        message: 'Missing title text'
+                    })
+                    return false;
                 }
             }
 

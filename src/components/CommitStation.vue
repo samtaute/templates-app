@@ -50,13 +50,15 @@ function publishChanges() {
     else {
         let actions = generateActions();
 
-        if (actions.length > 1) {
+        if (actions.length > 0) {
             let payload = {
                 message: commitMessage.value,
                 actions
             }
 
             store.dispatch('updateFiles', payload);
+        }else{
+            console.log('no actions')
         }
 
 
@@ -92,12 +94,14 @@ function generateActions() {
                 file_path: filePath,
                 content: content
             }
+           
             actions.push(action);
         } else {
             showAlert('alert-danger', 'Page failed validation')
         }
 
     }
+    console.log(actions)
     return actions;
 }
 
