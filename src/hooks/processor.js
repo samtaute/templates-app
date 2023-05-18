@@ -101,6 +101,9 @@ export default function useProcessor() {
             }else if (key === 'status'){
                 return undefined;
             }
+            else if(key === 'count'){
+                return Number(value)
+            }
             else{
                 return value; 
             }

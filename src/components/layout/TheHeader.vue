@@ -130,7 +130,7 @@ export default {
 }
 
 .page-button {
-    width: 8rem;
+    min-width: 8rem;
     margin: .2rem;
     font-size: .8rem;
 
