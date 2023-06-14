@@ -29,8 +29,6 @@
         Convert
       </button>
     </div>
-    {{ props.element.uid }}
-
     <template-item-config
       v-for="(value, key) in element"
       :label="key"
