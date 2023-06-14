@@ -10,7 +10,7 @@ export default {
     settings: {
       layout: "edge-description",
       count: 1,
-      category: "news",
+      category: "standard",
     }
   },
   outbrain_block: {
