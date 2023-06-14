@@ -13,10 +13,10 @@ export default function useProcessor() {
             let count = findProperty(block, 'count'); 
             let title = findProperty(block, 'title');
             if (typeof layout === 'string' && layout.includes('carousel')){
-                if (Number(count)<4){
+                if (Number(count)<3){
                     store.dispatch('alert',{
                         type: 'alert-danger',
-                        message: 'Carousel block contains fewer than 4 items'
+                        message: 'Carousel block contains fewer than 3 items'
                     })
                     return false; 
                 }
