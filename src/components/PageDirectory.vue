@@ -18,12 +18,15 @@
                         <option>pt</option>
                         <option>de_at</option>
                         <option>de_at</option>
+                        <option>en_ae</option>
                         <option>en_in</option>
-                        <option>en_ph</option>
                         <option>en_ph</option>
                         <option>fr_ca</option>
                         <option>it</option>
                         <option>de-at</option>
+                        <option>de-at</option>
+                        <option>en-at</option>
+                        <option>en-ph</option>
                     </select>
                 </div>
                 <div class="button-container">

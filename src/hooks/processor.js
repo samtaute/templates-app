@@ -8,30 +8,30 @@ export default function useProcessor() {
         if (!page.blocks.length > 0) {
             validateStatus = false;
         }
-        for (let block of page.blocks){
-            let layout=findProperty(block, 'layout');
-            let count = findProperty(block, 'count'); 
-            let title = findProperty(block, 'title');
-            if (typeof layout === 'string' && layout.includes('carousel')){
-                if (Number(count)<3){
-                    store.dispatch('alert',{
-                        type: 'alert-danger',
-                        message: 'Carousel block contains fewer than 3 items'
-                    })
-                    return false; 
-                }
-            }
-            if (title && typeof title === 'object') {
-                if (!title.text || title.text.length < 1) {
-                    store.dispatch('alert', {
-                        type: 'alert-danger',
-                        message: 'Missing title text'
-                    })
-                    return false;
-                }
-            }
+        // for (let block of page.blocks){
+        //     let layout=findProperty(block, 'layout');
+        //     let count = findProperty(block, 'count'); 
+        //     let title = findProperty(block, 'title');
+        //     if (typeof layout === 'string' && layout.includes('carousel')){
+        //         if (Number(count)<3){
+        //             store.dispatch('alert',{
+        //                 type: 'alert-danger',
+        //                 message: 'Carousel block contains fewer than 3 items'
+        //             })
+        //             return false; 
+        //         }
+        //     }
+        //     if (title && typeof title === 'object') {
+        //         if (!title.text || title.text.length < 1) {
+        //             store.dispatch('alert', {
+        //                 type: 'alert-danger',
+        //                 message: 'Missing title text'
+        //             })
+        //             return false;
+        //         }
+        //     }
 
-        }
+        // }
         return validateStatus;
     }
 

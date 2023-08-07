@@ -57,9 +57,10 @@ export default function useGitlab() {
             if (response.ok) {
                 const data = await response.json();
                 for (let page of data) {
-                    if (!page.name.includes('index')){
-                        filenames.push(page.name);
-                    }
+                    filenames.push(page.name);
+                    // if (!page.name.includes('index')){
+                    //     filenames.push(page.name);
+                    // }
                 }
             }
         }

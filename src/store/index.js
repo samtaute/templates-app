@@ -81,7 +81,6 @@ const store = createStore({
             return [...array]
         },
         activePlatform(state) {
-            console.log('test')
             return state.filters.platform;
         },
 
@@ -135,7 +134,6 @@ const store = createStore({
         back(state) {
             console.log('back')
             if (state.editHistory.length > 0) {
-                console.log('edit')
                 state.redoStack.push(JSON.parse(JSON.stringify(state.pageDirectory)));
                 state.pageDirectory = state.editHistory.pop();
             }
@@ -334,6 +332,7 @@ const store = createStore({
         },
 
         editDirectory(context, payload) {
+            console.log(payload); 
             context.dispatch('registerDirectorySnapshot')
             context.commit('editDirectory', payload);
 

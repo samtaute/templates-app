@@ -82,7 +82,7 @@ function generateActions() {
     for (let page of revisedPages.value) {
         let filePath;
         let content = store.getters.pageDirectory[page];
-        if (page.includes('portal')) {
+        if (page.includes('portal') && !page.includes('index_page_portal')){
             filePath = `/content/src/raw/pages/portals/${page}`
         } else {
             filePath = `/content/src/raw/pages/content_pages/${page}`
